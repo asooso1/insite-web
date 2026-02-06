@@ -1,0 +1,372 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/* ==================== CSP 디자인 토큰 ==================== */
+
+@theme inline {
+  /* shadcn/ui 기본 매핑 */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  /* 차트 컬러 */
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+
+  /* 사이드바 */
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  /* 폰트 */
+  --font-sans: var(--font-pretendard), system-ui, sans-serif;
+  --font-display: var(--font-rajdhani), system-ui, sans-serif;
+  --font-mono: ui-monospace, monospace;
+
+  /* 반지름 */
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+
+  /* Z-Index 레이어 */
+  --z-base: 1;
+  --z-dropdown: 50;
+  --z-sticky: 100;
+  --z-overlay: 200;
+  --z-modal: 300;
+  --z-toast: 400;
+  --z-loader: 500;
+}
+
+/* ==================== Light 테마 ==================== */
+:root {
+  --radius: 0.5rem;
+
+  /* Brand */
+  --brand: #0064FF;
+  --brand-secondary: rgba(0, 100, 255, 0.1);
+
+  /* Background */
+  --background: #FFFFFF;
+  --foreground: #2C2C2C;
+  --bg-gradient: linear-gradient(180deg, #EAF2FF 0%, #CAD9F3 100%);
+  --bg-header: rgba(255, 255, 255, 0.85);
+  --bg-footer: rgba(255, 255, 255, 0.85);
+  --bg-modal: rgba(255, 255, 255, 0.5);
+  --bg-tooltip: #2C2C2C;
+
+  /* Panel (Surface hierarchy) */
+  --panel-10: #FFFFFF;
+  --panel-20: #FAFAFA;
+  --panel-30: #F5F5F5;
+  --panel-40: #EAEAEA;
+
+  /* Card/Popover */
+  --card: var(--panel-10);
+  --card-foreground: var(--foreground);
+  --popover: var(--panel-10);
+  --popover-foreground: var(--foreground);
+
+  /* Primary (Brand) */
+  --primary: var(--brand);
+  --primary-foreground: #FAFAFA;
+
+  /* Secondary */
+  --secondary: var(--panel-30);
+  --secondary-foreground: var(--foreground);
+
+  /* Muted */
+  --muted: var(--panel-20);
+  --muted-foreground: #6E6E6E;
+
+  /* Accent */
+  --accent: var(--panel-30);
+  --accent-foreground: var(--foreground);
+
+  /* Destructive */
+  --destructive: #C9252D;
+
+  /* Field */
+  --field-10: #F5F5F5;
+  --field-10-hover: #FFFFFF;
+  --field-select: var(--brand);
+  --field-border: rgba(234, 234, 234, 0.5);
+  --field-disabled: hsl(0, 0%, 88%);
+
+  /* Border */
+  --border: #EAEAEA;
+  --border-hover: #CACACA;
+  --border-primary: var(--brand);
+  --input: var(--field-border);
+  --ring: var(--brand);
+
+  /* Elevation (그림자) */
+  --elevation-1: 0px 0px 1px rgba(40,41,61,0.08), 0px 0.5px 2px rgba(96,97,112,0.16);
+  --elevation-2: 0px 0px 1px rgba(40,41,61,0.04), 0px 2px 4px rgba(96,97,112,0.16);
+  --elevation-3: 0px 0px 2px rgba(40,41,61,0.04), 0px 4px 8px rgba(96,97,112,0.16);
+  --elevation-4: 0px 2px 4px rgba(40,41,61,0.04), 0px 8px 16px rgba(96,97,112,0.16);
+  --elevation-5: 0px 2px 8px rgba(40,41,61,0.04), 0px 16px 24px rgba(96,97,112,0.16);
+  --elevation-6: 0px 2px 8px rgba(40,41,61,0.08), 0px 20px 32px rgba(96,97,112,0.24);
+
+  /* Text */
+  --text-brand: var(--brand);
+  --text-primary: #2C2C2C;
+  --text-secondary: #6E6E6E;
+  --text-sub10: #B3B3B3;
+  --text-sub20: #CACACA;
+  --text-sub30: #E1E1E1;
+  --text-link: #1473E6;
+  --text-helper: #4B4B4B;
+  --text-placeholder: #6E6E6E;
+  --text-disabled: #8E8E8E;
+  --text-on-brand: #FAFAFA;
+  --text-on-dark: #FAFAFA;
+
+  /* Icon */
+  --icon-brand: var(--brand);
+  --icon-primary: #2C2C2C;
+  --icon-secondary: #6E6E6E;
+  --icon-sub10: #B3B3B3;
+  --icon-link: #1473E6;
+  --icon-on-brand: #FAFAFA;
+
+  /* System / Semantic */
+  --system-red: #C9252D;
+  --system-red-secondary: rgba(201, 37, 45, 0.2);
+  --system-orange: #CB6F10;
+  --system-orange-secondary: rgba(203, 111, 16, 0.2);
+  --system-yellow: #BEA736;
+  --system-yellow-secondary: rgba(190, 167, 54, 0.2);
+  --system-green: #12805C;
+  --system-green-secondary: rgba(18, 128, 92, 0.2);
+  --system-blue: #0D66D0;
+  --system-blue-secondary: rgba(13, 102, 208, 0.2);
+
+  /* Scroll */
+  --scroll-bar: hsl(0, 0%, 90%);
+  --scroll-bar-hover: hsl(0, 0%, 88%);
+  --scroll-bg: #FAFAFA;
+
+  /* Sidebar */
+  --sidebar: var(--panel-20);
+  --sidebar-foreground: var(--foreground);
+  --sidebar-primary: var(--brand);
+  --sidebar-primary-foreground: #FAFAFA;
+  --sidebar-accent: var(--panel-30);
+  --sidebar-accent-foreground: var(--foreground);
+  --sidebar-border: var(--border);
+  --sidebar-ring: var(--brand);
+
+  /* Chart */
+  --chart-1: #0064FF;
+  --chart-2: #12805C;
+  --chart-3: #CB6F10;
+  --chart-4: #7C3AED;
+  --chart-5: #C9252D;
+
+  /* Chart Blue Scale */
+  --chart-blue-10: #9AB7DC;
+  --chart-blue-50: #4A7BB5;
+  --chart-blue-90: #1F4A7C;
+
+  /* Chart Green Scale */
+  --chart-green-10: #CDDEBC;
+  --chart-green-50: #7FA866;
+  --chart-green-90: #547238;
+}
+
+/* ==================== Dark 테마 ==================== */
+.dark {
+  /* Brand */
+  --brand: #0064FF;
+  --brand-secondary: rgba(0, 100, 255, 0.8);
+
+  /* Background */
+  --background: #080808;
+  --foreground: #EFEFEF;
+  --bg-gradient: #080808;
+  --bg-header: rgba(30, 30, 30, 0.85);
+  --bg-footer: rgba(30, 30, 30, 0.85);
+  --bg-modal: rgba(30, 30, 30, 0.5);
+  --bg-tooltip: #FAFAFA;
+
+  /* Panel */
+  --panel-10: #1E1E1E;
+  --panel-20: #2C2C2C;
+  --panel-30: #393939;
+  --panel-40: #494949;
+
+  /* Card/Popover */
+  --card: var(--panel-10);
+  --card-foreground: var(--foreground);
+  --popover: var(--panel-10);
+  --popover-foreground: var(--foreground);
+
+  /* Primary */
+  --primary: var(--brand);
+  --primary-foreground: #FAFAFA;
+
+  /* Secondary */
+  --secondary: var(--panel-30);
+  --secondary-foreground: var(--foreground);
+
+  /* Muted */
+  --muted: var(--panel-20);
+  --muted-foreground: #A2A2A2;
+
+  /* Accent */
+  --accent: var(--panel-30);
+  --accent-foreground: var(--foreground);
+
+  /* Destructive */
+  --destructive: #D7373F;
+
+  /* Field */
+  --field-10: #393939;
+  --field-border: rgba(57, 57, 57, 0.5);
+
+  /* Border */
+  --border: #393939;
+  --border-hover: #494949;
+  --input: var(--field-border);
+  --ring: var(--brand);
+
+  /* Elevation (다크 버전) */
+  --elevation-1: 0px 0px 1px rgba(0,0,0,0.16), 0px 0.5px 2px rgba(0,0,0,0.32);
+  --elevation-2: 0px 0px 1px rgba(0,0,0,0.08), 0px 2px 4px rgba(0,0,0,0.32);
+  --elevation-3: 0px 0px 2px rgba(0,0,0,0.08), 0px 4px 8px rgba(0,0,0,0.32);
+  --elevation-4: 0px 2px 4px rgba(0,0,0,0.08), 0px 8px 16px rgba(0,0,0,0.32);
+  --elevation-5: 0px 2px 8px rgba(0,0,0,0.08), 0px 16px 24px rgba(0,0,0,0.32);
+  --elevation-6: 0px 2px 8px rgba(0,0,0,0.16), 0px 20px 32px rgba(0,0,0,0.48);
+
+  /* Text */
+  --text-primary: #EFEFEF;
+  --text-secondary: #A2A2A2;
+  --text-sub10: #7C7C7C;
+
+  /* Icon */
+  --icon-primary: #EFEFEF;
+  --icon-secondary: #A2A2A2;
+
+  /* System */
+  --system-red: #D7373F;
+  --system-green: #268E6C;
+  --system-blue: #1473E6;
+
+  /* Scroll */
+  --scroll-bar: hsl(0, 0%, 29%);
+  --scroll-bg: #2C2C2C;
+
+  /* Sidebar */
+  --sidebar: var(--panel-20);
+  --sidebar-foreground: var(--foreground);
+  --sidebar-primary: var(--brand);
+  --sidebar-primary-foreground: #FAFAFA;
+  --sidebar-accent: var(--panel-30);
+  --sidebar-accent-foreground: var(--foreground);
+  --sidebar-border: var(--border);
+  --sidebar-ring: var(--brand);
+
+  /* Chart */
+  --chart-1: #3B82F6;
+  --chart-2: #22C55E;
+  --chart-3: #F97316;
+  --chart-4: #A855F7;
+  --chart-5: #EF4444;
+}
+
+/* ==================== Base 스타일 ==================== */
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+
+  /* 스크롤바 스타일 */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: var(--scroll-bg);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: var(--scroll-bar);
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--scroll-bar-hover);
+  }
+}
+
+/* ==================== 유틸리티 ==================== */
+@layer utilities {
+  /* 숫자/KPI용 display 폰트 */
+  .font-display {
+    font-family: var(--font-display);
+  }
+
+  /* Elevation 유틸리티 */
+  .shadow-1 { box-shadow: var(--elevation-1); }
+  .shadow-2 { box-shadow: var(--elevation-2); }
+  .shadow-3 { box-shadow: var(--elevation-3); }
+  .shadow-4 { box-shadow: var(--elevation-4); }
+  .shadow-5 { box-shadow: var(--elevation-5); }
+  .shadow-6 { box-shadow: var(--elevation-6); }
+
+  /* 텍스트 컬러 유틸리티 */
+  .text-brand { color: var(--text-brand); }
+  .text-link { color: var(--text-link); }
+  .text-helper { color: var(--text-helper); }
+
+  /* 아이콘 컬러 유틸리티 */
+  .icon-brand { color: var(--icon-brand); }
+  .icon-link { color: var(--icon-link); }
+
+  /* 시스템 컬러 유틸리티 */
+  .bg-system-red { background-color: var(--system-red); }
+  .bg-system-orange { background-color: var(--system-orange); }
+  .bg-system-yellow { background-color: var(--system-yellow); }
+  .bg-system-green { background-color: var(--system-green); }
+  .bg-system-blue { background-color: var(--system-blue); }
+
+  .text-system-red { color: var(--system-red); }
+  .text-system-orange { color: var(--system-orange); }
+  .text-system-yellow { color: var(--system-yellow); }
+  .text-system-green { color: var(--system-green); }
+  .text-system-blue { color: var(--system-blue); }
+}
