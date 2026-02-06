@@ -1,6 +1,12 @@
 import "@testing-library/jest-dom/vitest";
 import { cleanup } from "@testing-library/react";
-import { afterEach, vi } from "vitest";
+import { afterEach, beforeAll, afterAll, vi } from "vitest";
+import { server } from "@/mocks/server";
+
+// MSW 서버 설정
+beforeAll(() => server.listen({ onUnhandledRequest: "error" }));
+afterAll(() => server.close());
+afterEach(() => server.resetHandlers());
 
 // 각 테스트 후 cleanup
 afterEach(() => {
