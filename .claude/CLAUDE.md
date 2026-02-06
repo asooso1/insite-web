@@ -72,6 +72,14 @@ csp-was(REST API 백엔드)는 그대로 유지하며, csp-was 변경은 CORS �
 - React Query 훅으로 데이터 fetching
 - 에러 처리는 handleApiError 함수 사용
 
+### API 연결 규칙
+- **반드시 기존 csp-web, csp-was 코드를 확인 후 API 연결 구현**
+- csp-web의 axiosApiGet/Post/Put/Delete 호출 패턴 참조
+- csp-was 컨트롤러의 엔드포인트, 요청/응답 구조 확인
+- 백엔드 변경이 필요한 경우 `docs/backend-changes.md`에 기록
+  - 변경 사유, 영향 범위, 제안 코드 포함
+  - CORS 설정 외 변경은 반드시 사전 논의 필요
+
 ---
 
 ## 📁 디렉토리 구조

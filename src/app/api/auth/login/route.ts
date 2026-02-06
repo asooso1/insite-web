@@ -11,9 +11,8 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
   try {
     const body = await request.json();
     const backendUrl = process.env.BACKEND_INTERNAL_URL ?? "http://localhost:8080";
-
     // csp-was 인증 API 호출
-    const authResponse = await fetch(`${backendUrl}/api/auth/login`, {
+    const authResponse = await fetch(`${backendUrl}/api/account/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
