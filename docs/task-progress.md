@@ -6,7 +6,7 @@
 
 | Phase | 상태 | 진행률 | 설명 |
 |-------|------|--------|------|
-| Phase 0 | 🔄 진행중 | 10% | 사전 준비 및 분석 |
+| Phase 0 | 🔄 진행중 | 50% | 사전 준비 및 분석 |
 | Phase 1 | ⏳ 대기 | 0% | 기반 구축 |
 | Phase 2A | ⏳ 대기 | 0% | 핵심 데이터 컴포넌트 |
 | Phase 2B | ⏳ 대기 | 0% | 위젯 프레임워크 및 서드파티 |
@@ -34,6 +34,7 @@
 ### 0.1 csp-was API 감사
 | 태스크 | 상태 | 완료일 | 담당 | 비고 |
 |--------|------|--------|------|------|
+| **API 감사 준비 문서 작성** | ✅ | 2026-02-06 | - | `docs/phase-0/api-audit.md` |
 | OpenAPI 스펙 추출 (`/v3/api-docs/v1-definition`) | ⏳ | - | - | csp-was 실행 필요 |
 | 72개 REST 컨트롤러 엔드포인트 카탈로그 작성 | ⏳ | - | - | |
 | csp-web 템플릿(583개) → csp-was API 매핑 문서 | ⏳ | - | - | |
@@ -44,31 +45,34 @@
 ### 0.2 Prisma 스키마 설계 준비
 | 태스크 | 상태 | 완료일 | 담당 | 비고 |
 |--------|------|--------|------|------|
+| **Prisma 스키마 설계 문서 작성** | ✅ | 2026-02-06 | - | `docs/phase-0/prisma-schema-design.md` |
 | csp-web DB 스키마 분석 | ⏳ | - | - | menu, role_menu, product_menu 등 |
 | PostgreSQL 접속 정보 확보 | ⏳ | - | - | |
 | `prisma db pull` 실행 | ⏳ | - | - | 기존 스키마 introspection |
-| MenuService.aside() 포팅 설계서 | ⏳ | - | - | |
-| HttpInterceptor.postHandle() 포팅 설계서 | ⏳ | - | - | |
-| DashboardService.getDashboardDTO() 포팅 설계서 | ⏳ | - | - | |
+| MenuService.aside() 포팅 설계서 | ✅ | 2026-02-06 | - | 문서 내 포함 |
+| HttpInterceptor.postHandle() 포팅 설계서 | ✅ | 2026-02-06 | - | 문서 내 포함 |
+| DashboardService.getDashboardDTO() 포팅 설계서 | ✅ | 2026-02-06 | - | 문서 내 포함 |
 
 ### 0.3 인프라 결정
 | 태스크 | 상태 | 완료일 | 담당 | 비고 |
 |--------|------|--------|------|------|
+| **인프라 결정 문서 작성** | ✅ | 2026-02-06 | - | `docs/phase-0/infrastructure-decisions.md` |
 | 배포 플랫폼 결정 | ⏳ | - | - | AWS Amplify / Vercel / ECS |
 | csp-was CORS 설정 확인 | ⏳ | - | - | Next.js 도메인 추가 계획 |
-| CI OpenAPI 스펙 갱신 파이프라인 설계 | ⏳ | - | - | |
+| CI OpenAPI 스펙 갱신 파이프라인 설계 | ✅ | 2026-02-06 | - | 문서 내 포함 |
 | 도메인/서브도메인 결정 | ⏳ | - | - | |
 
 ### 0.4 성능 베이스라인 측정
 | 태스크 | 상태 | 완료일 | 담당 | 비고 |
 |--------|------|--------|------|------|
+| **성능 베이스라인 문서 작성** | ✅ | 2026-02-06 | - | `docs/phase-0/performance-baseline.md` |
 | csp-web 로그인 페이지 Web Vitals 측정 | ⏳ | - | - | LCP, CLS, INP |
 | csp-web 메인 대시보드 Web Vitals 측정 | ⏳ | - | - | |
 | csp-web 작업 목록 페이지 Web Vitals 측정 | ⏳ | - | - | |
 | csp-web FMS 대시보드 Web Vitals 측정 | ⏳ | - | - | |
 | 주요 API 응답 시간 기록 | ⏳ | - | - | P50, P95, P99 |
 | 번들 사이즈 기준선 수립 | ⏳ | - | - | |
-| 성능 리포트 템플릿 작성 | ⏳ | - | - | |
+| 성능 리포트 템플릿 작성 | ✅ | 2026-02-06 | - | 문서 내 포함 |
 
 ---
 
@@ -153,6 +157,7 @@
 | 날짜 | 커밋 메시지 | Phase |
 |------|------------|-------|
 | 2026-02-06 | `chore: 프로젝트 초기화 및 개발 규칙 문서 작성` | Phase 0 |
+| 2026-02-06 | `docs: Phase 0 분석 문서 작성 (API 감사, Prisma 스키마, 인프라, 성능)` | Phase 0 |
 
 ---
 
@@ -178,3 +183,9 @@
 - [마이그레이션 계획서](../../../migration-plan.md)
 - [개발 규칙 (CLAUDE.md)](../.claude/CLAUDE.md)
 - [기존 csp-web](../../../csp-web/)
+
+### Phase 0 문서
+- [API 감사 문서](./phase-0/api-audit.md)
+- [Prisma 스키마 설계](./phase-0/prisma-schema-design.md)
+- [인프라 결정 문서](./phase-0/infrastructure-decisions.md)
+- [성능 베이스라인](./phase-0/performance-baseline.md)
