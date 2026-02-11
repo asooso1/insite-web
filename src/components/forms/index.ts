@@ -31,3 +31,8 @@ export {
   type FilterConfig,
   type FilterOption,
 } from "./search-filter-bar";
+export {
+  FileUpload,
+  type FileUploadProps,
+  type UploadedFile,
+} from "./file-upload";
