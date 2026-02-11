@@ -14,19 +14,43 @@ export const TOKEN_CONFIG = {
 
 /**
  * JWT 클레임 인터페이스
+ * csp-was TokenProvider.createToken() 기반
  */
 export interface JWTPayload {
-  sub: string; // userId
-  accountId: string;
-  userName: string;
-  userRoles: string[];
+  // 기본 사용자 정보
+  accountId: number;
+  userId: string;
   accountName: string;
-  accountType: "LABS" | "FIELD" | "CLIENT";
-  currentCompanyId: string;
+  accountType: string;
+
+  // 회사 정보
+  accountCompanyId: number;
+  accountCompanyName: string;
+  currentCompanyId: number;
   currentCompanyName: string;
-  currentBuildingId: string;
+
+  // 건물 정보
+  currentBuildingId: number;
   currentBuildingName: string;
-  accountCompanyId: string;
+
+  // 날씨 정보
+  currentWeatherAddress: string;
+  currentWeatherX: number;
+  currentWeatherY: number;
+
+  // 권한 정보
+  userRoles: string[];
+  userRoleNames: string[];
+
+  // 담당 범위
+  userCompanyIds: number[];
+  userWideAreaIds: number[];
+  userBaseAreaIds: number[];
+  userBuildingIds: number[];
+  viewAllBuildings: boolean;
+
+  // JWT 표준 클레임
+  iss: string;
   iat: number;
   exp: number;
 }
