@@ -7,7 +7,7 @@
 | 항목 | 값 |
 |------|-----|
 | **현재 Phase** | 2A - 핵심 데이터 컴포넌트 |
-| **Phase 진행률** | 46% (6/13 완료) |
+| **Phase 진행률** | 54% (7/13 완료) |
 | **전체 진행률** | ~12% |
 | **마지막 커밋** | feat: Phase 1 완료 - 커스텀 컴포넌트, Command Palette, E2E, MSW |
 
@@ -33,7 +33,7 @@
 4. ✅ FormField 래퍼
 5. ✅ CascadingSelect - 회사→지역→빌딩→층
 6. ✅ DatePicker / MonthPicker
-7. ⏳ SearchFilterBar
+7. ✅ SearchFilterBar
 8. ⏳ FileUpload
 
 ### 우선순위 3: 차트 시스템
