@@ -25,3 +25,9 @@ export {
   type DatePickerProps,
   type MonthPickerProps,
 } from "./date-picker";
+export {
+  SearchFilterBar,
+  type SearchFilterBarProps,
+  type FilterConfig,
+  type FilterOption,
+} from "./search-filter-bar";
