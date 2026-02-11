@@ -17,3 +17,11 @@ export {
   type DataTableVariant,
   type DataTableProps,
 } from "./data-table";
+export {
+  DataTableToolbar,
+  SearchInput,
+  ColumnVisibilityDropdown,
+  type DataTableToolbarProps,
+  type FilterConfig,
+  type FilterOption,
+} from "./data-table-toolbar";

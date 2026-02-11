@@ -7,7 +7,7 @@
 | 항목 | 값 |
 |------|-----|
 | **현재 Phase** | 2A - 핵심 데이터 컴포넌트 |
-| **Phase 진행률** | 8% (1/13 완료) |
+| **Phase 진행률** | 15% (2/13 완료) |
 | **전체 진행률** | ~12% |
 | **마지막 커밋** | feat: Phase 1 완료 - 커스텀 컴포넌트, Command Palette, E2E, MSW |
 
@@ -26,7 +26,7 @@
 
 ### 우선순위 1: 데이터 테이블 시스템
 1. ✅ **DataTable** - TanStack Table v8 + 가상화
-2. ⏳ DataTable Toolbar - 검색 + 필터바
+2. ✅ DataTable Toolbar - 검색 + 필터바
 3. ⏳ DataTable Pagination - 페이지네이션 통합
 
 ### 우선순위 2: 폼 시스템
