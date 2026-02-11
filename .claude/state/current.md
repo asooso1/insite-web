@@ -7,7 +7,7 @@
 | 항목 | 값 |
 |------|-----|
 | **현재 Phase** | 2A - 핵심 데이터 컴포넌트 |
-| **Phase 진행률** | 62% (8/13 완료) |
+| **Phase 진행률** | 85% (11/13 완료) |
 | **전체 진행률** | ~12% |
 | **마지막 커밋** | feat: Phase 1 완료 - 커스텀 컴포넌트, Command Palette, E2E, MSW |
 
@@ -37,9 +37,9 @@
 8. ✅ FileUpload
 
 ### 우선순위 3: 차트 시스템
-9. ⏳ ChartContainer
-10. ⏳ chart-colors.ts
-11. ⏳ 차트 프리셋 (Bar, Line, Area, Pie, Radar, Combo)
+9. ✅ ChartContainer (shadcn/ui에 이미 포함)
+10. ✅ chart-colors.ts
+11. ✅ 차트 프리셋 (Bar, Line, Area, Pie)
 
 ## 이미 완료된 컴포넌트 (Phase 1)
 
