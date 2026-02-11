@@ -6,8 +6,8 @@ test.describe("로그인 페이지", () => {
   });
 
   test("로그인 폼이 표시되어야 함", async ({ page }) => {
-    // 로고 확인
-    await expect(page.locator("svg")).toBeVisible();
+    // 로고 확인 (Layer_2 ID를 가진 로고 SVG)
+    await expect(page.locator("#Layer_2")).toBeVisible();
 
     // 입력 필드 확인
     await expect(page.getByPlaceholder("아이디를 입력해 주세요.")).toBeVisible();

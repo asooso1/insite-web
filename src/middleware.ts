@@ -75,10 +75,11 @@ export async function middleware(request: NextRequest): Promise<NextResponse> {
   }
 
   // Authorization 헤더 또는 쿠키에서 토큰 추출
+  // refresh-token 쿠키에 authToken이 저장됨 (백엔드는 단일 토큰 사용)
   const authHeader = request.headers.get("authorization");
   const token = authHeader?.startsWith("Bearer ")
     ? authHeader.slice(7)
-    : request.cookies.get("access-token")?.value;
+    : request.cookies.get("refresh-token")?.value;
 
   // 토큰이 없으면 로그인 페이지로 리다이렉트
   if (!token) {
@@ -102,7 +103,7 @@ export async function middleware(request: NextRequest): Promise<NextResponse> {
 
     // 요청 헤더에 사용자 정보 추가 (서버 컴포넌트에서 사용)
     const requestHeaders = new Headers(request.headers);
-    requestHeaders.set("x-user-id", payload.sub as string);
+    requestHeaders.set("x-user-id", payload.userId as string);
     requestHeaders.set("x-user-roles", userRoles.join(","));
 
     return NextResponse.next({

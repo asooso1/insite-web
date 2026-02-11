@@ -32,7 +32,8 @@ export async function verifyJWT(token: string): Promise<JWTPayload | null> {
  */
 export async function getAuthUser(): Promise<AuthUser | null> {
   const cookieStore = await cookies();
-  const token = cookieStore.get("access-token")?.value;
+  // refresh-token 쿠키에서 토큰 읽기 (authToken 저장)
+  const token = cookieStore.get("refresh-token")?.value;
 
   if (!token) {
     return null;
@@ -44,17 +45,17 @@ export async function getAuthUser(): Promise<AuthUser | null> {
   }
 
   return {
-    accountId: payload.accountId,
-    userId: payload.sub,
-    userName: payload.userName,
+    accountId: String(payload.accountId),
+    userId: payload.userId,
+    userName: payload.accountName, // 백엔드에는 userName이 없고 accountName만 있음
     userRoles: payload.userRoles,
     accountName: payload.accountName,
-    accountType: payload.accountType,
-    currentCompanyId: payload.currentCompanyId,
+    accountType: payload.accountType as "LABS" | "FIELD" | "CLIENT",
+    currentCompanyId: String(payload.currentCompanyId),
     currentCompanyName: payload.currentCompanyName,
-    currentBuildingId: payload.currentBuildingId,
+    currentBuildingId: String(payload.currentBuildingId),
     currentBuildingName: payload.currentBuildingName,
-    accountCompanyId: payload.accountCompanyId,
+    accountCompanyId: String(payload.accountCompanyId),
   };
 }
 
