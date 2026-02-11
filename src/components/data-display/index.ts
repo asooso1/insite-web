@@ -10,4 +10,10 @@ export {
   type WorkOrderStatus,
   type Priority,
 } from "./status-badge";
-export { DataTable, type Column } from "./data-table";
+export {
+  DataTable,
+  DataTablePagination,
+  type ColumnDef,
+  type DataTableVariant,
+  type DataTableProps,
+} from "./data-table";
