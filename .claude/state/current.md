@@ -119,6 +119,7 @@ npm run lint
 
 ## 참조 파일
 
+- **Phase 4 구현 계획: `.claude/context/phase-4-plan.md`** ← 다음 작업
 - 상세 계획: `.claude/context/phase-2b.md`
 - 전체 진행: `docs/task-progress.md`
 - 개발 규칙: `.claude/CLAUDE.md`
