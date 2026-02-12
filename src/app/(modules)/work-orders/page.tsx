@@ -118,7 +118,7 @@ function useColumns(): ColumnDef<WorkOrderListDTO>[] {
         cell: ({ row }) => (
           <button
             onClick={() =>
-              router.push(`/fms/work-orders/${row.original.workOrderDTO.id}`)
+              router.push(`/work-orders/${row.original.workOrderDTO.id}`)
             }
             className="text-left font-medium text-primary hover:underline"
           >
@@ -211,13 +211,13 @@ function RowActions({ row }: { row: Row<WorkOrderListDTO> }) {
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuItem
-          onClick={() => router.push(`/fms/work-orders/${workOrder.id}`)}
+          onClick={() => router.push(`/work-orders/${workOrder.id}`)}
         >
           <Eye className="mr-2 h-4 w-4" />
           상세 보기
         </DropdownMenuItem>
         <DropdownMenuItem
-          onClick={() => router.push(`/fms/work-orders/${workOrder.id}/edit`)}
+          onClick={() => router.push(`/work-orders/${workOrder.id}/edit`)}
         >
           수정
         </DropdownMenuItem>
@@ -335,9 +335,9 @@ export default function WorkOrderListPage() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold">작업 목록</h1>
-          <p className="text-muted-foreground">FMS 작업지시를 관리합니다.</p>
+          <p className="text-muted-foreground">작업지시를 관리합니다.</p>
         </div>
-        <Button onClick={() => router.push("/fms/work-orders/new")}>
+        <Button onClick={() => router.push("/work-orders/new")}>
           <Plus className="mr-2 h-4 w-4" />
           새 작업
         </Button>
@@ -425,7 +425,7 @@ export default function WorkOrderListPage() {
           description="새 작업을 등록해보세요."
           action={{
             label: "새 작업 등록",
-            onClick: () => router.push("/fms/work-orders/new"),
+            onClick: () => router.push("/work-orders/new"),
           }}
         />
       )}
