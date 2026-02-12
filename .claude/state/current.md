@@ -6,10 +6,10 @@
 
 | 항목 | 값 |
 |------|-----|
-| **현재 Phase** | 4 - 추가 CRUD 모듈 (시작) |
-| **Phase 진행률** | 0% |
-| **전체 진행률** | ~30% |
-| **마지막 커밋** | feat: WorkOrder 모듈 구현 (목록/상세/생성/수정 페이지) |
+| **현재 Phase** | 4 - 추가 CRUD 모듈 (진행중) |
+| **Phase 진행률** | 25% (시설 모듈 완료) |
+| **전체 진행률** | ~35% |
+| **마지막 커밋** | feat: Phase 4 시설(Facility) 모듈 구현 |
 
 ## Phase 상태
 
@@ -87,11 +87,13 @@
 
 ## Phase 4 진행 상황 (추가 CRUD 모듈)
 
-### 시설(Facility) 모듈 ⏳ 시작
-- ⏳ API 분석 및 타입 정의
-- ⏳ 시설 목록 페이지
-- ⏳ 시설 상세 페이지
-- ⏳ 시설 생성/수정 페이지
+### 시설(Facility) 모듈 ✅ 완료
+- ✅ API 분석 및 타입 정의 (`/lib/types/facility.ts`)
+- ✅ API 클라이언트 (`/lib/api/facility.ts`)
+- ✅ React Query 훅 (`/lib/hooks/use-facilities.ts`)
+- ✅ 시설 목록 페이지 (`/facilities`)
+- ✅ 시설 상세 페이지 (`/facilities/[id]`)
+- ✅ 시설 생성/수정 페이지 (`/facilities/new`, `/facilities/[id]/edit`)
 
 ### 대기 중인 모듈
 - ⏳ 사용자 관리
