@@ -1,6 +1,6 @@
-# Phase 2A: 핵심 데이터 컴포넌트 + 폼 시스템 + 차트
+# Phase 2A: 핵심 데이터 컴포넌트 + 폼 시스템 + 차트 ✅ 완료
 
-> 현재 진행해야 할 Phase입니다.
+> 이 Phase는 완료되었습니다. (2026-02-12)
 
 ## 개요
 
@@ -11,12 +11,12 @@ Phase 1에서 구축한 기반 위에 재사용 가능한 데이터 컴포넌트
 
 | 컴포넌트 | 상태 | 설명 |
 |----------|------|------|
-| DataTable | ⏳ | TanStack Table v8 + 가상화, variant: default/striped/category |
-| DataTable Toolbar | ⏳ | 검색 + 필터바 |
-| DataTable Pagination | ⏳ | 페이지네이션 통합 |
+| DataTable | ✅ | TanStack Table v8 + 가상화, variant: default/striped/category |
+| DataTable Toolbar | ✅ | 검색 + 필터바 |
+| DataTable Pagination | ✅ | 페이지네이션 통합 |
 | KPICard | ✅ | Rajdhani 폰트 숫자 + 트렌드 표시 (Phase 1에서 생성됨) |
-| StatWidget | ⏳ | 미니 차트 포함 가능 |
-| InfoPanel | ⏳ | Key-Value 리스트 |
+| StatWidget | ✅ | 스파크라인 차트 포함 미니 통계 위젯 |
+| InfoPanel | ✅ | Key-Value 리스트, InfoRow, InfoGroup |
 | EmptyState | ✅ | 아이콘 + 메시지 + 액션 (Phase 1에서 생성됨) |
 
 ### DataTable 구현 가이드
@@ -39,13 +39,13 @@ interface DataTableProps<T> {
 
 | 컴포넌트 | 상태 | 설명 |
 |----------|------|------|
-| FormField | ⏳ | label + input + helper + error, react-hook-form 통합 |
-| EnumSelect | ⏳ | Java Enum 기반 드롭다운 |
-| CascadingSelect | ⏳ | 회사→지역→빌딩→층, React Query dependent queries |
-| SearchFilterBar | ⏳ | 검색 + 필터 + URL 상태 동기화 (nuqs) |
-| DatePicker | ⏳ | 날짜 선택기 |
-| MonthPicker | ⏳ | 월 선택기 |
-| FileUpload | ⏳ | 드래그앤드롭 + 이미지 미리보기 |
+| FormField | ✅ | label + input + helper + error, react-hook-form 통합 |
+| EnumSelect | ⏳ | Java Enum 기반 드롭다운 (필요시 구현) |
+| CascadingSelect | ✅ | 회사→지역→빌딩→층, React Query dependent queries |
+| SearchFilterBar | ✅ | 검색 + 필터 + URL 상태 동기화 (nuqs) |
+| DatePicker | ✅ | 날짜 선택기, 한국어 로케일 |
+| MonthPicker | ✅ | 월 선택기, 년도 네비게이션 |
+| FileUpload | ✅ | 드래그앤드롭 + 이미지 미리보기 |
 
 ### CascadingSelect 구현 가이드
 
@@ -71,16 +71,16 @@ const { data: buildings } = useQuery({
 
 | 컴포넌트 | 상태 | 설명 |
 |----------|------|------|
-| ChartContainer | ⏳ | loading/error/empty 상태 래퍼 |
-| ChartTooltip | ⏳ | 테마 적용 툴팁 |
-| ChartLegend | ⏳ | 테마 적용 범례 |
-| BarChart 프리셋 | ⏳ | 막대 차트 |
-| LineChart 프리셋 | ⏳ | 선 차트 |
-| AreaChart 프리셋 | ⏳ | 영역 차트 |
-| PieChart 프리셋 | ⏳ | 파이 차트 |
-| RadarChart 프리셋 | ⏳ | 레이더 차트 |
-| ComboChart 프리셋 | ⏳ | 복합 차트 |
-| chart-colors.ts | ⏳ | 시리즈 수별 자동 categorical 팔레트 |
+| ChartContainer | ✅ | shadcn/ui chart.tsx 포함 |
+| ChartTooltip | ✅ | shadcn/ui chart.tsx 포함 |
+| ChartLegend | ✅ | shadcn/ui chart.tsx 포함 |
+| BarChart 프리셋 | ✅ | 막대 차트 |
+| LineChart 프리셋 | ✅ | 선 차트 |
+| AreaChart 프리셋 | ✅ | 영역 차트 |
+| PieChart 프리셋 | ✅ | 파이 차트 |
+| RadarChart 프리셋 | ⏳ | 레이더 차트 (필요시 구현) |
+| ComboChart 프리셋 | ⏳ | 복합 차트 (필요시 구현) |
+| chart-colors.ts | ✅ | 시리즈 수별 자동 categorical 팔레트 |
 
 ### 차트 컬러 시스템
 

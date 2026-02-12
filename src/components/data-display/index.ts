@@ -25,3 +25,16 @@ export {
   type FilterConfig,
   type FilterOption,
 } from "./data-table-toolbar";
+export {
+  StatWidget,
+  StatWidgetGrid,
+  type StatWidgetProps,
+  type SparklineData,
+} from "./stat-widget";
+export {
+  InfoPanel,
+  InfoRow,
+  InfoGroup,
+  type InfoPanelProps,
+  type InfoItem,
+} from "./info-panel";
