@@ -194,13 +194,121 @@ export function apiDelete<T>(
 }
 
 /**
+ * FormData POST 요청 헬퍼
+ */
+export async function apiPostForm<T>(
+  endpoint: string,
+  formData: FormData,
+  options?: Omit<RequestOptions, "method" | "body">
+): Promise<T> {
+  const url = endpoint.startsWith("http")
+    ? endpoint
+    : `${API_BASE_URL}${endpoint}`;
+
+  const headers = new Headers(options?.headers);
+  // FormData는 Content-Type을 자동으로 설정 (boundary 포함)
+
+  const token = useAuthStore.getState().accessToken;
+  if (token) {
+    headers.set("Authorization", `Bearer ${token}`);
+  }
+
+  const response = await fetch(url, {
+    method: "POST",
+    headers,
+    body: formData,
+    credentials: "include",
+  });
+
+  if (!response.ok) {
+    throw await extractApiError(response);
+  }
+
+  const responseData: ApiResponse<T> = await response.json();
+  return responseData.data;
+}
+
+/**
+ * FormData PUT 요청 헬퍼
+ */
+export async function apiPutForm<T>(
+  endpoint: string,
+  formData: FormData,
+  options?: Omit<RequestOptions, "method" | "body">
+): Promise<T> {
+  const url = endpoint.startsWith("http")
+    ? endpoint
+    : `${API_BASE_URL}${endpoint}`;
+
+  const headers = new Headers(options?.headers);
+
+  const token = useAuthStore.getState().accessToken;
+  if (token) {
+    headers.set("Authorization", `Bearer ${token}`);
+  }
+
+  const response = await fetch(url, {
+    method: "PUT",
+    headers,
+    body: formData,
+    credentials: "include",
+  });
+
+  if (!response.ok) {
+    throw await extractApiError(response);
+  }
+
+  const responseData: ApiResponse<T> = await response.json();
+  return responseData.data;
+}
+
+/**
+ * Blob GET 요청 헬퍼 (파일 다운로드용)
+ */
+export async function apiGetBlob(
+  endpoint: string,
+  options?: Omit<RequestOptions, "method" | "body">
+): Promise<Blob> {
+  const url = endpoint.startsWith("http")
+    ? endpoint
+    : `${API_BASE_URL}${endpoint}`;
+
+  const headers = new Headers(options?.headers);
+
+  const token = useAuthStore.getState().accessToken;
+  if (token) {
+    headers.set("Authorization", `Bearer ${token}`);
+  }
+
+  const response = await fetch(url, {
+    method: "GET",
+    headers,
+    credentials: "include",
+  });
+
+  if (!response.ok) {
+    throw await extractApiError(response);
+  }
+
+  return response.blob();
+}
+
+/**
  * API 클라이언트 객체
  * - 메서드 체이닝 스타일
  */
-export const api = {
+export const apiClient = {
   get: apiGet,
   post: apiPost,
   put: apiPut,
   delete: apiDelete,
+  postForm: apiPostForm,
+  putForm: apiPutForm,
+  getBlob: apiGetBlob,
   request: apiRequest,
 } as const;
+
+/**
+ * @deprecated api 대신 apiClient 사용
+ */
+export const api = apiClient;
