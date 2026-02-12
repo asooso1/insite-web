@@ -26,11 +26,46 @@ const ADMIN_PATHS = ["/admin"];
 const ADMIN_ROLES = ["ROLE_SYSTEM_ADMIN", "ROLE_LABS_SYSTEM_ADMIN"];
 
 /**
+ * Base64 디코딩 (Edge Runtime 호환)
+ */
+function base64Decode(str: string): Uint8Array {
+  // Base64 문자를 6비트 값으로 변환하는 테이블
+  const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+  const lookup = new Uint8Array(256);
+  for (let i = 0; i < chars.length; i++) {
+    lookup[chars.charCodeAt(i)] = i;
+  }
+
+  // = 패딩 제거
+  let len = str.length;
+  while (len > 0 && str[len - 1] === "=") len--;
+
+  const bytes = new Uint8Array(Math.floor((len * 6) / 8));
+  let p = 0;
+  let bits = 0;
+  let value = 0;
+
+  for (let i = 0; i < len; i++) {
+    const charCode = str.charCodeAt(i);
+    const lookupValue = lookup[charCode];
+    value = (value << 6) | (lookupValue ?? 0);
+    bits += 6;
+    if (bits >= 8) {
+      bits -= 8;
+      bytes[p++] = (value >> bits) & 0xff;
+    }
+  }
+
+  return bytes;
+}
+
+/**
  * JWT Secret 가져오기
+ * - csp-was TokenProvider와 동일하게 Base64 디코딩 후 사용
  */
 function getJWTSecret(): Uint8Array {
   const secret = process.env.JWT_SECRET ?? "development-secret-key-32chars!!";
-  return new TextEncoder().encode(secret);
+  return base64Decode(secret);
 }
 
 /**

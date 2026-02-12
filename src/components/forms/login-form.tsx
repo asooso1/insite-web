@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, type ReactNode } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
@@ -24,7 +24,6 @@ import { loginSchema, type LoginFormData } from "@/lib/validations/auth";
  * 로그인 폼 컴포넌트
  */
 export function LoginForm(): ReactNode {
-  const router = useRouter();
   const searchParams = useSearchParams();
   const { setAuth } = useAuthStore();
   const [isLoading, setIsLoading] = useState(false);
@@ -60,9 +59,9 @@ export function LoginForm(): ReactNode {
 
       toast.success("로그인되었습니다.");
 
-      // 리다이렉트 처리
+      // 리다이렉트 처리 (전체 페이지 리로드로 미들웨어 재실행)
       const redirectUrl = searchParams.get("redirect") || "/";
-      router.push(redirectUrl);
+      window.location.href = redirectUrl;
     } catch (error) {
       const message = error instanceof Error ? error.message : "로그인에 실패했습니다.";
       toast.error(message);
