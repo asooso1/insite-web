@@ -1,11 +1,14 @@
 "use client";
 
-import { type ReactNode } from "react";
+import { type ReactNode, type ComponentProps } from "react";
+// Legacy API 사용 (v1 호환성)
 import {
-  ResponsiveGridLayout,
-  useContainerWidth,
-} from "react-grid-layout";
-import type ReactGridLayout from "react-grid-layout";
+  Responsive as ResponsiveGridLayout,
+  WidthProvider,
+  type Layout,
+  type LayoutItem,
+  type ResponsiveLayouts,
+} from "react-grid-layout/legacy";
 import { cn } from "@/lib/utils";
 import { WIDGET_SIZES, type WidgetSize } from "./widget-container";
 
@@ -15,8 +18,25 @@ import { WIDGET_SIZES, type WidgetSize } from "./widget-container";
 // Types
 // ============================================================================
 
-type Layout = ReactGridLayout.Layout;
-type Layouts = ReactGridLayout.Layouts;
+/**
+ * 반응형 레이아웃 타입 (react-grid-layout)
+ * - Layout = readonly LayoutItem[] (배열)
+ * - ResponsiveLayouts = Record<string, Layout>
+ */
+export type Layouts = ResponsiveLayouts;
+
+// Layout 타입 재노출 (readonly LayoutItem[])
+export type { Layout, LayoutItem };
+
+/**
+ * WidthProvider로 래핑된 ResponsiveGridLayout
+ */
+const ResponsiveGridLayoutWithWidth = WidthProvider(ResponsiveGridLayout);
+
+/**
+ * ResponsiveGridLayout 컴포넌트 Props 타입
+ */
+type RGLProps = ComponentProps<typeof ResponsiveGridLayoutWithWidth>;
 
 // ============================================================================
 // Constants
@@ -83,16 +103,20 @@ export interface WidgetGridProps {
   layouts?: Layouts;
   /** 기본 레이아웃 (단일) */
   layout?: WidgetLayoutItem[];
-  /** 레이아웃 변경 핸들러 */
-  onLayoutChange?: (layout: Layout[], layouts: Layouts) => void;
+  /**
+   * 레이아웃 변경 핸들러
+   * - layout: 현재 브레이크포인트의 레이아웃 (readonly LayoutItem[])
+   * - layouts: 모든 브레이크포인트의 레이아웃
+   */
+  onLayoutChange?: RGLProps["onLayoutChange"];
   /** 드래그 시작 핸들러 */
-  onDragStart?: (layout: Layout[], oldItem: Layout, newItem: Layout) => void;
+  onDragStart?: RGLProps["onDragStart"];
   /** 드래그 종료 핸들러 */
-  onDragStop?: (layout: Layout[], oldItem: Layout, newItem: Layout) => void;
+  onDragStop?: RGLProps["onDragStop"];
   /** 리사이즈 시작 핸들러 */
-  onResizeStart?: (layout: Layout[], oldItem: Layout, newItem: Layout) => void;
+  onResizeStart?: RGLProps["onResizeStart"];
   /** 리사이즈 종료 핸들러 */
-  onResizeStop?: (layout: Layout[], oldItem: Layout, newItem: Layout) => void;
+  onResizeStop?: RGLProps["onResizeStop"];
   /** 드래그 가능 여부 */
   isDraggable?: boolean;
   /** 리사이즈 가능 여부 */
@@ -164,11 +188,6 @@ export function WidgetGrid({
   compactType = "vertical",
   className,
 }: WidgetGridProps): ReactNode {
-  const { width, mounted, containerRef } = useContainerWidth({
-    measureBeforeMount: true,
-    initialWidth: 1200,
-  });
-
   // 단일 레이아웃을 반응형으로 변환
   const getResponsiveLayouts = (): Layouts => {
     if (layouts) return layouts;
@@ -194,37 +213,30 @@ export function WidgetGrid({
 
   const responsiveLayouts = getResponsiveLayouts();
 
-  // Note: react-grid-layout 2.x의 타입 정의가 실제 라이브러리와 불일치하여
-  // any 타입으로 우회합니다. 런타임에서는 정상 동작합니다.
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const GridComponent = ResponsiveGridLayout as any;
-
   return (
-    <div ref={containerRef} className={cn("widget-grid", className)}>
-      {mounted && width > 0 && (
-        <GridComponent
-          className="layout"
-          layouts={responsiveLayouts}
-          breakpoints={BREAKPOINTS}
-          cols={GRID_COLS}
-          rowHeight={rowHeight}
-          width={width}
-          margin={MARGIN}
-          containerPadding={CONTAINER_PADDING}
-          isDraggable={isDraggable}
-          isResizable={isResizable}
-          draggableHandle=".widget-drag-handle"
-          compactType={compactType}
-          preventCollision={false}
-          onLayoutChange={onLayoutChange}
-          onDragStart={onDragStart}
-          onDragStop={onDragStop}
-          onResizeStart={onResizeStart}
-          onResizeStop={onResizeStop}
-        >
-          {children}
-        </GridComponent>
-      )}
+    <div className={cn("widget-grid", className)}>
+      <ResponsiveGridLayoutWithWidth
+        className="layout"
+        layouts={responsiveLayouts}
+        breakpoints={BREAKPOINTS}
+        cols={GRID_COLS}
+        rowHeight={rowHeight}
+        margin={MARGIN}
+        containerPadding={CONTAINER_PADDING}
+        isDraggable={isDraggable}
+        isResizable={isResizable}
+        draggableHandle=".widget-drag-handle"
+        compactType={compactType}
+        preventCollision={false}
+        measureBeforeMount={true}
+        onLayoutChange={onLayoutChange}
+        onDragStart={onDragStart}
+        onDragStop={onDragStop}
+        onResizeStart={onResizeStart}
+        onResizeStop={onResizeStop}
+      >
+        {children}
+      </ResponsiveGridLayoutWithWidth>
     </div>
   );
 }

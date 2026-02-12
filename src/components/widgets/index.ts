@@ -36,6 +36,7 @@ export {
   type WidgetSize,
   type WidgetAction,
   type WidgetContainerProps,
+  type WidgetErrorBoundaryProps,
 } from "./widget-container";
 
 // Grid
@@ -46,6 +47,8 @@ export {
   removeWidgetFromLayout,
   saveLayout,
   loadLayout,
+  type Layout,
+  type Layouts,
   type WidgetLayoutItem,
   type WidgetGridProps,
 } from "./widget-grid";

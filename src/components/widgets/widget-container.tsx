@@ -392,7 +392,98 @@ export function WidgetSkeleton({
   );
 }
 
+// ============================================================================
+// Widget Error Boundary
+// ============================================================================
+
+import { ErrorBoundary, type FallbackProps } from "react-error-boundary";
+
+interface WidgetErrorFallbackProps extends FallbackProps {
+  widgetTitle?: string;
+}
+
+/**
+ * 에러 메시지 추출 헬퍼
+ */
+function getErrorMessage(error: unknown): string {
+  if (error instanceof Error) {
+    return error.message;
+  }
+  if (typeof error === "string") {
+    return error;
+  }
+  return "알 수 없는 오류가 발생했습니다";
+}
+
+/**
+ * 위젯 에러 폴백 컴포넌트
+ */
+function WidgetErrorFallback({
+  error,
+  resetErrorBoundary,
+  widgetTitle,
+}: WidgetErrorFallbackProps): ReactNode {
+  const errorMessage = getErrorMessage(error);
+
+  return (
+    <Card className="h-full overflow-hidden border-destructive/50">
+      <CardHeader className="p-3 pb-2">
+        <div className="flex items-center gap-2">
+          <div className="rounded bg-destructive/10 p-1.5">
+            <X className="h-3.5 w-3.5 text-destructive" />
+          </div>
+          <h3 className="text-sm font-semibold truncate">
+            {widgetTitle ?? "위젯 오류"}
+          </h3>
+        </div>
+      </CardHeader>
+      <CardContent className="flex flex-col items-center justify-center h-[calc(100%-48px)] p-3 pt-0 text-center">
+        <p className="text-sm text-destructive mb-2">
+          위젯을 표시할 수 없습니다
+        </p>
+        <p className="text-xs text-muted-foreground mb-3 max-w-[200px] truncate">
+          {errorMessage}
+        </p>
+        <Button variant="outline" size="sm" onClick={resetErrorBoundary}>
+          <RefreshCw className="mr-2 h-3 w-3" />
+          다시 시도
+        </Button>
+      </CardContent>
+    </Card>
+  );
+}
+
+export interface WidgetErrorBoundaryProps {
+  children: ReactNode;
+  widgetTitle?: string;
+  onReset?: () => void;
+}
+
 /**
  * 위젯 에러 바운더리
+ *
+ * 개별 위젯의 에러를 격리하여 전체 대시보드가 깨지지 않도록 합니다.
+ *
+ * @example
+ * ```tsx
+ * <WidgetErrorBoundary widgetTitle="에너지 사용량" onReset={refetch}>
+ *   <ChartWidget data={data} />
+ * </WidgetErrorBoundary>
+ * ```
  */
-export { ErrorBoundary as WidgetErrorBoundary } from "react-error-boundary";
+export function WidgetErrorBoundary({
+  children,
+  widgetTitle,
+  onReset,
+}: WidgetErrorBoundaryProps): ReactNode {
+  return (
+    <ErrorBoundary
+      fallbackRender={(props) => (
+        <WidgetErrorFallback {...props} widgetTitle={widgetTitle} />
+      )}
+      onReset={onReset}
+    >
+      {children}
+    </ErrorBoundary>
+  );
+}
