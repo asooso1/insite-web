@@ -6,10 +6,10 @@
 
 | 항목 | 값 |
 |------|-----|
-| **현재 Phase** | 2A - 핵심 데이터 컴포넌트 (완료) |
-| **Phase 진행률** | 100% (17/17 완료) |
-| **전체 진행률** | ~15% |
-| **마지막 커밋** | fix: 로그인 인증 시스템 완성 및 대시보드 구현 |
+| **현재 Phase** | 2B - 위젯 프레임워크 (진행중) |
+| **Phase 진행률** | 90% (위젯 프레임워크 완료, 서드파티 4/5 완료) |
+| **전체 진행률** | ~22% |
+| **마지막 커밋** | feat: Phase 2B-2 서드파티 대체 컴포넌트 구현 |
 
 ## Phase 상태
 
@@ -17,8 +17,8 @@
 |-------|------|------|--------|
 | 0 | 사전 준비 | ⏳ 대기 | 50% |
 | 1 | 기반 구축 | ✅ 완료 | 100% |
-| **2A** | **핵심 데이터 컴포넌트** | **✅ 완료** | 100% |
-| 2B | 위젯 프레임워크 | ⏳ 대기 | 0% |
+| 2A | 핵심 데이터 컴포넌트 | ✅ 완료 | 100% |
+| **2B** | **위젯 프레임워크** | **🔄 진행중** | 90% |
 | 3 | FMS 파일럿 | ⏳ 대기 | 0% |
 | 4-8 | 나머지 | ⏳ 대기 | 0% |
 
@@ -49,24 +49,30 @@
 16. ✅ StatWidget - 스파크라인 포함 미니 통계 위젯
 17. ✅ InfoPanel - Key-Value 리스트 패널
 
-## 다음 Phase (2B)
+## Phase 2B 진행 상황
 
-### 위젯 프레임워크
-- WidgetGrid (react-grid-layout)
-- WidgetContainer
-- WidgetRegistry
-- WidgetSkeleton
-- WidgetErrorBoundary
+### 위젯 프레임워크 ✅ 완료
+- ✅ WidgetGrid (react-grid-layout) - 6컬럼 반응형 그리드
+- ✅ WidgetContainer - 7가지 사이즈, 드래그 핸들, 에러 처리
+- ✅ WidgetRegistry - 동적 위젯 등록/조회, lazy import
+- ✅ WidgetSkeleton - 로딩 스켈레톤
+- ✅ WidgetErrorBoundary - 커스텀 에러 폴백 UI
 
-### 서드파티 대체
-- FullCalendar (DHTMLX Scheduler 대체)
-- Tiptap (Summernote 대체)
-- SheetJS (DHTMLX Spreadsheet 대체)
-- 카카오맵 (React)
-- react-to-print
+### 기본 위젯 프리셋 ✅ 완료
+- ✅ ChartWidget - Bar/Line/Area 차트, API 데이터 연동
+- ✅ TableWidget - 테이블 위젯, StatusBadge 자동 렌더링
+- ✅ KPIWidget - KPI 통계 위젯
+- ✅ ListWidget - 목록 위젯
 
-### BIM PoC
-- Three.js + IFC.js 프로토타입
+### 서드파티 대체 ✅ 완료 (4/5)
+- ✅ FullCalendar - Calendar, MiniCalendar (DHTMLX Scheduler 대체)
+- ✅ Tiptap - RichTextEditor, RichTextViewer (Summernote 대체)
+- ⏳ SheetJS (DHTMLX Spreadsheet 대체) - 필요시 구현
+- ✅ 카카오맵 - KakaoMapComponent, StaticMap, useGeocode
+- ✅ react-to-print - PrintButton, PrintContainer, usePrint
+
+### BIM PoC ⏳ 대기
+- ⏳ Three.js + IFC.js 프로토타입
 
 ## 빠른 명령어
 

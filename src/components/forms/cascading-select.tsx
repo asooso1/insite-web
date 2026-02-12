@@ -1,6 +1,6 @@
 "use client";
 
-import { type ReactNode, useEffect } from "react";
+import { type ReactNode, useEffect, useRef, useCallback } from "react";
 import {
   type Control,
   type FieldPath,
@@ -107,13 +107,25 @@ function CascadeLevel<
     staleTime: 5 * 60 * 1000, // 5분
   });
 
+  // 이전 상위 값 추적
+  const prevParentValueRef = useRef<string | null>(parentValue);
+
   // 상위 값 변경 시 현재 값 초기화
+  const resetFieldValue = useCallback(() => {
+    field.onChange(undefined as PathValue<TFieldValues, TName>);
+  }, [field]);
+
   useEffect(() => {
-    if (config.parentLevelIndex !== null && config.parentLevelIndex !== undefined) {
-      // 상위 값이 변경되면 현재 값 초기화
-      field.onChange(undefined as PathValue<TFieldValues, TName>);
+    // 첫 번째 레벨이 아니고, 상위 값이 실제로 변경된 경우에만 초기화
+    if (
+      config.parentLevelIndex !== null &&
+      config.parentLevelIndex !== undefined &&
+      prevParentValueRef.current !== parentValue
+    ) {
+      resetFieldValue();
     }
-  }, [parentValue]);
+    prevParentValueRef.current = parentValue;
+  }, [parentValue, config.parentLevelIndex, resetFieldValue]);
 
   const isDisabled = config.disabled || !isEnabled || isLoading;
 
