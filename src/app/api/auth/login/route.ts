@@ -52,6 +52,9 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     const body = await request.json();
     const backendUrl = process.env.BACKEND_INTERNAL_URL ?? "http://localhost:8080";
 
+    console.log("[Login] Request body:", JSON.stringify(body));
+    console.log("[Login] Backend URL:", `${backendUrl}/api/account/login`);
+
     // csp-was 인증 API 호출
     const authResponse = await fetch(`${backendUrl}/api/account/login`, {
       method: "POST",
@@ -62,6 +65,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     });
 
     const data: BackendLoginResponse = await authResponse.json();
+    console.log("[Login] Backend response:", JSON.stringify(data));
 
     // 인증 실패 (백엔드는 항상 200 반환, code로 성공/실패 구분)
     if (data.code !== "success" || !data.authToken) {

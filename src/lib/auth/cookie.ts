@@ -11,7 +11,7 @@ import { TOKEN_CONFIG } from "./token-config";
 export const REFRESH_COOKIE_OPTIONS: Partial<ResponseCookie> = {
   name: "refresh-token",
   maxAge: TOKEN_CONFIG.refreshTokenTTL,
-  path: "/api/auth",
+  path: "/",  // 모든 경로에서 쿠키 전송 (미들웨어 인증 체크용)
   httpOnly: true,
   secure: process.env.NODE_ENV === "production",
   sameSite: "lax",

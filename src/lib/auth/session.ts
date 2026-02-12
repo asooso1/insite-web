@@ -4,14 +4,17 @@ import type { JWTPayload } from "./token-config";
 import type { AuthUser } from "@/lib/stores/auth-store";
 
 /**
- * JWT Secret을 TextEncoder로 인코딩
+ * JWT Secret 가져오기
+ * - csp-was TokenProvider와 동일하게 Base64 디코딩 후 사용
  */
 function getJWTSecret(): Uint8Array {
   const secret = process.env.JWT_SECRET;
   if (!secret) {
     throw new Error("JWT_SECRET 환경변수가 설정되지 않았습니다.");
   }
-  return new TextEncoder().encode(secret);
+  // Base64 디코딩 (csp-was TokenProvider와 동일)
+  const decoded = Buffer.from(secret, "base64");
+  return new Uint8Array(decoded);
 }
 
 /**
