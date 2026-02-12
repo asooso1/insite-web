@@ -9,9 +9,9 @@
 | Phase 0 | ⏳ 대기 | 50% | 사전 준비 및 분석 (DB/API 접근 필요) |
 | Phase 1 | ✅ 완료 | 100% | 기반 구축 |
 | Phase 2A | ✅ 완료 | 100% | 핵심 데이터 컴포넌트 |
-| Phase 2B | 🔄 진행중 | 90% | 위젯 프레임워크 및 서드파티 (4/5 완료) |
-| Phase 3 | ⏳ 대기 | 0% | FMS 파일럿 |
-| Phase 4 | ⏳ 대기 | 0% | 추가 CRUD 모듈 |
+| Phase 2B | ✅ 완료 | 95% | 위젯 프레임워크 및 서드파티 (SheetJS/BIM 보류) |
+| Phase 3 | ✅ 완료 | 100% | FMS 파일럿 (WorkOrder 모듈) |
+| Phase 4 | 🔄 진행중 | 0% | 추가 CRUD 모듈 |
 | Phase 5 | ⏳ 대기 | 0% | 대시보드 위젯 구현 |
 | Phase 6 | ⏳ 대기 | 0% | 복잡 모듈 |
 | Phase 7 | ⏳ 대기 | 0% | 모바일 및 최종 조정 |
@@ -223,11 +223,11 @@
 ### 2B.2 서드파티 대체
 | 태스크 | 상태 | 완료일 | 담당 | 비고 |
 |--------|------|--------|------|------|
-| FullCalendar | ⏳ | - | - | DHTMLX Scheduler 대체 |
-| Tiptap | ⏳ | - | - | Summernote 대체 |
-| SheetJS | ⏳ | - | - | DHTMLX Spreadsheet 대체 |
-| 카카오맵 (React) | ⏳ | - | - | 동적 import |
-| react-to-print | ⏳ | - | - | printThis 대체 |
+| FullCalendar | ✅ | 2026-02-12 | - | Calendar, MiniCalendar |
+| Tiptap | ✅ | 2026-02-12 | - | RichTextEditor, RichTextViewer |
+| SheetJS | ⏳ | - | - | 필요시 구현 |
+| 카카오맵 (React) | ✅ | 2026-02-12 | - | KakaoMapComponent, useGeocode |
+| react-to-print | ✅ | 2026-02-12 | - | PrintButton, PrintContainer |
 
 ### 2B.3 BIM PoC
 | 태스크 | 상태 | 완료일 | 담당 | 비고 |
@@ -235,6 +235,43 @@
 | Three.js + IFC.js 프로토타입 | ⏳ | - | - | 고위험 항목 검증 |
 | HOOPS 비교 문서 | ⏳ | - | - | |
 | 성능/비용 분석 | ⏳ | - | - | |
+
+---
+
+## Phase 3: FMS 파일럿 ✅ 완료
+
+### 3.1 작업(Work Order) 모듈
+| 태스크 | 상태 | 완료일 | 담당 | 비고 |
+|--------|------|--------|------|------|
+| API 분석 및 타입 정의 | ✅ | 2026-02-12 | - | `/lib/types/work-order.ts` |
+| API 클라이언트 | ✅ | 2026-02-12 | - | `/lib/api/work-order.ts` |
+| React Query 훅 | ✅ | 2026-02-12 | - | `/lib/hooks/use-work-orders.ts` |
+| 작업 목록 페이지 | ✅ | 2026-02-12 | - | DataTable + 상태 탭 + 페이지네이션 |
+| 작업 상세 페이지 | ✅ | 2026-02-12 | - | 상태 워크플로우, 이력 타임라인 |
+| 작업 생성/수정 페이지 | ✅ | 2026-02-12 | - | react-hook-form + zod |
+
+---
+
+## Phase 4: 추가 CRUD 모듈 🔄 진행중
+
+### 4.1 시설(Facility) 모듈
+| 태스크 | 상태 | 완료일 | 담당 | 비고 |
+|--------|------|--------|------|------|
+| API 분석 및 타입 정의 | ⏳ | - | - | |
+| API 클라이언트 | ⏳ | - | - | |
+| React Query 훅 | ⏳ | - | - | |
+| 시설 목록 페이지 | ⏳ | - | - | |
+| 시설 상세 페이지 | ⏳ | - | - | |
+| 시설 생성/수정 페이지 | ⏳ | - | - | |
+
+### 4.2 기타 모듈 (대기)
+| 모듈 | 상태 |
+|------|------|
+| 사용자 관리 | ⏳ |
+| 게시판/공지 | ⏳ |
+| 설정 | ⏳ |
+| 클라이언트/계약 | ⏳ |
+| 자재 관리 | ⏳ |
 
 ---
 
@@ -257,6 +294,9 @@
 | 2026-02-12 | `fix: 로그인 인증 시스템 완성 및 대시보드 구현` | Phase 1 |
 | 2026-02-12 | `feat: Phase 2A 완료 - StatWidget, InfoPanel 컴포넌트 추가` | Phase 2A |
 | 2026-02-12 | `feat: Phase 2B-1 위젯 프레임워크 구현` | Phase 2B |
+| 2026-02-12 | `feat: Phase 2B-2 서드파티 대체 컴포넌트 구현` | Phase 2B |
+| 2026-02-12 | `feat: Phase 3 FMS 작업 목록 페이지 구현` | Phase 3 |
+| 2026-02-12 | `feat: WorkOrder 모듈 구현 (목록/상세/생성/수정 페이지)` | Phase 3 |
 
 ---
 
