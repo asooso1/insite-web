@@ -1,0 +1,524 @@
+{
+  "version": "1.0.0",
+  "lastScanned": 1771802680627,
+  "projectRoot": "/Volumes/jinseok-SSD-1tb/00_insite/insite-web",
+  "techStack": {
+    "languages": [
+      {
+        "name": "JavaScript/TypeScript",
+        "version": null,
+        "confidence": "high",
+        "markers": [
+          "package.json"
+        ]
+      },
+      {
+        "name": "TypeScript",
+        "version": null,
+        "confidence": "high",
+        "markers": [
+          "tsconfig.json"
+        ]
+      }
+    ],
+    "frameworks": [
+      {
+        "name": "next",
+        "version": "16.1.6",
+        "category": "fullstack"
+      },
+      {
+        "name": "react",
+        "version": "19.2.3",
+        "category": "frontend"
+      },
+      {
+        "name": "react-dom",
+        "version": "19.2.3",
+        "category": "frontend"
+      },
+      {
+        "name": "@playwright/test",
+        "version": "1.58.1",
+        "category": "testing"
+      },
+      {
+        "name": "vitest",
+        "version": "4.0.18",
+        "category": "testing"
+      }
+    ],
+    "packageManager": "npm",
+    "runtime": null
+  },
+  "build": {
+    "buildCommand": "npm run build",
+    "testCommand": "npm test",
+    "lintCommand": "npm run lint",
+    "devCommand": "npm run dev",
+    "scripts": {
+      "dev": "next dev",
+      "build": "next build",
+      "start": "next start",
+      "lint": "eslint",
+      "test": "vitest",
+      "test:run": "vitest run",
+      "test:coverage": "vitest run --coverage",
+      "test:ui": "vitest --ui",
+      "e2e": "playwright test",
+      "e2e:ui": "playwright test --ui"
+    }
+  },
+  "conventions": {
+    "namingStyle": "camelCase",
+    "importStyle": "ES modules",
+    "testPattern": null,
+    "fileOrganization": "type-based"
+  },
+  "structure": {
+    "isMonorepo": false,
+    "workspaces": [],
+    "mainDirectories": [
+      "docs",
+      "public",
+      "src",
+      "tests"
+    ],
+    "gitBranches": {
+      "defaultBranch": "main",
+      "branchingStrategy": null
+    }
+  },
+  "customNotes": [],
+  "directoryMap": {
+    "docs": {
+      "path": "docs",
+      "purpose": "Documentation",
+      "fileCount": 2,
+      "lastAccessed": 1771802680606,
+      "keyFiles": [
+        "backend-changes.md",
+        "task-progress.md"
+      ]
+    },
+    "e2e": {
+      "path": "e2e",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1771802680607,
+      "keyFiles": [
+        "login.spec.ts"
+      ]
+    },
+    "openapi": {
+      "path": "openapi",
+      "purpose": null,
+      "fileCount": 0,
+      "lastAccessed": 1771802680614,
+      "keyFiles": []
+    },
+    "playwright-report": {
+      "path": "playwright-report",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1771802680615,
+      "keyFiles": [
+        "index.html"
+      ]
+    },
+    "prisma": {
+      "path": "prisma",
+      "purpose": null,
+      "fileCount": 0,
+      "lastAccessed": 1771802680616,
+      "keyFiles": []
+    },
+    "public": {
+      "path": "public",
+      "purpose": "Public files",
+      "fileCount": 5,
+      "lastAccessed": 1771802680616,
+      "keyFiles": [
+        "file.svg",
+        "globe.svg",
+        "next.svg",
+        "vercel.svg",
+        "window.svg"
+      ]
+    },
+    "src": {
+      "path": "src",
+      "purpose": "Source code",
+      "fileCount": 1,
+      "lastAccessed": 1771802680617,
+      "keyFiles": [
+        "middleware.ts"
+      ]
+    },
+    "test-results": {
+      "path": "test-results",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1771802680617,
+      "keyFiles": []
+    },
+    "tests": {
+      "path": "tests",
+      "purpose": "Test files",
+      "fileCount": 2,
+      "lastAccessed": 1771802680617,
+      "keyFiles": [
+        "setup.ts",
+        "utils.tsx"
+      ]
+    },
+    "src/app": {
+      "path": "src/app",
+      "purpose": "Application code",
+      "fileCount": 6,
+      "lastAccessed": 1771802680619,
+      "keyFiles": [
+        "error.tsx",
+        "favicon.ico",
+        "globals.css"
+      ]
+    },
+    "src/components": {
+      "path": "src/components",
+      "purpose": "UI components",
+      "fileCount": 0,
+      "lastAccessed": 1771802680619,
+      "keyFiles": []
+    },
+    "src/lib": {
+      "path": "src/lib",
+      "purpose": "Library code",
+      "fileCount": 1,
+      "lastAccessed": 1771802680619,
+      "keyFiles": [
+        "utils.ts"
+      ]
+    },
+    "src/mocks": {
+      "path": "src/mocks",
+      "purpose": "Mock data",
+      "fileCount": 4,
+      "lastAccessed": 1771802680620,
+      "keyFiles": [
+        "browser.ts",
+        "handlers.ts",
+        "index.ts"
+      ]
+    },
+    "tests/mocks": {
+      "path": "tests/mocks",
+      "purpose": "Mock data",
+      "fileCount": 0,
+      "lastAccessed": 1771802680620,
+      "keyFiles": []
+    }
+  },
+  "hotPaths": [
+    {
+      "path": "docs/task-progress.md",
+      "accessCount": 22,
+      "lastAccessed": 1771808815725,
+      "type": "file"
+    },
+    {
+      "path": "",
+      "accessCount": 19,
+      "lastAccessed": 1771808647511,
+      "type": "directory"
+    },
+    {
+      "path": "src/lib/types/facility.ts",
+      "accessCount": 6,
+      "lastAccessed": 1771808497243,
+      "type": "file"
+    },
+    {
+      "path": "src/lib/api/dashboard.ts",
+      "accessCount": 5,
+      "lastAccessed": 1771803203416,
+      "type": "file"
+    },
+    {
+      "path": "src/app/dashboard/page.tsx",
+      "accessCount": 4,
+      "lastAccessed": 1771803196475,
+      "type": "file"
+    },
+    {
+      "path": "src/lib/api/material.ts",
+      "accessCount": 4,
+      "lastAccessed": 1771803544320,
+      "type": "file"
+    },
+    {
+      "path": "src/components/widgets/widget-registry.tsx",
+      "accessCount": 4,
+      "lastAccessed": 1771808645552,
+      "type": "file"
+    },
+    {
+      "path": "src/lib/types/dashboard.ts",
+      "accessCount": 3,
+      "lastAccessed": 1771803202758,
+      "type": "file"
+    },
+    {
+      "path": "src/lib/hooks/use-dashboard.ts",
+      "accessCount": 3,
+      "lastAccessed": 1771803204192,
+      "type": "file"
+    },
+    {
+      "path": "src/components/widgets/widget-container.tsx",
+      "accessCount": 3,
+      "lastAccessed": 1771803207575,
+      "type": "file"
+    },
+    {
+      "path": "src/lib/hooks/use-materials.ts",
+      "accessCount": 3,
+      "lastAccessed": 1771803545394,
+      "type": "file"
+    },
+    {
+      "path": "src/lib/api/client.ts",
+      "accessCount": 3,
+      "lastAccessed": 1771805592269,
+      "type": "file"
+    },
+    {
+      "path": "src/components/widgets/dashboard/schedule-widget.tsx",
+      "accessCount": 3,
+      "lastAccessed": 1771808718920,
+      "type": "file"
+    },
+    {
+      "path": "src/components/widgets/presets/kpi-widget.tsx",
+      "accessCount": 2,
+      "lastAccessed": 1771802953712,
+      "type": "file"
+    },
+    {
+      "path": "src/components/widgets/dashboard/work-order-status-widget.tsx",
+      "accessCount": 2,
+      "lastAccessed": 1771803194358,
+      "type": "file"
+    },
+    {
+      "path": "src/components/widgets/dashboard/notice-widget.tsx",
+      "accessCount": 2,
+      "lastAccessed": 1771803194801,
+      "type": "file"
+    },
+    {
+      "path": "src/components/widgets/dashboard/work-status-table-widget.tsx",
+      "accessCount": 2,
+      "lastAccessed": 1771803195529,
+      "type": "file"
+    },
+    {
+      "path": "src/lib/types/material.ts",
+      "accessCount": 2,
+      "lastAccessed": 1771803543863,
+      "type": "file"
+    },
+    {
+      "path": "src/app/(modules)/licenses/[id]/page.tsx",
+      "accessCount": 2,
+      "lastAccessed": 1771803671027,
+      "type": "file"
+    },
+    {
+      "path": "src/lib/api/patrol.ts",
+      "accessCount": 2,
+      "lastAccessed": 1771805573444,
+      "type": "file"
+    },
+    {
+      "path": "src/components/widgets/presets/chart-widget.tsx",
+      "accessCount": 1,
+      "lastAccessed": 1771802875948,
+      "type": "file"
+    },
+    {
+      "path": "src/components/widgets/presets/list-widget.tsx",
+      "accessCount": 1,
+      "lastAccessed": 1771802895050,
+      "type": "file"
+    },
+    {
+      "path": "src/components/widgets/presets/table-widget.tsx",
+      "accessCount": 1,
+      "lastAccessed": 1771802895512,
+      "type": "file"
+    },
+    {
+      "path": "src/components/data-display/stat-widget.tsx",
+      "accessCount": 1,
+      "lastAccessed": 1771802958776,
+      "type": "file"
+    },
+    {
+      "path": "src/lib/auth/session.ts",
+      "accessCount": 1,
+      "lastAccessed": 1771803066474,
+      "type": "file"
+    },
+    {
+      "path": "src/app/dashboard/_components/dashboard-widgets.tsx",
+      "accessCount": 1,
+      "lastAccessed": 1771803076738,
+      "type": "file"
+    },
+    {
+      "path": "src/components/widgets/dashboard",
+      "accessCount": 1,
+      "lastAccessed": 1771803208970,
+      "type": "directory"
+    },
+    {
+      "path": ".claude/context/phase-4-plan.md",
+      "accessCount": 1,
+      "lastAccessed": 1771803334710,
+      "type": "file"
+    },
+    {
+      "path": "src/app/(modules)/materials/page.tsx",
+      "accessCount": 1,
+      "lastAccessed": 1771803553016,
+      "type": "file"
+    },
+    {
+      "path": "src/lib/types/license.ts",
+      "accessCount": 1,
+      "lastAccessed": 1771803582451,
+      "type": "file"
+    },
+    {
+      "path": "src/lib/api/license.ts",
+      "accessCount": 1,
+      "lastAccessed": 1771803595573,
+      "type": "file"
+    },
+    {
+      "path": "src/lib/hooks/use-licenses.ts",
+      "accessCount": 1,
+      "lastAccessed": 1771803607024,
+      "type": "file"
+    },
+    {
+      "path": "src/app/(modules)/licenses/page.tsx",
+      "accessCount": 1,
+      "lastAccessed": 1771803634553,
+      "type": "file"
+    },
+    {
+      "path": "src/components/data-display/info-panel.tsx",
+      "accessCount": 1,
+      "lastAccessed": 1771803655508,
+      "type": "file"
+    },
+    {
+      "path": "src/app/(modules)/licenses/_components/license-form.tsx",
+      "accessCount": 1,
+      "lastAccessed": 1771803691556,
+      "type": "file"
+    },
+    {
+      "path": "src/app/(modules)/licenses/new/page.tsx",
+      "accessCount": 1,
+      "lastAccessed": 1771803697331,
+      "type": "file"
+    },
+    {
+      "path": "src/app/(modules)/licenses/[id]/edit/page.tsx",
+      "accessCount": 1,
+      "lastAccessed": 1771803704445,
+      "type": "file"
+    },
+    {
+      "path": "src/lib/types/patrol.ts",
+      "accessCount": 1,
+      "lastAccessed": 1771803724260,
+      "type": "file"
+    },
+    {
+      "path": "src/lib/hooks/use-patrols.ts",
+      "accessCount": 1,
+      "lastAccessed": 1771803754395,
+      "type": "file"
+    },
+    {
+      "path": "src/app/(modules)/patrols/page.tsx",
+      "accessCount": 1,
+      "lastAccessed": 1771803793246,
+      "type": "file"
+    },
+    {
+      "path": "src/app/(modules)/patrols/[id]/page.tsx",
+      "accessCount": 1,
+      "lastAccessed": 1771803810557,
+      "type": "file"
+    },
+    {
+      "path": "src/app/(modules)/patrols/_components/patrol-plan-form.tsx",
+      "accessCount": 1,
+      "lastAccessed": 1771803829515,
+      "type": "file"
+    },
+    {
+      "path": "src/app/(modules)/patrols/new/page.tsx",
+      "accessCount": 1,
+      "lastAccessed": 1771803835395,
+      "type": "file"
+    },
+    {
+      "path": "src/app/(modules)/patrols/[id]/edit/page.tsx",
+      "accessCount": 1,
+      "lastAccessed": 1771803841091,
+      "type": "file"
+    },
+    {
+      "path": "src/app/(modules)/patrols/_components/patrol-team-form.tsx",
+      "accessCount": 1,
+      "lastAccessed": 1771803851997,
+      "type": "file"
+    },
+    {
+      "path": "src/app/(modules)/patrols/teams/[id]/page.tsx",
+      "accessCount": 1,
+      "lastAccessed": 1771803867349,
+      "type": "file"
+    },
+    {
+      "path": "src/app/(modules)/patrols/teams/new/page.tsx",
+      "accessCount": 1,
+      "lastAccessed": 1771803870610,
+      "type": "file"
+    },
+    {
+      "path": "src/app/(modules)/patrols/teams/[id]/edit/page.tsx",
+      "accessCount": 1,
+      "lastAccessed": 1771803875697,
+      "type": "file"
+    },
+    {
+      "path": "src/lib/types/report.ts",
+      "accessCount": 1,
+      "lastAccessed": 1771803891273,
+      "type": "file"
+    },
+    {
+      "path": "src/lib/api/report.ts",
+      "accessCount": 1,
+      "lastAccessed": 1771803907334,
+      "type": "file"
+    }
+  ],
+  "userDirectives": []
+}

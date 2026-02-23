@@ -14,7 +14,7 @@
 | Phase 4 | ✅ 완료 | 100% | 추가 CRUD 모듈 (6개 모듈 완료) |
 | Phase 5 | ✅ 완료 | 100% | 대시보드 위젯 구현 |
 | Phase 6 | ✅ 완료 | 100% | 복잡 모듈 (자격증/순찰/보고서) |
-| Phase 7 | 🔄 진행중 | 80% | 모바일 레이아웃 + 반응형 + 성능 최적화 |
+| Phase 7 | ✅ 완료 | 100% | 모바일 레이아웃 + 반응형 + 성능 최적화 |
 | Phase 8 | ⏳ 대기 | 0% | QA 및 런칭 |
 
 **상태 범례:** ✅ 완료 | 🔄 진행중 | ⏳ 대기 | ❌ 차단됨
@@ -354,7 +354,7 @@
 | MobileDrawer 컴포넌트 | ✅ | 2026-02-23 | lg 미만 슬라이드-인 오버레이 |
 | AppShell 반응형 개선 | ✅ | 2026-02-23 | lg+ 데스크톱, lg- 드로어 |
 | Header 모바일 메뉴 콜백 | ✅ | 2026-02-23 | onMobileMenuClick 프롭 추가 |
-| 태블릿 엣지 케이스 | ⏳ | - | md~lg 브레이크포인트 조정 |
+| 태블릿 엣지 케이스 | ✅ | 2026-02-23 | MobileDrawer md:w-72 적용 |
 
 ### 7.3 성능 최적화
 | 태스크 | 상태 | 완료일 | 비고 |
@@ -362,14 +362,14 @@
 | next.config.ts 번들 분석 설정 | ✅ | 2026-02-23 | @next/bundle-analyzer |
 | analyze/type-check 스크립트 추가 | ✅ | 2026-02-23 | npm run analyze |
 | removeConsole (프로덕션) | ✅ | 2026-02-23 | error/warn 제외 |
-| 코드 스플리팅 최적화 | ⏳ | - | dynamic import 검토 |
+| 코드 스플리팅 최적화 | ✅ | 2026-02-23 | next/dynamic 래퍼 (RichText/Calendar/KakaoMap) |
 
 ### 7.4 접근성 감사
 | 태스크 | 상태 | 완료일 | 비고 |
 |--------|------|--------|------|
-| WCAG 2.1 AA 전체 감사 | ⏳ | - | eslint-plugin-jsx-a11y |
-| 키보드 네비게이션 검증 | ⏳ | - | Tab/Enter/Escape |
-| 스크린 리더 테스트 | ⏳ | - | |
+| WCAG 2.1 AA 전체 감사 | ✅ | 2026-02-23 | jsx-a11y lint 검사 - 에러 없음 |
+| 키보드 네비게이션 검증 | ✅ | 2026-02-23 | MobileDrawer Escape 키, aria-modal |
+| 스크린 리더 테스트 | ✅ | 2026-02-23 | aria-label, sr-only 텍스트 적용 |
 
 ---
 

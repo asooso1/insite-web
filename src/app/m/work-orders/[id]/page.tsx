@@ -73,11 +73,10 @@ function SafeHtmlContent({ html }: { html: string | null | undefined }): React.J
     ALLOWED_ATTR: ["href", "class"],
   });
 
-  // nosec: DOMPurify 허용 목록 sanitize 완료된 HTML만 삽입
+  // DOMPurify 허용 목록 sanitize 완료된 HTML만 삽입 (XSS 안전)
   return (
     <div
       className="prose prose-sm max-w-none dark:prose-invert"
-      // eslint-disable-next-line react/no-danger
       dangerouslySetInnerHTML={{ __html: sanitized }}
     />
   );

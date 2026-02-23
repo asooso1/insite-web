@@ -1,0 +1,165 @@
+[    5811ms] [WARNING] Image with src "http://localhost:3000/vercel.svg" has either width or height modified, but not the other. If you use CSS to change the size of your image, also include the styles 'width: "auto"' or 'height: "auto"' to maintain the aspect ratio. @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:2297
+[   75748ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:3000/dashboard?_rsc=vusbg:0
+[   75766ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:3000/dashboard:0
+[  101594ms] [ERROR] ./src/app/dashboard/page.tsx:3:1
+Module not found: Can't resolve './logout-button'
+  1 | import { getAuthUser } from "@/lib/auth/session";
+  2 | import { redirect } from "next/navigation";
+> 3 | import { LogoutButton } from "./logout-button";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  4 |
+  5 | /**
+  6 |  * 대시보드 페이지
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[  102569ms] [ERROR] ./src/app/dashboard/page.tsx:3:1
+Module not found: Can't resolve './logout-button'
+  1 | import { getAuthUser } from "@/lib/auth/session";
+  2 | import { redirect } from "next/navigation";
+> 3 | import { LogoutButton } from "./logout-button";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  4 |
+  5 | /**
+  6 |  * 대시보드 페이지
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[  102791ms] [ERROR] ./src/app/dashboard/page.tsx:3:1
+Module not found: Can't resolve './logout-button'
+  1 | import { getAuthUser } from "@/lib/auth/session";
+  2 | import { redirect } from "next/navigation";
+> 3 | import { LogoutButton } from "./logout-button";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  4 |
+  5 | /**
+  6 |  * 대시보드 페이지
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[  103149ms] [ERROR] ./src/app/dashboard/page.tsx:3:1
+Module not found: Can't resolve './logout-button'
+  1 | import { getAuthUser } from "@/lib/auth/session";
+  2 | import { redirect } from "next/navigation";
+> 3 | import { LogoutButton } from "./logout-button";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  4 |
+  5 | /**
+  6 |  * 대시보드 페이지
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_f3530cac._.js:3127
+[  103160ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3000/dashboard?_rsc=kw9md:0
+[  103224ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3000/dashboard?_rsc=kw9md:0
+[  103248ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://localhost:3000/dashboard:0
+[  103530ms] Error: ./src/app/dashboard/page.tsx:3:1
+Module not found: Can't resolve './logout-button'
+  1 | import { getAuthUser } from "@/lib/auth/session";
+  2 | import { redirect } from "next/navigation";
+> 3 | import { LogoutButton } from "./logout-button";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  4 |
+  5 | /**
+  6 |  * 대시보드 페이지
+
+
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+    at <unknown> (Error: ./src/app/dashboard/page.tsx:3:1)
+    at <unknown> (https://nextjs.org/docs/messages/module-not-found)
+    at Object.getCompilationErrors (file:///Volumes/jinseok-SSD-1tb/00_insite/insite-web/node_modules/next/dist/server/dev/hot-reloader-turbopack.js:1008:59)
+    at DevBundlerService.getCompilationError (file:///Volumes/jinseok-SSD-1tb/00_insite/insite-web/node_modules/next/dist/server/lib/dev-bundler-service.js:44:55)
+    at DevServer.getCompilationError (file:///Volumes/jinseok-SSD-1tb/00_insite/insite-web/node_modules/next/dist/server/dev/next-dev-server.js:706:42)
+    at DevServer.findPageComponents (file:///Volumes/jinseok-SSD-1tb/00_insite/insite-web/node_modules/next/dist/server/dev/next-dev-server.js:676:43)
+    at async DevServer.renderErrorToResponseImpl (file:///Volumes/jinseok-SSD-1tb/00_insite/insite-web/node_modules/next/dist/server/base-server.js:1733:26)
+[  103578ms] [ERROR] ./src/app/dashboard/page.tsx:3:1
+Module not found: Can't resolve './logout-button'
+  1 | import { getAuthUser } from "@/lib/auth/session";
+  2 | import { redirect } from "next/navigation";
+> 3 | import { LogoutButton } from "./logout-button";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  4 |
+  5 | /**
+  6 |  * 대시보드 페이지
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_b3fb3b5f._.js:1920
+[  103598ms] [ERROR] ./src/app/dashboard/page.tsx:3:1
+Module not found: Can't resolve './logout-button'
+  1 | import { getAuthUser } from "@/lib/auth/session";
+  2 | import { redirect } from "next/navigation";
+> 3 | import { LogoutButton } from "./logout-button";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  4 |
+  5 | /**
+  6 |  * 대시보드 페이지
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_b3fb3b5f._.js:1920
+[  103683ms] [ERROR] ./src/app/dashboard/page.tsx:3:1
+Module not found: Can't resolve './logout-button'
+  1 | import { getAuthUser } from "@/lib/auth/session";
+  2 | import { redirect } from "next/navigation";
+> 3 | import { LogoutButton } from "./logout-button";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  4 |
+  5 | /**
+  6 |  * 대시보드 페이지
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_b3fb3b5f._.js:1920
+[  103733ms] [ERROR] ./src/app/dashboard/page.tsx:3:1
+Module not found: Can't resolve './logout-button'
+  1 | import { getAuthUser } from "@/lib/auth/session";
+  2 | import { redirect } from "next/navigation";
+> 3 | import { LogoutButton } from "./logout-button";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  4 |
+  5 | /**
+  6 |  * 대시보드 페이지
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_b3fb3b5f._.js:1920
+[  103774ms] [ERROR] ./src/app/dashboard/page.tsx:3:1
+Module not found: Can't resolve './logout-button'
+  1 | import { getAuthUser } from "@/lib/auth/session";
+  2 | import { redirect } from "next/navigation";
+> 3 | import { LogoutButton } from "./logout-button";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  4 |
+  5 | /**
+  6 |  * 대시보드 페이지
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_b3fb3b5f._.js:1920
+[  104041ms] [ERROR] ./src/app/dashboard/page.tsx:3:1
+Module not found: Can't resolve './logout-button'
+  1 | import { getAuthUser } from "@/lib/auth/session";
+  2 | import { redirect } from "next/navigation";
+> 3 | import { LogoutButton } from "./logout-button";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  4 |
+  5 | /**
+  6 |  * 대시보드 페이지
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_b3fb3b5f._.js:1920
+[  104103ms] [ERROR] ./src/app/dashboard/page.tsx:3:1
+Module not found: Can't resolve './logout-button'
+  1 | import { getAuthUser } from "@/lib/auth/session";
+  2 | import { redirect } from "next/navigation";
+> 3 | import { LogoutButton } from "./logout-button";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  4 |
+  5 | /**
+  6 |  * 대시보드 페이지
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_b3fb3b5f._.js:1920
+[  104151ms] [ERROR] ./src/app/dashboard/page.tsx:3:1
+Module not found: Can't resolve './logout-button'
+  1 | import { getAuthUser } from "@/lib/auth/session";
+  2 | import { redirect } from "next/navigation";
+> 3 | import { LogoutButton } from "./logout-button";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  4 |
+  5 | /**
+  6 |  * 대시보드 페이지
+
+https://nextjs.org/docs/messages/module-not-found @ http://localhost:3000/_next/static/chunks/node_modules_next_dist_b3fb3b5f._.js:1920
+[  552162ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:3000/dashboard/%E3%85%A0%E3%85%91%E3%85%A1:0
+[  553203ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:3000/dashboard/bim:0
+[  554890ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:3000/dashboard/rms:0
+[  559569ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:3000/dashboard/bim:0
+[  560072ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:3000/dashboard/%E3%85%A0%E3%85%91%E3%85%A1:0

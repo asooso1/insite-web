@@ -74,10 +74,10 @@ export function MobileDrawer({ open, onClose }: MobileDrawerProps): React.JSX.El
         aria-hidden="true"
       />
 
-      {/* 드로어 패널 */}
+      {/* 드로어 패널 - 태블릿(md+)에서 더 넓게 표시 */}
       <aside
         className={cn(
-          "fixed left-0 top-0 z-[70] h-full w-64",
+          "fixed left-0 top-0 z-[70] h-full w-64 md:w-72",
           "flex flex-col bg-sidebar shadow-xl",
           "transition-transform duration-200 ease-in-out lg:hidden",
           open ? "translate-x-0" : "-translate-x-full"
