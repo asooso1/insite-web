@@ -13,6 +13,7 @@ const PUBLIC_PATHS = [
   "/m",
   "/api/auth/login",
   "/api/auth/refresh",
+  ...(process.env.NODE_ENV === "development" ? ["/ui-preview"] : []),
 ];
 
 /**

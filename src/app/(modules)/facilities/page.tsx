@@ -19,6 +19,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { DataTable } from "@/components/data-display/data-table";
 import { StatusBadge } from "@/components/data-display/status-badge";
 import { EmptyState } from "@/components/data-display/empty-state";
@@ -278,21 +279,22 @@ export default function FacilityListPage() {
       </div>
 
       {/* 상태 탭 */}
-      <div className="flex gap-2 border-b">
-        {STATE_TABS.map((tab) => (
-          <button
-            key={tab.value}
-            onClick={() => handleStateChange(tab.value)}
-            className={`px-4 py-2 text-sm font-medium border-b-2 transition-colors ${
-              state === tab.value
-                ? "border-primary text-primary"
-                : "border-transparent text-muted-foreground hover:text-foreground"
-            }`}
-          >
-            {tab.label}
-          </button>
-        ))}
-      </div>
+      <Tabs
+        value={state || "ALL"}
+        onValueChange={(v) => handleStateChange(v === "ALL" ? "" : v)}
+      >
+        <TabsList className="h-auto gap-1 bg-transparent p-0 border-b rounded-none w-full justify-start">
+          {STATE_TABS.map((tab) => (
+            <TabsTrigger
+              key={tab.value || "ALL"}
+              value={tab.value || "ALL"}
+              className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none px-4 py-2"
+            >
+              {tab.label}
+            </TabsTrigger>
+          ))}
+        </TabsList>
+      </Tabs>
 
       {/* 툴바 */}
       <div className="flex items-center justify-between gap-4">

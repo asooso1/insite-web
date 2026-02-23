@@ -69,7 +69,7 @@ export function Header({ onMobileMenuClick }: HeaderProps): React.JSX.Element {
       className={cn(
         "fixed left-0 right-0 top-0 z-[var(--z-sticky)]",
         "flex h-[52px] items-center justify-between",
-        "border-b border-border bg-[var(--bg-header)] backdrop-blur-sm",
+        "border-b border-border/50 bg-[var(--bg-header-upgrade)] [backdrop-filter:var(--backdrop-header)]",
         "px-4"
       )}
     >

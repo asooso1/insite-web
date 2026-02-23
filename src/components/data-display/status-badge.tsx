@@ -7,7 +7,7 @@ const statusBadgeVariants = cva(
   {
     variants: {
       status: {
-        // 작업 상태
+        // 작업 상태 (generic)
         pending: "bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300",
         inProgress: "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400",
         completed: "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400",
@@ -23,6 +23,22 @@ const statusBadgeVariants = cva(
         // 알림 상태
         unread: "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400",
         read: "bg-gray-100 text-gray-500 dark:bg-gray-800 dark:text-gray-400",
+        // 작업지시 실제 상태 (WorkOrderState)
+        WRITE: "bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300",
+        ISSUE: "bg-sky-100 text-sky-700 dark:bg-sky-900/30 dark:text-sky-400",
+        PROCESSING: "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400",
+        REQ_COMPLETE: "bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400",
+        COMPLETE: "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400",
+        CANCEL: "bg-gray-100 text-gray-500 dark:bg-gray-800 dark:text-gray-400",
+        // 시설 실제 상태 (FacilityState)
+        BEFORE_CONSTRUCT: "bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400",
+        ONGOING_CONSTRUCT: "bg-violet-100 text-violet-700 dark:bg-violet-900/30 dark:text-violet-400",
+        END_CONSTRUCT: "bg-indigo-100 text-indigo-700 dark:bg-indigo-900/30 dark:text-indigo-400",
+        BEFORE_OPERATING: "bg-sky-100 text-sky-700 dark:bg-sky-900/30 dark:text-sky-400",
+        ONGOING_OPERATING: "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400",
+        END_OPERATING: "bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400",
+        DISCARD: "bg-gray-100 text-gray-400 dark:bg-gray-800 dark:text-gray-500",
+        NOW_CHECK: "bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400",
       },
     },
     defaultVariants: {
@@ -47,6 +63,22 @@ const dotColors: Record<string, string> = {
   offline: "bg-gray-400",
   unread: "bg-blue-500",
   read: "bg-gray-400",
+  // 작업지시 실제 상태
+  WRITE: "bg-slate-400",
+  ISSUE: "bg-sky-500",
+  PROCESSING: "bg-blue-500",
+  REQ_COMPLETE: "bg-amber-500",
+  COMPLETE: "bg-green-500",
+  CANCEL: "bg-gray-400",
+  // 시설 실제 상태
+  BEFORE_CONSTRUCT: "bg-slate-400",
+  ONGOING_CONSTRUCT: "bg-violet-500",
+  END_CONSTRUCT: "bg-indigo-500",
+  BEFORE_OPERATING: "bg-sky-500",
+  ONGOING_OPERATING: "bg-green-500",
+  END_OPERATING: "bg-slate-400",
+  DISCARD: "bg-gray-400",
+  NOW_CHECK: "bg-amber-500",
 };
 
 /**
@@ -65,6 +97,22 @@ const statusLabels: Record<string, string> = {
   offline: "오프라인",
   unread: "읽지 않음",
   read: "읽음",
+  // 작업지시 실제 상태
+  WRITE: "작성",
+  ISSUE: "발행",
+  PROCESSING: "처리중",
+  REQ_COMPLETE: "완료요청",
+  COMPLETE: "완료",
+  CANCEL: "취소",
+  // 시설 실제 상태
+  BEFORE_CONSTRUCT: "공사전",
+  ONGOING_CONSTRUCT: "공사중",
+  END_CONSTRUCT: "공사완료",
+  BEFORE_OPERATING: "운영전",
+  ONGOING_OPERATING: "운영중",
+  END_OPERATING: "운영완료",
+  DISCARD: "폐기",
+  NOW_CHECK: "점검중",
 };
 
 interface StatusBadgeProps extends VariantProps<typeof statusBadgeVariants> {

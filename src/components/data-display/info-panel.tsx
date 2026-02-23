@@ -133,7 +133,7 @@ export function InfoPanel({
       <div key={`${item.label}-${index}`}>
         <div className={cn(itemVariants({ layout }))}>
           {/* 레이블 */}
-          <span className="text-sm text-muted-foreground shrink-0">
+          <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide shrink-0">
             {item.label}
           </span>
 
@@ -189,7 +189,7 @@ export function InfoPanel({
   };
 
   return (
-    <Card className={cn("overflow-hidden", className)}>
+    <Card className={cn("overflow-hidden shadow-[var(--shadow-panel)] border border-border/60", className)}>
       {title && (
         <CardHeader className="pb-3">
           <CardTitle className="text-base font-semibold">{title}</CardTitle>

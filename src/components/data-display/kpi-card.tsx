@@ -63,7 +63,7 @@ export function KPICard({
     trend === "up" ? TrendingUp : trend === "down" ? TrendingDown : Minus;
 
   return (
-    <Card className={cn("overflow-hidden", className)}>
+    <Card className={cn("overflow-hidden shadow-[var(--shadow-card)] hover:shadow-[var(--shadow-card-hover)] transition-shadow duration-200", className)}>
       <CardContent className="p-4">
         <div className="flex items-start justify-between">
           <div className="space-y-1">
@@ -82,7 +82,7 @@ export function KPICard({
             )}
           </div>
           {Icon && (
-            <div className="rounded-lg bg-primary/10 p-2">
+            <div className="rounded-lg bg-[image:var(--gradient-brand-soft)] p-2">
               <Icon className="h-5 w-5 text-primary" />
             </div>
           )}
