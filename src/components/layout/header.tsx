@@ -28,12 +28,18 @@ import { useAuthStore } from "@/lib/stores/auth-store";
 import { useTenantStore } from "@/lib/stores/tenant-store";
 import { cn } from "@/lib/utils";
 
+interface HeaderProps {
+  /** 모바일에서 햄버거 클릭 시 콜백 (MobileDrawer 열기용) */
+  onMobileMenuClick?: () => void;
+}
+
 /**
  * 헤더 컴포넌트
  * - 52px 고정 높이
- * - 사이드바 토글, 빌딩 컨텍스트, 검색, 알림, 테마, 사용자 메뉴
+ * - Desktop: 사이드바 토글 | Mobile/Tablet: 드로어 열기
+ * - 빌딩 컨텍스트, 검색, 알림, 테마, 사용자 메뉴
  */
-export function Header(): React.JSX.Element {
+export function Header({ onMobileMenuClick }: HeaderProps): React.JSX.Element {
   const { toggleSidebar, setCommandPaletteOpen } = useUIStore();
   const { user } = useAuthStore();
   const { currentBuilding, currentCompany } = useTenantStore();
@@ -69,15 +75,26 @@ export function Header(): React.JSX.Element {
     >
       {/* 좌측: 메뉴 토글 + 빌딩 컨텍스트 */}
       <div className="flex items-center gap-4">
-        {/* 사이드바 토글 버튼 */}
+        {/* 사이드바 토글 (데스크톱: 사이드바 접기, 모바일/태블릿: 드로어 열기) */}
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={onMobileMenuClick ?? toggleSidebar}
+          className="h-8 w-8 lg:hidden"
+          aria-label="메뉴 열기"
+        >
+          <Menu className="h-5 w-5" />
+          <span className="sr-only">메뉴 열기</span>
+        </Button>
         <Button
           variant="ghost"
           size="icon"
           onClick={toggleSidebar}
-          className="h-8 w-8"
+          className="hidden h-8 w-8 lg:flex"
+          aria-label="사이드바 토글"
         >
           <Menu className="h-5 w-5" />
-          <span className="sr-only">메뉴 토글</span>
+          <span className="sr-only">사이드바 토글</span>
         </Button>
 
         {/* 빌딩 컨텍스트 */}
