@@ -220,21 +220,33 @@
   },
   "hotPaths": [
     {
+      "path": "",
+      "accessCount": 55,
+      "lastAccessed": 1771810793492,
+      "type": "directory"
+    },
+    {
       "path": "docs/task-progress.md",
       "accessCount": 22,
       "lastAccessed": 1771808815725,
       "type": "file"
     },
     {
-      "path": "",
-      "accessCount": 19,
-      "lastAccessed": 1771808647511,
-      "type": "directory"
+      "path": "src/lib/types/facility.ts",
+      "accessCount": 14,
+      "lastAccessed": 1771810791519,
+      "type": "file"
     },
     {
-      "path": "src/lib/types/facility.ts",
-      "accessCount": 6,
-      "lastAccessed": 1771808497243,
+      "path": "src/lib/types/material.ts",
+      "accessCount": 7,
+      "lastAccessed": 1771810779323,
+      "type": "file"
+    },
+    {
+      "path": "src/lib/types/dashboard.ts",
+      "accessCount": 7,
+      "lastAccessed": 1771810780767,
       "type": "file"
     },
     {
@@ -245,8 +257,14 @@
     },
     {
       "path": "src/app/dashboard/page.tsx",
-      "accessCount": 4,
-      "lastAccessed": 1771803196475,
+      "accessCount": 5,
+      "lastAccessed": 1771809785470,
+      "type": "file"
+    },
+    {
+      "path": "src/components/data-display/info-panel.tsx",
+      "accessCount": 5,
+      "lastAccessed": 1771810775188,
       "type": "file"
     },
     {
@@ -259,12 +277,6 @@
       "path": "src/components/widgets/widget-registry.tsx",
       "accessCount": 4,
       "lastAccessed": 1771808645552,
-      "type": "file"
-    },
-    {
-      "path": "src/lib/types/dashboard.ts",
-      "accessCount": 3,
-      "lastAccessed": 1771803202758,
       "type": "file"
     },
     {
@@ -319,12 +331,6 @@
       "path": "src/components/widgets/dashboard/work-status-table-widget.tsx",
       "accessCount": 2,
       "lastAccessed": 1771803195529,
-      "type": "file"
-    },
-    {
-      "path": "src/lib/types/material.ts",
-      "accessCount": 2,
-      "lastAccessed": 1771803543863,
       "type": "file"
     },
     {
@@ -415,12 +421,6 @@
       "path": "src/app/(modules)/licenses/page.tsx",
       "accessCount": 1,
       "lastAccessed": 1771803634553,
-      "type": "file"
-    },
-    {
-      "path": "src/components/data-display/info-panel.tsx",
-      "accessCount": 1,
-      "lastAccessed": 1771803655508,
       "type": "file"
     },
     {
