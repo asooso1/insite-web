@@ -374,14 +374,14 @@ export function Sidebar(): React.JSX.Element {
 
   return (
     <TooltipProvider delayDuration={0}>
-      <aside
+      <motion.aside
+        animate={{ width: isCollapsed ? 64 : sidebarWidth }}
+        transition={{ type: "spring", stiffness: 300, damping: 30 }}
         className={cn(
           "fixed left-0 top-[52px] z-[var(--z-sticky)]",
-          "flex h-[calc(100vh-52px)] flex-col",
-          "transition-all duration-200 ease-out"
+          "flex h-[calc(100vh-52px)] flex-col overflow-hidden"
         )}
         style={{
-          width: isCollapsed ? 64 : sidebarWidth,
           backgroundColor: "var(--sidebar-dark-bg)",
           borderRight: "1px solid var(--sidebar-dark-border)",
         }}
@@ -519,7 +519,7 @@ export function Sidebar(): React.JSX.Element {
             </Tooltip>
           </div>
         </div>
-      </aside>
+      </motion.aside>
     </TooltipProvider>
   );
 }

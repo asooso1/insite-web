@@ -130,6 +130,17 @@ interface StatusBadgeProps extends VariantProps<typeof statusBadgeVariants> {
  * <StatusBadge status="inProgress" />
  * <StatusBadge status="urgent" label="긴급" showDot />
  */
+/** 활성(진행중) 상태 — 점에 pulse 애니메이션 적용 */
+const ACTIVE_STATUSES = new Set([
+  "inProgress",
+  "PROCESSING",
+  "ISSUE",
+  "online",
+  "ONGOING_OPERATING",
+  "ONGOING_CONSTRUCT",
+  "NOW_CHECK",
+]);
+
 export function StatusBadge({
   status,
   label,
@@ -139,11 +150,18 @@ export function StatusBadge({
   const statusKey = status ?? "pending";
   const displayLabel = label ?? statusLabels[statusKey] ?? statusKey;
   const dotColor = dotColors[statusKey] ?? "bg-gray-400";
+  const isPulsing = ACTIVE_STATUSES.has(statusKey);
 
   return (
     <span className={cn(statusBadgeVariants({ status }), className)}>
       {showDot && (
-        <span className={cn("h-1.5 w-1.5 rounded-full", dotColor)} />
+        <span
+          className={cn(
+            "h-1.5 w-1.5 rounded-full",
+            dotColor,
+            isPulsing && "animate-pulse"
+          )}
+        />
       )}
       {displayLabel}
     </span>
