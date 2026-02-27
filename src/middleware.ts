@@ -3,6 +3,35 @@ import type { NextRequest } from "next/server";
 import { jwtVerify } from "jose";
 
 /**
+ * 레거시 csp-web URL → insite-web 경로 리다이렉트 매핑
+ */
+const LEGACY_REDIRECTS: Record<string, string> = {
+  "/workorder": "/work-orders",
+  "/facility": "/facilities",
+  "/user": "/users",
+  "/client": "/clients",
+  "/material": "/materials",
+  "/board": "/boards",
+  "/patrol": "/patrols",
+  "/report": "/reports",
+  "/setting": "/settings",
+  "/license": "/licenses",
+  "/main": "/dashboard",
+};
+
+/**
+ * 레거시 경로를 새 경로로 리다이렉트
+ */
+function getLegacyRedirect(pathname: string): string | null {
+  for (const [legacy, modern] of Object.entries(LEGACY_REDIRECTS)) {
+    if (pathname === legacy || pathname.startsWith(`${legacy}/`) || pathname.startsWith(`${legacy}?`)) {
+      return modern + pathname.slice(legacy.length);
+    }
+  }
+  return null;
+}
+
+/**
  * 공개 경로 (인증 불필요)
  */
 const PUBLIC_PATHS = [
@@ -103,6 +132,12 @@ export async function middleware(request: NextRequest): Promise<NextResponse> {
     pathname.includes(".")
   ) {
     return NextResponse.next();
+  }
+
+  // 레거시 csp-web URL 리다이렉트
+  const legacyTarget = getLegacyRedirect(pathname);
+  if (legacyTarget) {
+    return NextResponse.redirect(new URL(legacyTarget, request.url));
   }
 
   // 공개 경로는 인증 불필요
