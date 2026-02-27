@@ -18,9 +18,9 @@ interface PageHeaderProps {
 }
 
 /**
- * 페이지 헤더 컴포넌트
+ * 페이지 헤더 컴포넌트 (Server Component)
  * - 아이콘 + 제목 + 설명 + 통계 배지 + 액션 버튼
- * - src/components/common/ — 재사용 컴포넌트 (layout/ 싱글턴과 분리)
+ * - CSS 애니메이션으로 입장 효과 (tw-animate-css 사용)
  */
 export function PageHeader({
   title,
@@ -31,7 +31,13 @@ export function PageHeader({
   className,
 }: PageHeaderProps): ReactNode {
   return (
-    <div className={cn("flex items-start justify-between gap-4", className)}>
+    <div
+      className={cn(
+        "flex items-start justify-between gap-4",
+        "animate-in fade-in slide-in-from-top-2 duration-300 fill-mode-both",
+        className
+      )}
+    >
       <div className="flex items-start gap-3">
         {Icon && (
           <div className="rounded-lg bg-primary/10 p-2 mt-0.5">
@@ -65,7 +71,9 @@ export function PageHeader({
           )}
         </div>
       </div>
-      {actions && <div className="flex items-center gap-2 shrink-0">{actions}</div>}
+      {actions && (
+        <div className="flex items-center gap-2 shrink-0">{actions}</div>
+      )}
     </div>
   );
 }

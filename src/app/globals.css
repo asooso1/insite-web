@@ -63,6 +63,15 @@
   --z-modal: 300;
   --z-toast: 400;
   --z-loader: 500;
+
+  /* ==================== 애니메이션 토큰 ==================== */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in: cubic-bezier(0.7, 0, 0.84, 0);
+  --ease-inout: cubic-bezier(0.42, 0, 0.58, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --duration-fast: 150ms;
+  --duration-normal: 300ms;
+  --duration-slow: 500ms;
 }
 
 /* ==================== Light 테마 ==================== */
@@ -225,6 +234,27 @@
   --sidebar-dark-text: rgba(255,255,255,0.55);
   --sidebar-dark-text-active: rgba(255,255,255,0.95);
   --sidebar-dark-label: rgba(255,255,255,0.28);
+
+  /* ==================== 인터랙션 상태 토큰 ==================== */
+  /* Easing 함수 (Framer Motion과 동일한 값) */
+  --easing-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --easing-in: cubic-bezier(0.7, 0, 0.84, 0);
+  --easing-inout: cubic-bezier(0.42, 0, 0.58, 1);
+  --easing-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* Hover 상태 */
+  --hover-opacity: 0.92;
+
+  /* Focus 상태 */
+  --focus-ring-width: 2px;
+  --focus-ring-color: var(--brand);
+  --focus-ring-offset: 2px;
+
+  /* Active 상태 */
+  --active-opacity: 0.88;
+
+  /* Disabled 상태 */
+  --disabled-opacity: 0.5;
 }
 
 /* ==================== Dark 테마 ==================== */
@@ -340,6 +370,12 @@
   --sidebar-dark-text: rgba(255,255,255,0.55);
   --sidebar-dark-text-active: rgba(255,255,255,0.95);
   --sidebar-dark-label: rgba(255,255,255,0.28);
+
+  /* 다크 모드 인터랙션 상태 */
+  --hover-opacity: 0.95;
+  --focus-ring-color: var(--brand);
+  --active-opacity: 0.90;
+  --disabled-opacity: 0.45;
 }
 
 /* ==================== Base 스타일 ==================== */
@@ -410,6 +446,60 @@
   .text-system-yellow { color: var(--system-yellow); }
   .text-system-green { color: var(--system-green); }
   .text-system-blue { color: var(--system-blue); }
+
+  /* ==================== 타이포그래피 스케일 ==================== */
+  .text-display {
+    @apply text-[32px] font-semibold leading-tight tracking-tight;
+  }
+
+  .text-h1 {
+    @apply text-[24px] font-semibold leading-tight;
+  }
+
+  .text-h2 {
+    @apply text-[20px] font-semibold leading-snug;
+  }
+
+  .text-h3 {
+    @apply text-[16px] font-semibold leading-snug;
+  }
+
+  .text-body-lg {
+    @apply text-[15px] font-normal leading-relaxed;
+  }
+
+  .text-body-base {
+    @apply text-[14px] font-normal leading-relaxed;
+  }
+
+  .text-body-sm {
+    @apply text-[13px] font-normal leading-relaxed;
+  }
+
+  .text-caption {
+    @apply text-[12px] font-normal leading-relaxed text-muted-foreground;
+  }
+
+  .text-label {
+    @apply text-[11px] font-semibold uppercase tracking-wider;
+  }
+
+  /* ==================== 인터랙션 유틸리티 ==================== */
+  /* focus-ring: 접근성 포커스 표시 */
+  .focus-ring {
+    @apply outline-none ring-2 ring-[var(--focus-ring-color)] ring-offset-2 ring-offset-background;
+  }
+
+  /* 애니메이션 최적화 */
+  .will-animate {
+    will-change: transform, opacity;
+  }
+
+  /* GPU 가속 */
+  .gpu-accelerated {
+    transform: translateZ(0);
+    backface-visibility: hidden;
+  }
 }
 
 /* ==================== React Grid Layout ==================== */

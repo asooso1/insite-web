@@ -20,6 +20,7 @@ import {
   LogOut,
   Zap,
 } from "lucide-react";
+import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import {
@@ -34,6 +35,7 @@ import { useMenuTree } from "@/lib/hooks/use-menu";
 import type { MenuDTO } from "@/lib/types/menu";
 import { cn } from "@/lib/utils";
 import { mapMenuUrl } from "@/lib/utils/menu-url-mapper";
+import { containerVariants, itemVariants } from "@/lib/animations";
 
 // ============================================================================
 // 아이콘 매핑
@@ -315,9 +317,15 @@ function MenuList({
     .sort((a, b) => a.sortNo - b.sortNo);
 
   return (
-    <nav className="flex flex-col gap-0.5 px-2" aria-label="사이드바 메뉴">
+    <motion.nav
+      variants={containerVariants}
+      initial="initial"
+      animate="animate"
+      className="flex flex-col gap-0.5 px-2"
+      aria-label="사이드바 메뉴"
+    >
       {visibleMenus.map((item, idx) => (
-        <div key={item.id}>
+        <motion.div key={item.id} variants={itemVariants}>
           {/* depth=1 항목 사이에 구분선 (축소 시, 첫 번째 제외) */}
           {isCollapsed && idx > 0 && item.depth === 1 && (
             <div
@@ -330,9 +338,9 @@ function MenuList({
             isCollapsed={isCollapsed}
             pathname={pathname}
           />
-        </div>
+        </motion.div>
       ))}
-    </nav>
+    </motion.nav>
   );
 }
 

@@ -206,7 +206,7 @@ export default async function UIPreviewPage(): Promise<ReactNode> {
             title="총 작업 건수"
             value={mockWorkOrderStatus.totalCount ?? 0}
             unit="건"
-            icon={ClipboardList}
+            icon={<ClipboardList className="h-5 w-5 text-primary" />}
             trend="up"
             trendValue="+12%"
             trendLabel="전월 대비"
@@ -215,7 +215,7 @@ export default async function UIPreviewPage(): Promise<ReactNode> {
             title="진행중 작업"
             value={mockWorkOrderStatus.inProgressCount ?? 0}
             unit="건"
-            icon={TrendingUp}
+            icon={<TrendingUp className="h-5 w-5 text-primary" />}
             trend="neutral"
             trendValue="±0%"
             trendLabel="전월 대비"
@@ -224,7 +224,7 @@ export default async function UIPreviewPage(): Promise<ReactNode> {
             title="완료 작업"
             value={mockWorkOrderStatus.completedCount ?? 0}
             unit="건"
-            icon={Users}
+            icon={<Users className="h-5 w-5 text-primary" />}
             trend="up"
             trendValue="+8%"
             trendLabel="전월 대비"
@@ -233,7 +233,7 @@ export default async function UIPreviewPage(): Promise<ReactNode> {
             title="지연 작업"
             value={mockWorkOrderStatus.overdueCount ?? 0}
             unit="건"
-            icon={Building}
+            icon={<Building className="h-5 w-5 text-primary" />}
             trend="down"
             trendValue="-2건"
             trendLabel="전월 대비"

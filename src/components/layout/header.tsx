@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { motion, useScroll, useTransform, useMotionTemplate } from "framer-motion";
 import { useTheme } from "next-themes";
 import {
   Menu,
@@ -46,6 +47,14 @@ export function Header({ onMobileMenuClick }: HeaderProps): React.JSX.Element {
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = React.useState(false);
 
+  // 스크롤 기반 애니메이션
+  const { scrollY } = useScroll();
+  const shadowOpacity = useTransform(scrollY, [0, 50], [0, 1]);
+  const shadowValue = useMotionTemplate`0 1px 3px rgba(0,0,0,${useTransform(
+    shadowOpacity,
+    (v) => v * 0.1
+  )}), 0 1px 2px rgba(0,0,0,${useTransform(shadowOpacity, (v) => v * 0.06)})`;
+
   // 하이드레이션 문제 방지
   React.useEffect(() => {
     setMounted(true);
@@ -68,13 +77,16 @@ export function Header({ onMobileMenuClick }: HeaderProps): React.JSX.Element {
   const userInitial = user?.userName?.charAt(0) ?? "U";
 
   return (
-    <header
+    <motion.header
       className={cn(
         "fixed left-0 right-0 top-0 z-[var(--z-sticky)]",
         "flex h-[52px] items-center justify-between",
         "bg-[var(--bg-header-upgrade)] [backdrop-filter:var(--backdrop-header)]",
         "px-4"
       )}
+      style={{
+        boxShadow: shadowValue,
+      }}
     >
       {/* 하단 그라데이션 라인 */}
       <div
@@ -258,6 +270,6 @@ export function Header({ onMobileMenuClick }: HeaderProps): React.JSX.Element {
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
-    </header>
+    </motion.header>
   );
 }
