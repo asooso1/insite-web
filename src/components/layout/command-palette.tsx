@@ -3,17 +3,20 @@
 import { useCallback, useEffect, type ReactNode } from "react";
 import { useRouter } from "next/navigation";
 import {
-  Home,
-  FileText,
   Settings,
   User,
-  Building2,
-  Wrench,
-  BarChart3,
-  Search,
   LogOut,
   Moon,
   Sun,
+  HelpCircle,
+  LayoutDashboard,
+  ClipboardList,
+  Building,
+  Users,
+  BarChart3,
+  MapPin,
+  FileText,
+  ShieldCheck,
 } from "lucide-react";
 import { useTheme } from "next-themes";
 
@@ -28,30 +31,73 @@ import {
 } from "@/components/ui/command";
 import { useUIStore } from "@/lib/stores/ui-store";
 import { useAuthStore } from "@/lib/stores/auth-store";
+import { useMenuTree } from "@/lib/hooks/use-menu";
+import { mapMenuUrl } from "@/lib/utils/menu-url-mapper";
+import type { MenuDTO } from "@/lib/types/menu";
 
-interface CommandItem {
-  id: string;
-  label: string;
-  icon: React.ComponentType<{ className?: string }>;
-  shortcut?: string;
-  action: () => void;
+// ============================================================================
+// 아이콘 매핑 (sidebar.tsx와 동일 패턴)
+// ============================================================================
+
+const ICON_MAP: Record<string, React.ComponentType<{ className?: string }>> = {
+  dashboard: LayoutDashboard,
+  "work-order": ClipboardList,
+  workorder: ClipboardList,
+  facility: Building,
+  building: Building,
+  user: Users,
+  users: Users,
+  settings: Settings,
+  setting: Settings,
+  analytics: BarChart3,
+  report: BarChart3,
+  patrol: MapPin,
+  board: FileText,
+  license: ShieldCheck,
+};
+
+function getMenuIcon(
+  iconName: string
+): React.ComponentType<{ className?: string }> {
+  const key = iconName?.toLowerCase() ?? "";
+  for (const [k, v] of Object.entries(ICON_MAP)) {
+    if (key.includes(k)) return v;
+  }
+  return HelpCircle;
 }
 
-interface CommandGroup {
-  heading: string;
-  items: CommandItem[];
+// ============================================================================
+// 메뉴 항목 평탄화 (depth 무관하게 검색 가능하도록)
+// ============================================================================
+
+function flattenMenus(menus: MenuDTO[]): MenuDTO[] {
+  return menus.flatMap((m) => {
+    const visible = m.use && m.show;
+    if (!visible) return [];
+    const children = m.children?.length ? flattenMenus(m.children) : [];
+    return [m, ...children];
+  });
 }
+
+// ============================================================================
+// Command Palette
+// ============================================================================
 
 /**
  * Command Palette 컴포넌트
  * - Cmd+K (Mac) / Ctrl+K (Windows)로 열기
- * - 페이지 이동, 설정, 테마 변경 등
+ * - 백엔드 메뉴 API 기반 동적 페이지 이동
+ * - 설정, 테마 변경, 로그아웃
  */
 export function CommandPalette(): ReactNode {
   const router = useRouter();
   const { theme, setTheme } = useTheme();
   const { isCommandPaletteOpen, setCommandPaletteOpen } = useUIStore();
-  const { clearAuth } = useAuthStore();
+  const { user, clearAuth } = useAuthStore();
+
+  const buildingId = user?.currentBuildingId;
+  const { data: menuData } = useMenuTree(buildingId);
+  const flatMenus = flattenMenus(menuData ?? []);
 
   // 단축키 핸들러
   useEffect(() => {
@@ -80,105 +126,86 @@ export function CommandPalette(): ReactNode {
     router.push("/login");
   }, [clearAuth, router]);
 
-  const commandGroups: CommandGroup[] = [
-    {
-      heading: "빠른 이동",
-      items: [
-        {
-          id: "home",
-          label: "홈",
-          icon: Home,
-          action: () => router.push("/"),
-        },
-        {
-          id: "work-orders",
-          label: "작업 목록",
-          icon: Wrench,
-          action: () => router.push("/work-orders"),
-        },
-        {
-          id: "facilities",
-          label: "시설 관리",
-          icon: Building2,
-          action: () => router.push("/facilities"),
-        },
-        {
-          id: "dashboard",
-          label: "대시보드",
-          icon: BarChart3,
-          action: () => router.push("/dashboard"),
-        },
-        {
-          id: "reports",
-          label: "보고서",
-          icon: FileText,
-          action: () => router.push("/reports"),
-        },
-      ],
-    },
-    {
-      heading: "설정",
-      items: [
-        {
-          id: "profile",
-          label: "프로필",
-          icon: User,
-          action: () => router.push("/settings/profile"),
-        },
-        {
-          id: "settings",
-          label: "환경설정",
-          icon: Settings,
-          action: () => router.push("/settings"),
-        },
-        {
-          id: "theme-toggle",
-          label: theme === "dark" ? "라이트 모드로 전환" : "다크 모드로 전환",
-          icon: theme === "dark" ? Sun : Moon,
-          action: () => setTheme(theme === "dark" ? "light" : "dark"),
-        },
-      ],
-    },
-    {
-      heading: "계정",
-      items: [
-        {
-          id: "logout",
-          label: "로그아웃",
-          icon: LogOut,
-          action: handleLogout,
-        },
-      ],
-    },
-  ];
-
   return (
-    <CommandDialog open={isCommandPaletteOpen} onOpenChange={setCommandPaletteOpen}>
-      <CommandInput placeholder="명령어 또는 페이지 검색..." />
+    <CommandDialog
+      open={isCommandPaletteOpen}
+      onOpenChange={setCommandPaletteOpen}
+    >
+      <CommandInput placeholder="페이지 이동 또는 명령어 검색..." />
       <CommandList>
         <CommandEmpty>검색 결과가 없습니다.</CommandEmpty>
 
-        {commandGroups.map((group, groupIndex) => (
-          <div key={group.heading}>
-            {groupIndex > 0 && <CommandSeparator />}
-            <CommandGroup heading={group.heading}>
-              {group.items.map((item) => (
+        {/* 동적 메뉴 그룹 */}
+        {flatMenus.length > 0 && (
+          <CommandGroup heading="메뉴">
+            {flatMenus.map((item) => {
+              const Icon = getMenuIcon(item.icon);
+              const href = mapMenuUrl(item.url);
+              return (
                 <CommandItem
                   key={item.id}
-                  onSelect={() => runCommand(item.action)}
+                  value={item.name}
+                  onSelect={() => runCommand(() => router.push(href))}
                 >
-                  <item.icon className="mr-2 h-4 w-4" />
-                  <span>{item.label}</span>
-                  {item.shortcut && (
-                    <span className="ml-auto text-xs text-muted-foreground">
-                      {item.shortcut}
-                    </span>
-                  )}
+                  <Icon className="mr-2 h-4 w-4" />
+                  <span>{item.name}</span>
                 </CommandItem>
-              ))}
-            </CommandGroup>
-          </div>
-        ))}
+              );
+            })}
+          </CommandGroup>
+        )}
+
+        <CommandSeparator />
+
+        {/* 설정 그룹 */}
+        <CommandGroup heading="설정">
+          <CommandItem
+            value="프로필 마이페이지"
+            onSelect={() =>
+              runCommand(() => router.push("/settings/profile"))
+            }
+          >
+            <User className="mr-2 h-4 w-4" />
+            <span>마이페이지</span>
+          </CommandItem>
+          <CommandItem
+            value="환경설정 설정"
+            onSelect={() => runCommand(() => router.push("/settings"))}
+          >
+            <Settings className="mr-2 h-4 w-4" />
+            <span>환경설정</span>
+          </CommandItem>
+          <CommandItem
+            value="테마 다크모드 라이트모드"
+            onSelect={() =>
+              runCommand(() =>
+                setTheme(theme === "dark" ? "light" : "dark")
+              )
+            }
+          >
+            {theme === "dark" ? (
+              <Sun className="mr-2 h-4 w-4" />
+            ) : (
+              <Moon className="mr-2 h-4 w-4" />
+            )}
+            <span>
+              {theme === "dark" ? "라이트 모드로 전환" : "다크 모드로 전환"}
+            </span>
+          </CommandItem>
+        </CommandGroup>
+
+        <CommandSeparator />
+
+        {/* 계정 그룹 */}
+        <CommandGroup heading="계정">
+          <CommandItem
+            value="로그아웃"
+            onSelect={() => runCommand(handleLogout)}
+          >
+            <LogOut className="mr-2 h-4 w-4" />
+            <span>로그아웃</span>
+          </CommandItem>
+        </CommandGroup>
       </CommandList>
     </CommandDialog>
   );
