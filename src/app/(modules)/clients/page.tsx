@@ -25,6 +25,15 @@ import {
 import { DataTable } from "@/components/data-display/data-table";
 import { StatusBadge } from "@/components/data-display/status-badge";
 import { EmptyState } from "@/components/data-display/empty-state";
+import { PageHeader } from "@/components/common/page-header";
+import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 import {
   useClientList,
@@ -255,38 +264,39 @@ export default function ClientListPage() {
   return (
     <div className="flex flex-col gap-6 p-6">
       {/* 헤더 */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold">고객사 목록</h1>
-          <p className="text-muted-foreground">고객사를 관리합니다.</p>
-        </div>
-        <Button onClick={() => router.push("/clients/new")}>
-          <Plus className="mr-2 h-4 w-4" />
-          새 고객사
-        </Button>
-      </div>
+      <PageHeader
+        title="고객사 목록"
+        description="고객사를 관리합니다."
+        icon={Building2}
+        actions={
+          <Button onClick={() => router.push("/clients/new")}>
+            <Plus className="mr-2 h-4 w-4" />
+            새 고객사
+          </Button>
+        }
+      />
 
       {/* 툴바 */}
       <div className="flex items-center justify-between gap-4">
         <div />
         <div className="flex items-center gap-2">
-          <select
-            value={searchCode}
-            onChange={(e) => setSearchCode(e.target.value)}
-            className="h-9 rounded-md border bg-background px-3 text-sm"
-          >
-            {SEARCH_CODES.map((code) => (
-              <option key={code.value} value={code.value}>
-                {code.label}
-              </option>
-            ))}
-          </select>
-          <input
-            type="text"
+          <Select value={searchCode} onValueChange={setSearchCode}>
+            <SelectTrigger className="w-32">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {SEARCH_CODES.map((code) => (
+                <SelectItem key={code.value} value={code.value}>
+                  {code.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+          <Input
             placeholder="검색어 입력..."
             value={searchKeyword}
             onChange={(e) => handleSearch(e.target.value)}
-            className="h-9 w-64 rounded-md border bg-background px-3 text-sm"
+            className="w-64"
           />
           <Button
             variant="outline"

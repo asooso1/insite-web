@@ -44,8 +44,8 @@
   --color-sidebar-ring: var(--sidebar-ring);
 
   /* 폰트 */
-  --font-sans: var(--font-pretendard), system-ui, sans-serif;
-  --font-display: var(--font-rajdhani), system-ui, sans-serif;
+  --font-sans: "Pretendard", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  --font-display: "Pretendard", system-ui, sans-serif;
   --font-mono: ui-monospace, monospace;
 
   /* 반지름 */
@@ -216,6 +216,15 @@
   /* 헤더 블러 */
   --backdrop-header: saturate(180%) blur(10px);
   --bg-header-upgrade: rgba(255,255,255,0.80);
+
+  /* 다크 사이드바 고정 토큰 (테마 무관) */
+  --sidebar-dark-bg: #0F1623;
+  --sidebar-dark-hover: rgba(255,255,255,0.05);
+  --sidebar-dark-active: rgba(0,100,255,0.15);
+  --sidebar-dark-border: rgba(255,255,255,0.06);
+  --sidebar-dark-text: rgba(255,255,255,0.55);
+  --sidebar-dark-text-active: rgba(255,255,255,0.95);
+  --sidebar-dark-label: rgba(255,255,255,0.28);
 }
 
 /* ==================== Dark 테마 ==================== */
@@ -322,6 +331,15 @@
   --shadow-card-hover: 0 4px 12px rgba(0,0,0,0.35), 0 2px 4px rgba(0,0,0,0.20);
   --shadow-panel: 0 0 0 1px rgba(255,255,255,0.06), 0 1px 2px rgba(0,0,0,0.20);
   --bg-header-upgrade: rgba(15,15,20,0.80);
+
+  /* 다크 사이드바 고정 토큰 (테마 무관) */
+  --sidebar-dark-bg: #0F1623;
+  --sidebar-dark-hover: rgba(255,255,255,0.05);
+  --sidebar-dark-active: rgba(0,100,255,0.15);
+  --sidebar-dark-border: rgba(255,255,255,0.06);
+  --sidebar-dark-text: rgba(255,255,255,0.55);
+  --sidebar-dark-text-active: rgba(255,255,255,0.95);
+  --sidebar-dark-label: rgba(255,255,255,0.28);
 }
 
 /* ==================== Base 스타일 ==================== */
@@ -332,6 +350,7 @@
 
   body {
     @apply bg-background text-foreground antialiased;
+    font-family: var(--font-sans);
     font-feature-settings: "rlig" 1, "calt" 1;
   }
 

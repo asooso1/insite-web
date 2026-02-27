@@ -10,6 +10,7 @@ import {
   Edit,
   AlertCircle,
   Inbox,
+  Wrench,
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -23,6 +24,8 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { DataTable } from "@/components/data-display/data-table";
 import { StatusBadge } from "@/components/data-display/status-badge";
 import { EmptyState } from "@/components/data-display/empty-state";
+import { PageHeader } from "@/components/common/page-header";
+import { Input } from "@/components/ui/input";
 
 import {
   useFacilityList,
@@ -267,16 +270,17 @@ export default function FacilityListPage() {
   return (
     <div className="flex flex-col gap-6 p-6">
       {/* 헤더 */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold">시설 목록</h1>
-          <p className="text-muted-foreground">시설을 관리합니다.</p>
-        </div>
-        <Button onClick={() => router.push("/facilities/new")}>
-          <Plus className="mr-2 h-4 w-4" />
-          새 시설
-        </Button>
-      </div>
+      <PageHeader
+        title="시설 목록"
+        description="시설을 관리합니다."
+        icon={Wrench}
+        actions={
+          <Button onClick={() => router.push("/facilities/new")}>
+            <Plus className="mr-2 h-4 w-4" />
+            새 시설
+          </Button>
+        }
+      />
 
       {/* 상태 탭 */}
       <Tabs
@@ -300,12 +304,11 @@ export default function FacilityListPage() {
       <div className="flex items-center justify-between gap-4">
         <div />
         <div className="flex items-center gap-2">
-          <input
-            type="text"
+          <Input
             placeholder="시설명 검색..."
             value={keyword}
             onChange={(e) => handleSearch(e.target.value)}
-            className="h-9 w-64 rounded-md border bg-background px-3 text-sm"
+            className="w-64"
           />
           <Button
             variant="outline"

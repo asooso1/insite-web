@@ -5,6 +5,7 @@ import { NuqsAdapter } from "nuqs/adapters/next/app";
 import { ThemeProvider } from "./theme-provider";
 import { QueryProvider } from "./query-provider";
 import { Toaster } from "@/components/ui/sonner";
+import { AuthInitializer } from "./auth-initializer";
 
 interface ProvidersProps {
   children: React.ReactNode;
@@ -22,6 +23,7 @@ export function Providers({ children }: ProvidersProps): React.ReactNode {
     <NuqsAdapter>
       <QueryProvider>
         <ThemeProvider>
+          <AuthInitializer />
           {children}
           <Toaster position="top-right" richColors closeButton />
         </ThemeProvider>

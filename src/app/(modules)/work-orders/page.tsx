@@ -11,6 +11,7 @@ import {
   Ban,
   AlertCircle,
   Inbox,
+  ClipboardList,
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -25,6 +26,8 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { DataTable } from "@/components/data-display/data-table";
 import { StatusBadge } from "@/components/data-display/status-badge";
 import { EmptyState } from "@/components/data-display/empty-state";
+import { PageHeader } from "@/components/common/page-header";
+import { Input } from "@/components/ui/input";
 
 import {
   useWorkOrderList,
@@ -333,16 +336,17 @@ export default function WorkOrderListPage() {
   return (
     <div className="flex flex-col gap-6 p-6">
       {/* 헤더 */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold">작업 목록</h1>
-          <p className="text-muted-foreground">작업지시를 관리합니다.</p>
-        </div>
-        <Button onClick={() => router.push("/work-orders/new")}>
-          <Plus className="mr-2 h-4 w-4" />
-          새 작업
-        </Button>
-      </div>
+      <PageHeader
+        title="작업 목록"
+        description="작업지시를 관리합니다."
+        icon={ClipboardList}
+        actions={
+          <Button onClick={() => router.push("/work-orders/new")}>
+            <Plus className="mr-2 h-4 w-4" />
+            새 작업
+          </Button>
+        }
+      />
 
       {/* 상태 탭 */}
       <Tabs
@@ -390,12 +394,11 @@ export default function WorkOrderListPage() {
           )}
         </div>
         <div className="flex items-center gap-2">
-          <input
-            type="text"
+          <Input
             placeholder="작업명 검색..."
             value={keyword}
             onChange={(e) => handleSearch(e.target.value)}
-            className="h-9 w-64 rounded-md border bg-background px-3 text-sm"
+            className="w-64"
           />
           <Button
             variant="outline"

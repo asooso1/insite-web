@@ -11,6 +11,7 @@ import {
   AlertCircle,
   Inbox,
   Trash2,
+  Users,
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -24,6 +25,16 @@ import {
 import { DataTable } from "@/components/data-display/data-table";
 import { StatusBadge } from "@/components/data-display/status-badge";
 import { EmptyState } from "@/components/data-display/empty-state";
+import { PageHeader } from "@/components/common/page-header";
+import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 import {
   useUserList,
@@ -272,55 +283,57 @@ export default function UserListPage() {
   return (
     <div className="flex flex-col gap-6 p-6">
       {/* 헤더 */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold">사용자 목록</h1>
-          <p className="text-muted-foreground">사용자를 관리합니다.</p>
-        </div>
-        <Button onClick={() => router.push("/users/new")}>
-          <Plus className="mr-2 h-4 w-4" />
-          새 사용자
-        </Button>
-      </div>
+      <PageHeader
+        title="사용자 목록"
+        description="사용자를 관리합니다."
+        icon={Users}
+        actions={
+          <Button onClick={() => router.push("/users/new")}>
+            <Plus className="mr-2 h-4 w-4" />
+            새 사용자
+          </Button>
+        }
+      />
 
       {/* 상태 탭 */}
-      <div className="flex gap-2 border-b">
-        {STATE_TABS.map((tab) => (
-          <button
-            key={tab.value}
-            onClick={() => handleStateChange(tab.value)}
-            className={`px-4 py-2 text-sm font-medium border-b-2 transition-colors ${
-              accountState === tab.value
-                ? "border-primary text-primary"
-                : "border-transparent text-muted-foreground hover:text-foreground"
-            }`}
-          >
-            {tab.label}
-          </button>
-        ))}
-      </div>
+      <Tabs
+        value={accountState || "ALL"}
+        onValueChange={(v) => handleStateChange(v === "ALL" ? "" : v)}
+      >
+        <TabsList className="h-auto gap-1 bg-transparent p-0 border-b rounded-none w-full justify-start">
+          {STATE_TABS.map((tab) => (
+            <TabsTrigger
+              key={tab.value || "ALL"}
+              value={tab.value || "ALL"}
+              className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none px-4 py-2"
+            >
+              {tab.label}
+            </TabsTrigger>
+          ))}
+        </TabsList>
+      </Tabs>
 
       {/* 툴바 */}
       <div className="flex items-center justify-between gap-4">
         <div />
         <div className="flex items-center gap-2">
-          <select
-            value={searchCode}
-            onChange={(e) => setSearchCode(e.target.value)}
-            className="h-9 rounded-md border bg-background px-3 text-sm"
-          >
-            {SEARCH_CODES.map((code) => (
-              <option key={code.value} value={code.value}>
-                {code.label}
-              </option>
-            ))}
-          </select>
-          <input
-            type="text"
+          <Select value={searchCode} onValueChange={setSearchCode}>
+            <SelectTrigger className="w-28">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {SEARCH_CODES.map((code) => (
+                <SelectItem key={code.value} value={code.value}>
+                  {code.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+          <Input
             placeholder="검색어 입력..."
             value={searchKeyword}
             onChange={(e) => handleSearch(e.target.value)}
-            className="h-9 w-64 rounded-md border bg-background px-3 text-sm"
+            className="w-64"
           />
           <Button
             variant="outline"
