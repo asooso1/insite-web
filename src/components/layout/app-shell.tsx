@@ -4,6 +4,7 @@ import * as React from "react";
 import { Header } from "./header";
 import { Sidebar } from "./sidebar";
 import { MobileDrawer } from "./mobile-drawer";
+import { CommandPalette } from "./command-palette";
 import { useUIStore } from "@/lib/stores/ui-store";
 import { cn } from "@/lib/utils";
 
@@ -47,6 +48,9 @@ export function AppShell({ children }: AppShellProps): React.JSX.Element {
       <div className="hidden lg:block">
         <Sidebar />
       </div>
+
+      {/* Command Palette (전역) */}
+      <CommandPalette />
 
       {/* Main Content */}
       <main
