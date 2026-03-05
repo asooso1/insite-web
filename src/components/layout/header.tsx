@@ -24,6 +24,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import Link from "next/link";
 import { useUIStore } from "@/lib/stores/ui-store";
 import { useAuthStore } from "@/lib/stores/auth-store";
 import { useTenantStore } from "@/lib/stores/tenant-store";
@@ -271,9 +272,11 @@ export function Header({ onMobileMenuClick }: HeaderProps): React.JSX.Element {
               </div>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem className="gap-2">
-              <User className="h-4 w-4" />
-              마이페이지
+            <DropdownMenuItem className="gap-2" asChild>
+              <Link href="/mypage">
+                <User className="h-4 w-4" />
+                마이페이지
+              </Link>
             </DropdownMenuItem>
             <DropdownMenuItem className="gap-2">
               <Settings className="h-4 w-4" />
