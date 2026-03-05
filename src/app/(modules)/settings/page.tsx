@@ -16,6 +16,9 @@ import {
   ChevronDown,
   Check,
   X,
+  Layers,
+  Target,
+  Calculator,
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -29,6 +32,11 @@ import { DataTable } from "@/components/data-display/data-table";
 import { EmptyState } from "@/components/data-display/empty-state";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
+
+import { CleaningCategoryTab } from "./_components/cleaning-category-tab";
+import { CleaningTargetTab } from "./_components/cleaning-target-tab";
+import { CleaningUtilTab } from "./_components/cleaning-util-tab";
+import { CleaningCoefficientTab } from "./_components/cleaning-coefficient-tab";
 
 import {
   useConfigGroupList,
@@ -51,12 +59,16 @@ import type { ColumnDef, Row } from "@tanstack/react-table";
 // 탭 타입
 // ============================================================================
 
-type SettingTab = "config" | "category" | "master";
+type SettingTab = "config" | "category" | "master" | "cleaning-category" | "cleaning-target" | "cleaning-util" | "cleaning-coefficient";
 
 const SETTING_TABS: { value: SettingTab; label: string; icon: React.ComponentType<{ className?: string }> }[] = [
   { value: "config", label: "기본 코드", icon: Settings2 },
   { value: "category", label: "설비 분류", icon: FolderTree },
   { value: "master", label: "표준 설비", icon: Wrench },
+  { value: "cleaning-category", label: "미화 분류", icon: Layers },
+  { value: "cleaning-target", label: "미화 대상", icon: Target },
+  { value: "cleaning-util", label: "미화 도구", icon: Wrench },
+  { value: "cleaning-coefficient", label: "미화 계수", icon: Calculator },
 ];
 
 // ============================================================================
@@ -497,6 +509,10 @@ export default function SettingsPage() {
       {activeTab === "config" && <ConfigSection />}
       {activeTab === "category" && <CategorySection />}
       {activeTab === "master" && <MasterSection />}
+      {activeTab === "cleaning-category" && <CleaningCategoryTab />}
+      {activeTab === "cleaning-target" && <CleaningTargetTab />}
+      {activeTab === "cleaning-util" && <CleaningUtilTab />}
+      {activeTab === "cleaning-coefficient" && <CleaningCoefficientTab />}
     </div>
   );
 }

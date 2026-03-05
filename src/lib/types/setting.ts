@@ -247,3 +247,59 @@ export interface SearchKeywordVO {
 // ============================================================================
 
 export type FacilityMasterListResponse = PageResponse<FacilityMasterDTO>;
+
+// ============================================================================
+// 미화 분류/대상/도구 공통 (트리 구조)
+// ============================================================================
+
+/**
+ * 미화 분류/대상/도구 트리 DTO
+ */
+export interface CleaningTreeDTO {
+  id: number;
+  code: string;
+  name: string;
+  parentId?: number;
+  sortNo: number;
+  used: boolean;
+  items?: CleaningTreeDTO[];
+}
+
+/**
+ * 미화 분류/대상/도구 등록/수정 VO
+ */
+export interface CleaningTreeVO {
+  id?: number;
+  code: string;
+  name: string;
+  parentId?: number;
+  sortNo: number;
+  used: boolean;
+}
+
+// ============================================================================
+// 미화 계수
+// ============================================================================
+
+/**
+ * 미화 계수 DTO
+ */
+export interface CleaningCoefficientDTO {
+  id: number;
+  type: string;
+  typeName?: string;
+  value: number;
+  unit: string;
+  used: boolean;
+}
+
+/**
+ * 미화 계수 등록/수정 VO
+ */
+export interface CleaningCoefficientVO {
+  id?: number;
+  type: string;
+  value: number;
+  unit: string;
+  used: boolean;
+}

@@ -16,6 +16,10 @@ import type {
   FacilityMasterDTO,
   SearchFacilityMasterVO,
   FacilityMasterVO,
+  CleaningTreeDTO,
+  CleaningTreeVO,
+  CleaningCoefficientDTO,
+  CleaningCoefficientVO,
 } from "@/lib/types/setting";
 
 // ============================================================================
@@ -177,4 +181,135 @@ export async function editFacilityMaster(data: FacilityMasterVO): Promise<Facili
  */
 export async function copyFacilityMaster(id: number): Promise<FacilityMasterDTO> {
   return apiClient.post<FacilityMasterDTO>(`/api/setting/facilityCopy/${id}`);
+}
+
+// ============================================================================
+// 미화 분류
+// ============================================================================
+
+/**
+ * 미화 분류 트리 목록 조회
+ */
+export async function getCleaningCategoryList(
+  params?: SearchKeywordVO
+): Promise<CleaningTreeDTO[]> {
+  const searchParams = new URLSearchParams();
+  if (params?.searchCode) searchParams.set("searchCode", params.searchCode);
+  if (params?.searchKeyword) searchParams.set("searchKeyword", params.searchKeyword);
+
+  return apiClient.get<CleaningTreeDTO[]>(
+    `/api/setting/cleaningCategoryTreeList?${searchParams.toString()}`
+  );
+}
+
+/**
+ * 미화 분류 등록
+ */
+export async function addCleaningCategory(data: CleaningTreeVO): Promise<void> {
+  return apiClient.post<void>("/api/setting/cleaningCategoryAdd", data);
+}
+
+/**
+ * 미화 분류 수정
+ */
+export async function updateCleaningCategory(data: CleaningTreeVO): Promise<void> {
+  return apiClient.put<void>("/api/setting/cleaningCategoryEdit", data);
+}
+
+// ============================================================================
+// 미화 대상
+// ============================================================================
+
+/**
+ * 미화 대상 트리 목록 조회
+ */
+export async function getCleaningTargetList(
+  params?: SearchKeywordVO
+): Promise<CleaningTreeDTO[]> {
+  const searchParams = new URLSearchParams();
+  if (params?.searchCode) searchParams.set("searchCode", params.searchCode);
+  if (params?.searchKeyword) searchParams.set("searchKeyword", params.searchKeyword);
+
+  return apiClient.get<CleaningTreeDTO[]>(
+    `/api/setting/cleaningTargetTreeList?${searchParams.toString()}`
+  );
+}
+
+/**
+ * 미화 대상 등록
+ */
+export async function addCleaningTarget(data: CleaningTreeVO): Promise<void> {
+  return apiClient.post<void>("/api/setting/cleaningTargetAdd", data);
+}
+
+/**
+ * 미화 대상 수정
+ */
+export async function updateCleaningTarget(data: CleaningTreeVO): Promise<void> {
+  return apiClient.put<void>("/api/setting/cleaningTargetEdit", data);
+}
+
+// ============================================================================
+// 미화 도구
+// ============================================================================
+
+/**
+ * 미화 도구 트리 목록 조회
+ */
+export async function getCleaningUtilList(
+  params?: SearchKeywordVO
+): Promise<CleaningTreeDTO[]> {
+  const searchParams = new URLSearchParams();
+  if (params?.searchCode) searchParams.set("searchCode", params.searchCode);
+  if (params?.searchKeyword) searchParams.set("searchKeyword", params.searchKeyword);
+
+  return apiClient.get<CleaningTreeDTO[]>(
+    `/api/setting/cleaningUtilTreeList?${searchParams.toString()}`
+  );
+}
+
+/**
+ * 미화 도구 등록
+ */
+export async function addCleaningUtil(data: CleaningTreeVO): Promise<void> {
+  return apiClient.post<void>("/api/setting/cleaningUtilAdd", data);
+}
+
+/**
+ * 미화 도구 수정
+ */
+export async function updateCleaningUtil(data: CleaningTreeVO): Promise<void> {
+  return apiClient.put<void>("/api/setting/cleaningUtilEdit", data);
+}
+
+// ============================================================================
+// 미화 계수
+// ============================================================================
+
+/**
+ * 미화 계수 목록 조회
+ */
+export async function getCleaningCoefficientList(
+  params?: { type?: string }
+): Promise<CleaningCoefficientDTO[]> {
+  const searchParams = new URLSearchParams();
+  if (params?.type) searchParams.set("type", params.type);
+
+  return apiClient.get<CleaningCoefficientDTO[]>(
+    `/api/setting/cleaningCoefficientList?${searchParams.toString()}`
+  );
+}
+
+/**
+ * 미화 계수 등록
+ */
+export async function addCleaningCoefficient(data: CleaningCoefficientVO): Promise<void> {
+  return apiClient.post<void>("/api/setting/cleaningCoefficientAdd", data);
+}
+
+/**
+ * 미화 계수 수정
+ */
+export async function updateCleaningCoefficient(data: CleaningCoefficientVO): Promise<void> {
+  return apiClient.put<void>("/api/setting/cleaningCoefficientEdit", data);
 }

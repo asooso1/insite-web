@@ -15,6 +15,18 @@ import {
   addFacilityMaster,
   editFacilityMaster,
   copyFacilityMaster,
+  getCleaningCategoryList,
+  addCleaningCategory,
+  updateCleaningCategory,
+  getCleaningTargetList,
+  addCleaningTarget,
+  updateCleaningTarget,
+  getCleaningUtilList,
+  addCleaningUtil,
+  updateCleaningUtil,
+  getCleaningCoefficientList,
+  addCleaningCoefficient,
+  updateCleaningCoefficient,
 } from "@/lib/api/setting";
 import type {
   SearchKeywordVO,
@@ -22,6 +34,8 @@ import type {
   FacilityCategoryVO,
   SearchFacilityMasterVO,
   FacilityMasterVO,
+  CleaningTreeVO,
+  CleaningCoefficientVO,
 } from "@/lib/types/setting";
 
 // ============================================================================
@@ -160,6 +174,157 @@ export function useCopyFacilityMaster() {
     mutationFn: (id: number) => copyFacilityMaster(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: facilityMasterKeys.lists() });
+    },
+  });
+}
+
+// ============================================================================
+// 미화 분류 Hooks
+// ============================================================================
+
+export const cleaningCategoryKeys = {
+  all: ["cleaningCategories"] as const,
+  tree: () => [...cleaningCategoryKeys.all, "tree"] as const,
+  lists: () => [...cleaningCategoryKeys.all, "list"] as const,
+  list: (params?: SearchKeywordVO) => [...cleaningCategoryKeys.lists(), params] as const,
+};
+
+export function useCleaningCategoryList(params?: SearchKeywordVO) {
+  return useQuery({
+    queryKey: cleaningCategoryKeys.list(params),
+    queryFn: () => getCleaningCategoryList(params),
+  });
+}
+
+export function useAddCleaningCategory() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (data: CleaningTreeVO) => addCleaningCategory(data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: cleaningCategoryKeys.all });
+    },
+  });
+}
+
+export function useUpdateCleaningCategory() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (data: CleaningTreeVO) => updateCleaningCategory(data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: cleaningCategoryKeys.all });
+    },
+  });
+}
+
+// ============================================================================
+// 미화 대상 Hooks
+// ============================================================================
+
+export const cleaningTargetKeys = {
+  all: ["cleaningTargets"] as const,
+  tree: () => [...cleaningTargetKeys.all, "tree"] as const,
+  lists: () => [...cleaningTargetKeys.all, "list"] as const,
+  list: (params?: SearchKeywordVO) => [...cleaningTargetKeys.lists(), params] as const,
+};
+
+export function useCleaningTargetList(params?: SearchKeywordVO) {
+  return useQuery({
+    queryKey: cleaningTargetKeys.list(params),
+    queryFn: () => getCleaningTargetList(params),
+  });
+}
+
+export function useAddCleaningTarget() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (data: CleaningTreeVO) => addCleaningTarget(data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: cleaningTargetKeys.all });
+    },
+  });
+}
+
+export function useUpdateCleaningTarget() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (data: CleaningTreeVO) => updateCleaningTarget(data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: cleaningTargetKeys.all });
+    },
+  });
+}
+
+// ============================================================================
+// 미화 도구 Hooks
+// ============================================================================
+
+export const cleaningUtilKeys = {
+  all: ["cleaningUtils"] as const,
+  tree: () => [...cleaningUtilKeys.all, "tree"] as const,
+  lists: () => [...cleaningUtilKeys.all, "list"] as const,
+  list: (params?: SearchKeywordVO) => [...cleaningUtilKeys.lists(), params] as const,
+};
+
+export function useCleaningUtilList(params?: SearchKeywordVO) {
+  return useQuery({
+    queryKey: cleaningUtilKeys.list(params),
+    queryFn: () => getCleaningUtilList(params),
+  });
+}
+
+export function useAddCleaningUtil() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (data: CleaningTreeVO) => addCleaningUtil(data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: cleaningUtilKeys.all });
+    },
+  });
+}
+
+export function useUpdateCleaningUtil() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (data: CleaningTreeVO) => updateCleaningUtil(data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: cleaningUtilKeys.all });
+    },
+  });
+}
+
+// ============================================================================
+// 미화 계수 Hooks
+// ============================================================================
+
+export const cleaningCoefficientKeys = {
+  all: ["cleaningCoefficients"] as const,
+  lists: () => [...cleaningCoefficientKeys.all, "list"] as const,
+  list: (params?: { type?: string }) => [...cleaningCoefficientKeys.lists(), params] as const,
+};
+
+export function useCleaningCoefficientList(params?: { type?: string }) {
+  return useQuery({
+    queryKey: cleaningCoefficientKeys.list(params),
+    queryFn: () => getCleaningCoefficientList(params),
+  });
+}
+
+export function useAddCleaningCoefficient() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (data: CleaningCoefficientVO) => addCleaningCoefficient(data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: cleaningCoefficientKeys.all });
+    },
+  });
+}
+
+export function useUpdateCleaningCoefficient() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (data: CleaningCoefficientVO) => updateCleaningCoefficient(data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: cleaningCoefficientKeys.all });
     },
   });
 }
