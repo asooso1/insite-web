@@ -1,17 +1,12 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import "@fontsource/pretendard/900.css";
+import "@fontsource/pretendard/800.css";
+import "@fontsource/pretendard/700.css";
+import "@fontsource/pretendard/600.css";
+import "@fontsource/pretendard/500.css";
+import "@fontsource/pretendard/400.css";
 import { Providers } from "@/components/providers";
-
-const geistSans = Geist({
-  variable: "--font-pretendard",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-rajdhani",
-  subsets: ["latin"],
-});
 
 export const metadata: Metadata = {
   title: "insite-web",
@@ -25,7 +20,7 @@ export default function RootLayout({
 }>): React.JSX.Element {
   return (
     <html lang="ko" suppressHydrationWarning>
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>
+      <body>
         <Providers>{children}</Providers>
       </body>
     </html>

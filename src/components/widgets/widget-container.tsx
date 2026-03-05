@@ -61,7 +61,7 @@ const containerVariants = cva(
     variants: {
       variant: {
         default: "bg-card",
-        elevated: "bg-card shadow-md",
+        elevated: "bg-card shadow-2",
         bordered: "bg-card border-2",
         transparent: "bg-transparent",
       },
@@ -69,7 +69,7 @@ const containerVariants = cva(
         idle: "",
         loading: "pointer-events-none",
         error: "border-destructive/50",
-        dragging: "shadow-lg ring-2 ring-primary/20",
+        dragging: "shadow-4 ring-2 ring-primary/20",
       },
     },
     defaultVariants: {

@@ -20,7 +20,7 @@ import {
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
-import { Search, X } from "lucide-react";
+import { Search, X, ChevronDown } from "lucide-react";
 
 // ============================================================================
 // Types
@@ -63,6 +63,8 @@ export interface SearchFilterBarProps {
   actions?: ReactNode;
   /** 클래스명 */
   className?: string;
+  /** 필터 토글 버튼 표시 여부 (기본: false — 필터 항상 표시) */
+  showFilterToggle?: boolean;
 }
 
 export interface FilterValues {
@@ -418,7 +420,9 @@ export function SearchFilterBar({
   onReset,
   actions,
   className,
+  showFilterToggle = false,
 }: SearchFilterBarProps): ReactNode {
+  const [filterOpen, setFilterOpen] = useState(false);
   const {
     searchValue,
     filterValues,
@@ -514,31 +518,75 @@ export function SearchFilterBar({
           )}
         </div>
 
-        {/* 단일 선택 필터 */}
-        {singleFilters.map((filter) => (
-          <SingleFilter
-            key={filter.key}
-            config={filter}
-            value={(filterValues[filter.key] as string | null) ?? null}
-            onChange={(value) => handleFilterChange(filter.key, value)}
-          />
-        ))}
+        {/* 필터 토글 버튼 (showFilterToggle=true 일 때) */}
+        {showFilterToggle && filters.length > 0 && (
+          <Button
+            variant="outline"
+            size="sm"
+            className="h-9 gap-1"
+            onClick={() => setFilterOpen((prev) => !prev)}
+          >
+            필터
+            <ChevronDown
+              className={cn(
+                "h-4 w-4 transition-transform duration-200",
+                filterOpen && "rotate-180"
+              )}
+            />
+          </Button>
+        )}
 
-        {/* 다중 선택 필터 */}
-        {multiFilters.map((filter) => (
-          <MultiFilter
-            key={filter.key}
-            config={filter}
-            values={(filterValues[filter.key] as string[]) ?? []}
-            onChange={(values) =>
-              handleFilterChange(filter.key, values.length > 0 ? values : null)
-            }
-          />
-        ))}
+        {/* 필터 항상 표시 (showFilterToggle=false 일 때) */}
+        {!showFilterToggle && (
+          <>
+            {singleFilters.map((filter) => (
+              <SingleFilter
+                key={filter.key}
+                config={filter}
+                value={(filterValues[filter.key] as string | null) ?? null}
+                onChange={(value) => handleFilterChange(filter.key, value)}
+              />
+            ))}
+            {multiFilters.map((filter) => (
+              <MultiFilter
+                key={filter.key}
+                config={filter}
+                values={(filterValues[filter.key] as string[]) ?? []}
+                onChange={(values) =>
+                  handleFilterChange(filter.key, values.length > 0 ? values : null)
+                }
+              />
+            ))}
+          </>
+        )}
 
         {/* 추가 액션 */}
         {actions}
       </div>
+
+      {/* 토글 필터 패널 */}
+      {showFilterToggle && filterOpen && filters.length > 0 && (
+        <div className="flex flex-wrap gap-2 border border-border/60 rounded-lg p-3 mt-2 transition-all duration-200">
+          {singleFilters.map((filter) => (
+            <SingleFilter
+              key={filter.key}
+              config={filter}
+              value={(filterValues[filter.key] as string | null) ?? null}
+              onChange={(value) => handleFilterChange(filter.key, value)}
+            />
+          ))}
+          {multiFilters.map((filter) => (
+            <MultiFilter
+              key={filter.key}
+              config={filter}
+              values={(filterValues[filter.key] as string[]) ?? []}
+              onChange={(values) =>
+                handleFilterChange(filter.key, values.length > 0 ? values : null)
+              }
+            />
+          ))}
+        </div>
+      )}
 
       {/* 활성 필터 표시 */}
       <ActiveFiltersDisplay

@@ -40,8 +40,8 @@ export function EmptyState({
         className
       )}
     >
-      <div className="mb-4 rounded-full bg-muted p-4">
-        <Icon className="h-8 w-8 text-muted-foreground" />
+      <div className="mb-4 rounded-2xl bg-[image:var(--gradient-brand-soft)] p-5 shadow-[var(--shadow-card)]">
+        <Icon className="h-10 w-10 text-primary" />
       </div>
       <h3 className="mb-1 text-lg font-semibold text-foreground">{title}</h3>
       {description && (

@@ -10,6 +10,7 @@ import {
   Edit,
   AlertCircle,
   Inbox,
+  Wrench,
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -19,9 +20,12 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { DataTable } from "@/components/data-display/data-table";
 import { StatusBadge } from "@/components/data-display/status-badge";
 import { EmptyState } from "@/components/data-display/empty-state";
+import { PageHeader } from "@/components/common/page-header";
+import { Input } from "@/components/ui/input";
 
 import {
   useFacilityList,
@@ -266,44 +270,45 @@ export default function FacilityListPage() {
   return (
     <div className="flex flex-col gap-6 p-6">
       {/* 헤더 */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold">시설 목록</h1>
-          <p className="text-muted-foreground">시설을 관리합니다.</p>
-        </div>
-        <Button onClick={() => router.push("/facilities/new")}>
-          <Plus className="mr-2 h-4 w-4" />
-          새 시설
-        </Button>
-      </div>
+      <PageHeader
+        title="시설 목록"
+        description="시설을 관리합니다."
+        icon={Wrench}
+        actions={
+          <Button onClick={() => router.push("/facilities/new")}>
+            <Plus className="mr-2 h-4 w-4" />
+            새 시설
+          </Button>
+        }
+      />
 
       {/* 상태 탭 */}
-      <div className="flex gap-2 border-b">
-        {STATE_TABS.map((tab) => (
-          <button
-            key={tab.value}
-            onClick={() => handleStateChange(tab.value)}
-            className={`px-4 py-2 text-sm font-medium border-b-2 transition-colors ${
-              state === tab.value
-                ? "border-primary text-primary"
-                : "border-transparent text-muted-foreground hover:text-foreground"
-            }`}
-          >
-            {tab.label}
-          </button>
-        ))}
-      </div>
+      <Tabs
+        value={state || "ALL"}
+        onValueChange={(v) => handleStateChange(v === "ALL" ? "" : v)}
+      >
+        <TabsList className="h-auto gap-1 bg-transparent p-0 border-b rounded-none w-full justify-start">
+          {STATE_TABS.map((tab) => (
+            <TabsTrigger
+              key={tab.value || "ALL"}
+              value={tab.value || "ALL"}
+              className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none px-4 py-2"
+            >
+              {tab.label}
+            </TabsTrigger>
+          ))}
+        </TabsList>
+      </Tabs>
 
       {/* 툴바 */}
       <div className="flex items-center justify-between gap-4">
         <div />
         <div className="flex items-center gap-2">
-          <input
-            type="text"
+          <Input
             placeholder="시설명 검색..."
             value={keyword}
             onChange={(e) => handleSearch(e.target.value)}
-            className="h-9 w-64 rounded-md border bg-background px-3 text-sm"
+            className="w-64"
           />
           <Button
             variant="outline"
