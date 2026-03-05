@@ -27,6 +27,7 @@ import {
 import { useUIStore } from "@/lib/stores/ui-store";
 import { useAuthStore } from "@/lib/stores/auth-store";
 import { useTenantStore } from "@/lib/stores/tenant-store";
+import { useUserBuildings } from "@/lib/hooks/use-buildings";
 import { cn } from "@/lib/utils";
 
 interface HeaderProps {
@@ -43,8 +44,9 @@ interface HeaderProps {
 export function Header({ onMobileMenuClick }: HeaderProps): React.JSX.Element {
   const { toggleSidebar, setCommandPaletteOpen } = useUIStore();
   const { user, clearAuth } = useAuthStore();
-  const { currentBuilding, currentCompany } = useTenantStore();
+  const { currentBuilding, currentCompany, setContext } = useTenantStore();
   const { theme, setTheme } = useTheme();
+  const { buildings } = useUserBuildings(user?.userId);
   const [mounted, setMounted] = React.useState(false);
 
   // 스크롤 기반 애니메이션
@@ -154,12 +156,30 @@ export function Header({ onMobileMenuClick }: HeaderProps): React.JSX.Element {
               </span>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem
-              className="text-xs text-muted-foreground"
-              disabled
-            >
-              빌딩 전환 기능 준비 중
-            </DropdownMenuItem>
+            {buildings.length > 0 ? (
+              buildings.map((b) => (
+                <DropdownMenuItem
+                  key={b.buildingId}
+                  className={cn(
+                    "gap-2 text-sm",
+                    currentBuilding?.id === String(b.buildingId) && "bg-accent font-medium"
+                  )}
+                  onClick={() =>
+                    setContext(
+                      { id: currentCompany?.id ?? "", name: currentCompany?.name ?? "" },
+                      { id: String(b.buildingId), name: b.buildingName }
+                    )
+                  }
+                >
+                  <Building2 className="h-3.5 w-3.5 text-muted-foreground" />
+                  {b.buildingName}
+                </DropdownMenuItem>
+              ))
+            ) : (
+              <DropdownMenuItem className="text-xs text-muted-foreground" disabled>
+                배정된 빌딩이 없습니다
+              </DropdownMenuItem>
+            )}
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
