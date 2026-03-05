@@ -7,6 +7,9 @@ import {
   useEffect,
   useState,
 } from "react";
+import { motion } from "framer-motion";
+import { tableRowContainerVariants, tableRowVariants } from "@/lib/animations";
+import { useMotionPreference } from "@/lib/hooks/use-motion-preference";
 import {
   flexRender,
   getCoreRowModel,
@@ -308,6 +311,9 @@ function VirtualTableBody<TData>({
 // Regular Table Body
 // ============================================================================
 
+const MotionTableBody = motion(TableBody);
+const MotionTableRow = motion(TableRow);
+
 function RegularTableBody<TData>({
   table,
   variant,
@@ -318,6 +324,7 @@ function RegularTableBody<TData>({
   onRowClick?: (row: TData) => void;
 }): ReactNode {
   const styles = variantStyles[variant];
+  const prefersReducedMotion = useMotionPreference();
 
   return (
     <Table>
@@ -349,13 +356,18 @@ function RegularTableBody<TData>({
           </TableRow>
         ))}
       </TableHeader>
-      <TableBody>
+      <MotionTableBody
+        variants={prefersReducedMotion ? undefined : tableRowContainerVariants}
+        initial={prefersReducedMotion ? undefined : "initial"}
+        animate={prefersReducedMotion ? undefined : "animate"}
+      >
         {table.getRowModel().rows.map((row, index) => {
           const isEven = index % 2 === 0;
 
           return (
-            <TableRow
+            <MotionTableRow
               key={row.id}
+              variants={prefersReducedMotion ? undefined : tableRowVariants}
               data-state={row.getIsSelected() ? "selected" : undefined}
               onClick={onRowClick ? () => onRowClick(row.original) : undefined}
               className={cn(
@@ -369,10 +381,10 @@ function RegularTableBody<TData>({
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
                 </TableCell>
               ))}
-            </TableRow>
+            </MotionTableRow>
           );
         })}
-      </TableBody>
+      </MotionTableBody>
     </Table>
   );
 }
