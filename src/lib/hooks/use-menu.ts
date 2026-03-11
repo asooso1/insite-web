@@ -2,8 +2,23 @@
  * 메뉴(Menu) React Query 훅
  */
 
-import { useQuery } from "@tanstack/react-query";
-import { getMenuTree } from "@/lib/api/menu";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import {
+  getMenuTree,
+  getAllMenus,
+  getMenuPageInfo,
+  evictMenuCache,
+  getMenuMappings,
+  saveMenuMapping,
+  deleteMenuMapping,
+} from "@/lib/api/menu";
+import { enrichMenuWithStatus } from "@/lib/utils/menu-status-mapper";
+import type {
+  MenuDTO,
+  MenuWithStatus,
+  PageInfoDTO,
+  MenuUrlMappingStore,
+} from "@/lib/types/menu";
 
 // ============================================================================
 // Query Keys
@@ -11,8 +26,12 @@ import { getMenuTree } from "@/lib/api/menu";
 
 export const menuKeys = {
   all: ["menus"] as const,
-  trees: () => [...menuKeys.all, "tree"] as const,
-  tree: (buildingId: string) => [...menuKeys.trees(), buildingId] as const,
+  list: () => [...menuKeys.all, "list"] as const,
+  allMenus: () => [...menuKeys.all, "all"] as const,
+  byBuilding: (buildingId: string) =>
+    [...menuKeys.all, "building", buildingId] as const,
+  pageInfo: (pageInfoId: number) => ["pageInfo", pageInfoId] as const,
+  mappings: () => [...menuKeys.all, "mappings"] as const,
 };
 
 // ============================================================================
@@ -21,13 +40,160 @@ export const menuKeys = {
 
 /**
  * 빌딩별 메뉴 트리 조회 훅
+ * staleTime: 5분
  */
 export function useMenuTree(buildingId: string | undefined) {
   return useQuery({
-    queryKey: menuKeys.tree(buildingId ?? ""),
+    queryKey: menuKeys.byBuilding(buildingId ?? ""),
     queryFn: () => getMenuTree(buildingId!),
     enabled: !!buildingId,
-    // 메뉴는 자주 변경되지 않으므로 5분 캐시
     staleTime: 5 * 60 * 1000,
+  });
+}
+
+/**
+ * 전체 메뉴 목록 조회 훅 (관리자용)
+ * staleTime: 5분
+ */
+export function useAllMenus() {
+  return useQuery({
+    queryKey: menuKeys.allMenus(),
+    queryFn: getAllMenus,
+    staleTime: 5 * 60 * 1000,
+  });
+}
+
+/**
+ * 페이지 정보 조회 훅
+ * staleTime: 5분
+ * enabled: pageInfoId > 0일 때만 실행
+ */
+export function useMenuPageInfo(pageInfoId: number) {
+  return useQuery({
+    queryKey: menuKeys.pageInfo(pageInfoId),
+    queryFn: () => getMenuPageInfo(pageInfoId),
+    enabled: pageInfoId > 0,
+    staleTime: 5 * 60 * 1000,
+  });
+}
+
+/**
+ * 메뉴 URL 매핑 조회 훅
+ * staleTime: Infinity (거의 변경 없음)
+ */
+export function useMenuMappings() {
+  return useQuery({
+    queryKey: menuKeys.mappings(),
+    queryFn: getMenuMappings,
+    staleTime: Infinity,
+  });
+}
+
+/**
+ * 메뉴 + 연결 상태 조회 훅
+ * useAllMenus + useMenuMappings 조합
+ * 메뉴를 상태 정보와 함께 반환
+ */
+export function useMenuWithStatus() {
+  const menusQuery = useAllMenus();
+  const mappingsQuery = useMenuMappings();
+
+  // 로딩 또는 에러 상태 전파
+  if (menusQuery.isLoading || mappingsQuery.isLoading) {
+    return {
+      menus: [],
+      isLoading: true,
+      isError: false,
+      error: null,
+    };
+  }
+
+  if (menusQuery.isError) {
+    return {
+      menus: [],
+      isLoading: false,
+      isError: true,
+      error: menusQuery.error,
+    };
+  }
+
+  if (mappingsQuery.isError) {
+    return {
+      menus: [],
+      isLoading: false,
+      isError: true,
+      error: mappingsQuery.error,
+    };
+  }
+
+  const menus = menusQuery.data || [];
+  const mappingStore = mappingsQuery.data || { mappings: [], lastUpdated: "" };
+
+  const enrichedMenus = enrichMenuWithStatus(menus, mappingStore.mappings);
+
+  return {
+    menus: enrichedMenus,
+    isLoading: false,
+    isError: false,
+    error: null,
+  };
+}
+
+// ============================================================================
+// Mutation Hooks
+// ============================================================================
+
+/**
+ * 메뉴 캐시 초기화 훅
+ * 성공 시 menuKeys.list() 무효화
+ */
+export function useEvictMenuCache() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: evictMenuCache,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: menuKeys.allMenus() });
+    },
+  });
+}
+
+/**
+ * 메뉴 URL 매핑 저장 훅
+ * 성공 시 menuKeys.mappings() 무효화
+ */
+export function useSaveMenuMapping() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({
+      menuId,
+      menuName,
+      cspWasUrl,
+      insiteWebUrl,
+    }: {
+      menuId: number;
+      menuName: string;
+      cspWasUrl: string;
+      insiteWebUrl: string;
+    }) => saveMenuMapping(menuId, menuName, cspWasUrl, insiteWebUrl),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: menuKeys.mappings() });
+    },
+  });
+}
+
+/**
+ * 메뉴 URL 매핑 삭제 훅
+ * 성공 시 menuKeys.mappings() 무효화
+ */
+export function useDeleteMenuMapping() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (menuId: number) => deleteMenuMapping(menuId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: menuKeys.mappings() });
+    },
   });
 }

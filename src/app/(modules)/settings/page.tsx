@@ -19,6 +19,7 @@ import {
   Layers,
   Target,
   Calculator,
+  Menu,
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -474,6 +475,7 @@ function MasterSection() {
 // ============================================================================
 
 export default function SettingsPage() {
+  const router = useRouter();
   const [activeTab, setActiveTab] = useState<SettingTab>("config");
 
   return (
@@ -513,6 +515,25 @@ export default function SettingsPage() {
       {activeTab === "cleaning-target" && <CleaningTargetTab />}
       {activeTab === "cleaning-util" && <CleaningUtilTab />}
       {activeTab === "cleaning-coefficient" && <CleaningCoefficientTab />}
+
+      {/* 메뉴 관리 바로가기 */}
+      <div className="mt-2 border-t pt-4">
+        <button
+          onClick={() => router.push("/settings/menu-management")}
+          className="flex w-full items-center justify-between rounded-lg border bg-card px-4 py-3 text-left transition-colors hover:bg-accent"
+        >
+          <div className="flex items-center gap-3">
+            <Menu className="h-5 w-5 text-muted-foreground" />
+            <div>
+              <p className="text-sm font-medium">메뉴 관리</p>
+              <p className="text-xs text-muted-foreground">
+                csp-was 메뉴 트리와 insite-web 페이지 연결을 관리합니다.
+              </p>
+            </div>
+          </div>
+          <ChevronRight className="h-4 w-4 text-muted-foreground" />
+        </button>
+      </div>
     </div>
   );
 }
