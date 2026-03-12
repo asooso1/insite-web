@@ -50,9 +50,16 @@ export async function evictMenuCache(): Promise<void> {
 /**
  * 로컬 URL 매핑 조회
  * 수동으로 저장된 메뉴 매핑 정보 로드
+ * (Route Handler가 data를 직접 반환하므로 raw fetch 사용)
  */
 export async function getMenuMappings(): Promise<MenuUrlMappingStore> {
-  return apiClient.get<MenuUrlMappingStore>("/api/settings/menu-mapping");
+  const res = await fetch("/api/settings/menu-mapping", {
+    credentials: "include",
+  });
+  if (!res.ok) {
+    throw new Error("메뉴 매핑 조회에 실패했습니다.");
+  }
+  return res.json() as Promise<MenuUrlMappingStore>;
 }
 
 /**
@@ -65,17 +72,26 @@ export async function saveMenuMapping(
   cspWasUrl: string,
   insiteWebUrl: string
 ): Promise<void> {
-  await apiClient.post("/api/settings/menu-mapping", {
-    menuId,
-    menuName,
-    cspWasUrl,
-    insiteWebUrl,
+  const res = await fetch("/api/settings/menu-mapping", {
+    method: "POST",
+    credentials: "include",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ menuId, menuName, cspWasUrl, insiteWebUrl }),
   });
+  if (!res.ok) {
+    throw new Error("메뉴 매핑 저장에 실패했습니다.");
+  }
 }
 
 /**
  * 메뉴 URL 매핑 삭제
  */
 export async function deleteMenuMapping(menuId: number): Promise<void> {
-  await apiClient.delete(`/api/settings/menu-mapping/${menuId}`);
+  const res = await fetch(`/api/settings/menu-mapping/${menuId}`, {
+    method: "DELETE",
+    credentials: "include",
+  });
+  if (!res.ok) {
+    throw new Error("메뉴 매핑 삭제에 실패했습니다.");
+  }
 }
