@@ -1,7 +1,8 @@
 "use client";
 
 import * as React from "react";
-import { motion, useScroll, useTransform, useMotionTemplate } from "framer-motion";
+import { usePathname, useRouter } from "next/navigation";
+import { motion } from "framer-motion";
 import { useTheme } from "next-themes";
 import {
   Menu,
@@ -14,8 +15,8 @@ import {
   Settings,
   Building2,
   ChevronDown,
+  Check,
 } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -24,6 +25,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { useUIStore } from "@/lib/stores/ui-store";
 import { useAuthStore } from "@/lib/stores/auth-store";
@@ -31,200 +33,378 @@ import { useTenantStore } from "@/lib/stores/tenant-store";
 import { useUserBuildings } from "@/lib/hooks/use-buildings";
 import { cn } from "@/lib/utils";
 
+// ============================================================================
+// 타입 / 상수
+// ============================================================================
+
 interface HeaderProps {
-  /** 모바일에서 햄버거 클릭 시 콜백 (MobileDrawer 열기용) */
   onMobileMenuClick?: () => void;
 }
 
+interface GnbSection {
+  id: string;
+  label: string;
+  href: string;
+  prefixes: string[];
+  disabled?: boolean;
+}
+
+const GNB_SECTIONS: readonly GnbSection[] = [
+  { id: "dashboard", label: "대시보드", href: "/dashboard", prefixes: ["/dashboard"] },
+  {
+    id: "fms",
+    label: "FMS",
+    href: "/work-orders",
+    prefixes: [
+      "/work-orders", "/facilities", "/patrols", "/fieldwork", "/analysis",
+      "/reports", "/boards", "/materials", "/licenses", "/mypage", "/users", "/clients",
+    ],
+  },
+  { id: "bems", label: "BEMS", href: "/bems", prefixes: ["/bems"], disabled: true },
+  { id: "becm", label: "BECM", href: "/becm", prefixes: ["/becm"], disabled: true },
+  { id: "settings", label: "설정", href: "/settings", prefixes: ["/settings"] },
+] as const;
+
+// ============================================================================
+// 서브 컴포넌트: 빌딩 셀렉터
+// ============================================================================
+
+function BuildingSelector(): React.JSX.Element {
+  const { user } = useAuthStore();
+  const { currentBuilding, currentCompany, setContext } = useTenantStore();
+  const { buildings } = useUserBuildings(user?.userId);
+
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <button
+          className={cn(
+            "flex h-9 items-center gap-2 rounded-lg px-2.5",
+            "transition-colors duration-150 hover:bg-accent",
+            "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          )}
+          aria-label="빌딩 전환"
+        >
+          <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-md bg-primary/10">
+            <Building2 className="h-3.5 w-3.5 text-primary" />
+          </div>
+          <div className="hidden flex-col items-start sm:flex">
+            <span className="text-[10px] leading-none text-muted-foreground">
+              {currentCompany?.name ?? "회사"}
+            </span>
+            <span className="mt-[3px] text-[13px] font-semibold leading-none text-foreground">
+              {currentBuilding?.name ?? "빌딩 선택"}
+            </span>
+          </div>
+          <ChevronDown className="hidden h-3 w-3 text-muted-foreground/60 sm:block" />
+        </button>
+      </DropdownMenuTrigger>
+
+      <DropdownMenuContent align="start" className="w-64">
+        <DropdownMenuLabel className="pb-1 text-[11px] font-medium uppercase tracking-wider text-muted-foreground">
+          빌딩 전환
+        </DropdownMenuLabel>
+
+        {buildings.length > 0 ? (
+          buildings.map((b) => {
+            const isActive = currentBuilding?.id === String(b.buildingId);
+            return (
+              <DropdownMenuItem
+                key={b.buildingId}
+                className="gap-2.5"
+                onClick={() =>
+                  setContext(
+                    { id: currentCompany?.id ?? "", name: currentCompany?.name ?? "" },
+                    { id: String(b.buildingId), name: b.buildingName }
+                  )
+                }
+              >
+                <div
+                  className={cn(
+                    "flex h-6 w-6 shrink-0 items-center justify-center rounded-md",
+                    isActive ? "bg-primary/15" : "bg-muted"
+                  )}
+                >
+                  <Building2
+                    className={cn(
+                      "h-3.5 w-3.5",
+                      isActive ? "text-primary" : "text-muted-foreground"
+                    )}
+                  />
+                </div>
+                <span className={cn("flex-1 text-[13px]", isActive && "font-semibold")}>
+                  {b.buildingName}
+                </span>
+                {isActive && <Check className="h-3.5 w-3.5 text-primary" />}
+              </DropdownMenuItem>
+            );
+          })
+        ) : (
+          <DropdownMenuItem disabled className="text-xs text-muted-foreground">
+            배정된 빌딩이 없습니다
+          </DropdownMenuItem>
+        )}
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+}
+
+// ============================================================================
+// 서브 컴포넌트: GNB 탭 (슬라이딩 pill)
+// ============================================================================
+
+function GnbTabs({ activeSection }: { activeSection: string }): React.JSX.Element {
+  // framer-motion layoutId는 SSR에서 렌더링 시 hydration 불일치 유발 → 마운트 후에만 표시
+  const [mounted, setMounted] = React.useState(false);
+  React.useEffect(() => { setMounted(true); }, []);
+
+  return (
+    <nav
+      aria-label="주요 메뉴"
+      className="hidden flex-1 items-center justify-center md:flex"
+    >
+      {/* pill 컨테이너 */}
+      <div className="flex items-center gap-0.5 rounded-xl bg-black/[0.04] p-0.5 dark:bg-white/[0.06]">
+        {GNB_SECTIONS.map((section) => {
+          const isActive = activeSection === section.id;
+
+          if (section.disabled) {
+            return (
+              <span
+                key={section.id}
+                className="cursor-not-allowed select-none rounded-lg px-3.5 py-1.5 text-[13px] font-medium opacity-30"
+              >
+                {section.label}
+              </span>
+            );
+          }
+
+          return (
+            <Link
+              key={section.id}
+              href={section.href}
+              className={cn(
+                "relative rounded-lg px-3.5 py-1.5 text-[13px] font-medium",
+                "transition-colors duration-150",
+                "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+                isActive ? "text-foreground" : "text-muted-foreground hover:text-foreground/80"
+              )}
+              aria-current={isActive ? "page" : undefined}
+            >
+              {isActive && mounted && (
+                <motion.div
+                  layoutId="gnb-active-pill"
+                  className="absolute inset-0 rounded-lg bg-background shadow-[var(--shadow-card)] dark:bg-[var(--panel-20)]"
+                  initial={false}
+                  transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                />
+              )}
+              <span className="relative">{section.label}</span>
+            </Link>
+          );
+        })}
+      </div>
+    </nav>
+  );
+}
+
+// ============================================================================
+// 서브 컴포넌트: 사용자 드롭다운
+// ============================================================================
+
+function UserDropdown({
+  user,
+  onLogout,
+}: {
+  user: { userName?: string; accountName?: string } | null;
+  onLogout: () => void;
+}): React.JSX.Element {
+  const initial = user?.userName?.charAt(0) ?? "U";
+
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <button
+          className={cn(
+            "flex h-[30px] w-[30px] items-center justify-center rounded-full",
+            "bg-gradient-to-br from-[#0064FF] to-[#4B90FF]",
+            "ring-2 ring-background transition-opacity duration-150 hover:opacity-90",
+            "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1"
+          )}
+          aria-label="사용자 메뉴"
+        >
+          <span className="text-[11px] font-bold text-white">{initial}</span>
+        </button>
+      </DropdownMenuTrigger>
+
+      <DropdownMenuContent align="end" className="w-56">
+        <DropdownMenuLabel className="py-2">
+          <div className="flex items-center gap-2.5">
+            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-[#0064FF] to-[#4B90FF]">
+              <span className="text-[12px] font-bold text-white">{initial}</span>
+            </div>
+            <div className="flex flex-col gap-[2px]">
+              <span className="text-[13px] font-semibold leading-none">
+                {user?.userName ?? "사용자"}
+              </span>
+              <span className="text-[11px] leading-none text-muted-foreground">
+                {user?.accountName ?? ""}
+              </span>
+            </div>
+          </div>
+        </DropdownMenuLabel>
+
+        <DropdownMenuSeparator />
+
+        <DropdownMenuItem className="gap-2.5 text-[13px]" asChild>
+          <Link href="/mypage">
+            <User className="h-3.5 w-3.5 text-muted-foreground" />
+            마이페이지
+          </Link>
+        </DropdownMenuItem>
+        <DropdownMenuItem className="gap-2.5 text-[13px]" asChild>
+          <Link href="/settings">
+            <Settings className="h-3.5 w-3.5 text-muted-foreground" />
+            설정
+          </Link>
+        </DropdownMenuItem>
+
+        <DropdownMenuSeparator />
+
+        <DropdownMenuItem
+          className="gap-2.5 text-[13px] text-destructive focus:bg-destructive/10 focus:text-destructive"
+          onClick={onLogout}
+        >
+          <LogOut className="h-3.5 w-3.5" />
+          로그아웃
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+}
+
+// ============================================================================
+// 헤더 메인
+// ============================================================================
+
 /**
- * 프리미엄 글래스모피즘 헤더
- * - 52px 고정 높이
- * - 배경 블러 + 그라데이션 하단 라인
- * - 빌딩 컨텍스트, 글래스 검색바, 알림, 테마, 아바타 드롭다운
+ * 글로벌 네비게이션 바 (GNB)
+ * - 56px 고정 높이, 글래스모피즘 배경
+ * - 좌: 사이드바 토글 + 빌딩 셀렉터
+ * - 중: 슬라이딩 pill GNB 탭 (framer-motion layoutId)
+ * - 우: 검색(⌘K), 알림, 테마, 사용자
  */
 export function Header({ onMobileMenuClick }: HeaderProps): React.JSX.Element {
+  const pathname = usePathname();
+  const router = useRouter();
   const { toggleSidebar, setCommandPaletteOpen } = useUIStore();
   const { user, clearAuth } = useAuthStore();
-  const { currentBuilding, currentCompany, setContext } = useTenantStore();
   const { theme, setTheme } = useTheme();
-  const { buildings } = useUserBuildings(user?.userId);
   const [mounted, setMounted] = React.useState(false);
 
-  // 스크롤 기반 애니메이션
-  const { scrollY } = useScroll();
-  const shadowOpacity = useTransform(scrollY, [0, 50], [0, 1]);
-  const shadowValue = useMotionTemplate`0 1px 3px rgba(0,0,0,${useTransform(
-    shadowOpacity,
-    (v) => v * 0.1
-  )}), 0 1px 2px rgba(0,0,0,${useTransform(shadowOpacity, (v) => v * 0.06)})`;
+  React.useEffect(() => { setMounted(true); }, []);
 
-  // 하이드레이션 문제 방지
+  // ⌘K 단축키
   React.useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  // CMD+K / CTRL+K 단축키
-  React.useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent): void => {
+    const onKey = (e: KeyboardEvent): void => {
       if ((e.metaKey || e.ctrlKey) && e.key === "k") {
         e.preventDefault();
         setCommandPaletteOpen(true);
       }
     };
-
-    document.addEventListener("keydown", handleKeyDown);
-    return () => document.removeEventListener("keydown", handleKeyDown);
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
   }, [setCommandPaletteOpen]);
 
-  /** 사용자 이니셜 (첫 글자) */
-  const userInitial = user?.userName?.charAt(0) ?? "U";
+  const handleLogout = async (): Promise<void> => {
+    await fetch("/api/auth/logout", { method: "POST" });
+    clearAuth();
+    router.push("/login");
+  };
+
+  const activeSection =
+    GNB_SECTIONS.find((s) => s.prefixes.some((p) => pathname.startsWith(p)))?.id ??
+    "dashboard";
 
   return (
-    <motion.header
+    <header
       className={cn(
         "fixed left-0 right-0 top-0 z-[var(--z-sticky)]",
-        "flex h-[52px] items-center justify-between",
-        "bg-[var(--bg-header-upgrade)] [backdrop-filter:var(--backdrop-header)]",
-        "px-4"
+        "flex h-14 items-center justify-between gap-2 px-3",
+        "border-b border-border/60",
+        "bg-[var(--bg-header-upgrade)] [backdrop-filter:var(--backdrop-header)]"
       )}
-      style={{
-        boxShadow: shadowValue,
-      }}
     >
-      {/* 하단 그라데이션 라인 */}
-      <div
-        className="pointer-events-none absolute inset-x-0 bottom-0 h-px"
-        style={{
-          background:
-            "linear-gradient(90deg, transparent 0%, var(--border) 20%, var(--border) 80%, transparent 100%)",
-        }}
-      />
-
-      {/* 좌측: 메뉴 토글 + 빌딩 컨텍스트 */}
-      <div className="flex items-center gap-3">
-        {/* 사이드바 토글 (모바일/태블릿: 드로어 열기) */}
+      {/* ── 좌측 ── */}
+      <div className="flex shrink-0 items-center gap-1">
         <Button
           variant="ghost"
           size="icon"
           onClick={onMobileMenuClick ?? toggleSidebar}
-          className="h-8 w-8 rounded-lg text-muted-foreground transition-colors hover:bg-accent hover:text-foreground lg:hidden"
+          className="h-8 w-8 rounded-lg text-muted-foreground hover:bg-accent hover:text-foreground lg:hidden"
           aria-label="메뉴 열기"
         >
-          <Menu className="h-[18px] w-[18px]" />
+          <Menu className="h-[17px] w-[17px]" />
         </Button>
-        {/* 사이드바 토글 (데스크톱) */}
         <Button
           variant="ghost"
           size="icon"
           onClick={toggleSidebar}
-          className="hidden h-8 w-8 rounded-lg text-muted-foreground transition-colors hover:bg-accent hover:text-foreground lg:flex"
+          className="hidden h-8 w-8 rounded-lg text-muted-foreground hover:bg-accent hover:text-foreground lg:flex"
           aria-label="사이드바 토글"
         >
-          <Menu className="h-[18px] w-[18px]" />
+          <Menu className="h-[17px] w-[17px]" />
         </Button>
 
-        {/* 빌딩 컨텍스트 드롭다운 */}
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button
-              variant="ghost"
-              className="flex h-9 items-center gap-2 rounded-lg px-2.5 text-sm transition-colors hover:bg-accent"
-            >
-              <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-md bg-primary/10">
-                <Building2 className="h-3.5 w-3.5 text-primary" />
-              </div>
-              <div className="hidden flex-col items-start text-left sm:flex">
-                <span className="text-[11px] leading-tight text-muted-foreground">
-                  {currentCompany?.name ?? "회사 선택"}
-                </span>
-                <span className="text-[13px] font-semibold leading-tight">
-                  {currentBuilding?.name ?? "빌딩 선택"}
-                </span>
-              </div>
-              <ChevronDown className="hidden h-3.5 w-3.5 text-muted-foreground sm:block" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="start" className="w-72">
-            <DropdownMenuLabel className="text-xs text-muted-foreground">
-              현재 빌딩
-            </DropdownMenuLabel>
-            <DropdownMenuItem className="flex flex-col items-start gap-0.5 py-2">
-              <span className="font-medium">
-                {currentBuilding?.name ?? "빌딩 미선택"}
-              </span>
-              <span className="text-xs text-muted-foreground">
-                {currentCompany?.name ?? ""}
-              </span>
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            {buildings.length > 0 ? (
-              buildings.map((b) => (
-                <DropdownMenuItem
-                  key={b.buildingId}
-                  className={cn(
-                    "gap-2 text-sm",
-                    currentBuilding?.id === String(b.buildingId) && "bg-accent font-medium"
-                  )}
-                  onClick={() =>
-                    setContext(
-                      { id: currentCompany?.id ?? "", name: currentCompany?.name ?? "" },
-                      { id: String(b.buildingId), name: b.buildingName }
-                    )
-                  }
-                >
-                  <Building2 className="h-3.5 w-3.5 text-muted-foreground" />
-                  {b.buildingName}
-                </DropdownMenuItem>
-              ))
-            ) : (
-              <DropdownMenuItem className="text-xs text-muted-foreground" disabled>
-                배정된 빌딩이 없습니다
-              </DropdownMenuItem>
-            )}
-          </DropdownMenuContent>
-        </DropdownMenu>
+        <BuildingSelector />
       </div>
 
-      {/* 중앙: 검색 바 (데스크톱) */}
-      <div className="hidden flex-1 justify-center px-8 md:flex">
-        <Button
-          variant="outline"
-          className={cn(
-            "h-8 w-full max-w-md justify-start gap-2 rounded-lg",
-            "border-border/50 bg-accent/50 text-muted-foreground",
-            "transition-all hover:border-border hover:bg-accent"
-          )}
+      {/* ── 중앙: GNB 탭 ── */}
+      <GnbTabs activeSection={activeSection} />
+
+      {/* ── 우측 ── */}
+      <div className="flex shrink-0 items-center gap-0.5">
+        {/* 검색 버튼 */}
+        <button
           onClick={() => setCommandPaletteOpen(true)}
+          className={cn(
+            "hidden h-8 items-center gap-2 rounded-lg border border-border/70 px-2.5",
+            "text-[12px] text-muted-foreground transition-all duration-150",
+            "hover:border-border hover:bg-accent hover:text-foreground",
+            "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+            "sm:flex"
+          )}
+          aria-label="검색 (⌘K)"
         >
-          <Search className="h-3.5 w-3.5" />
-          <span className="text-[13px]">검색...</span>
-          <kbd className="pointer-events-none ml-auto inline-flex h-5 select-none items-center gap-0.5 rounded border border-border/70 bg-background/80 px-1.5 font-mono text-[10px] font-medium text-muted-foreground">
-            <span className="text-[11px]">⌘</span>K
+          <Search className="h-[13px] w-[13px]" />
+          <span>검색</span>
+          <kbd className="hidden rounded bg-muted px-1 py-px text-[10px] font-medium leading-none lg:block">
+            ⌘K
           </kbd>
-        </Button>
-      </div>
-
-      {/* 우측: 검색(모바일), 알림, 테마, 사용자 */}
-      <div className="flex items-center gap-1">
-        {/* 모바일 검색 */}
+        </button>
         <Button
           variant="ghost"
           size="icon"
-          className="h-8 w-8 rounded-lg text-muted-foreground hover:bg-accent hover:text-foreground md:hidden"
+          className="h-8 w-8 rounded-lg text-muted-foreground hover:bg-accent hover:text-foreground sm:hidden"
           onClick={() => setCommandPaletteOpen(true)}
           aria-label="검색"
         >
-          <Search className="h-[18px] w-[18px]" />
+          <Search className="h-[17px] w-[17px]" />
         </Button>
 
-        {/* 알림 (TODO: 알림 API 연동 후 뱃지 활성화) */}
+        {/* 알림 */}
         <Button
           variant="ghost"
           size="icon"
           className="relative h-8 w-8 rounded-lg text-muted-foreground hover:bg-accent hover:text-foreground"
           aria-label="알림"
         >
-          <Bell className="h-[18px] w-[18px]" />
+          <Bell className="h-[17px] w-[17px]" />
+          {/* TODO: 알림 API 연동 후 unreadCount 조건부 렌더 */}
+          <span
+            className="absolute right-[7px] top-[7px] h-2 w-2 rounded-full bg-destructive ring-[1.5px] ring-background"
+            aria-hidden="true"
+          />
         </Button>
 
         {/* 테마 토글 */}
@@ -234,65 +414,21 @@ export function Header({ onMobileMenuClick }: HeaderProps): React.JSX.Element {
             size="icon"
             className="h-8 w-8 rounded-lg text-muted-foreground hover:bg-accent hover:text-foreground"
             onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-            aria-label="테마 변경"
+            aria-label={theme === "dark" ? "라이트 모드" : "다크 모드"}
           >
             {theme === "dark" ? (
-              <Sun className="h-[18px] w-[18px]" />
+              <Sun className="h-[17px] w-[17px]" />
             ) : (
-              <Moon className="h-[18px] w-[18px]" />
+              <Moon className="h-[17px] w-[17px]" />
             )}
           </Button>
         )}
 
-        {/* 사용자 아바타 드롭다운 */}
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="ml-1 h-8 w-8 rounded-full p-0"
-              aria-label="사용자 메뉴"
-            >
-              <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-[#0064FF] to-[#4B90FF] ring-2 ring-background">
-                <span className="text-[12px] font-semibold text-white">
-                  {userInitial}
-                </span>
-              </div>
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-56">
-            <DropdownMenuLabel>
-              <div className="flex flex-col gap-0.5">
-                <span className="text-sm font-semibold">
-                  {user?.userName ?? "사용자"}
-                </span>
-                <span className="text-xs font-normal text-muted-foreground">
-                  {user?.accountName ?? "계정"}
-                </span>
-              </div>
-            </DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem className="gap-2" asChild>
-              <Link href="/mypage">
-                <User className="h-4 w-4" />
-                마이페이지
-              </Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem className="gap-2">
-              <Settings className="h-4 w-4" />
-              설정
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem
-              className="gap-2 text-destructive focus:text-destructive"
-              onClick={() => clearAuth()}
-            >
-              <LogOut className="h-4 w-4" />
-              로그아웃
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        {/* 사용자 */}
+        <div className="ml-1">
+          <UserDropdown user={user} onLogout={() => void handleLogout()} />
+        </div>
       </div>
-    </motion.header>
+    </header>
   );
 }

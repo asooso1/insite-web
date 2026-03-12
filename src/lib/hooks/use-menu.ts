@@ -62,11 +62,12 @@ export function useMenuTree(buildingId: string | undefined) {
  * 전체 메뉴 목록 조회 훅 (관리자용)
  * staleTime: 5분
  */
-export function useAllMenus() {
+export function useAllMenus(options?: { enabled?: boolean }) {
   return useQuery({
     queryKey: menuKeys.allMenus(),
     queryFn: getAllMenus,
     staleTime: 5 * 60 * 1000,
+    enabled: options?.enabled ?? true,
   });
 }
 
@@ -88,11 +89,12 @@ export function useMenuPageInfo(pageInfoId: number) {
  * 메뉴 URL 매핑 조회 훅
  * staleTime: Infinity (거의 변경 없음)
  */
-export function useMenuMappings() {
+export function useMenuMappings(options?: { enabled?: boolean }) {
   return useQuery({
     queryKey: menuKeys.mappings(),
     queryFn: getMenuMappings,
     staleTime: Infinity,
+    enabled: options?.enabled ?? true,
   });
 }
 
@@ -100,11 +102,12 @@ export function useMenuMappings() {
  * 메뉴 오버라이드 조회 훅
  * staleTime: Infinity (거의 변경 없음)
  */
-export function useMenuOverrides() {
+export function useMenuOverrides(options?: { enabled?: boolean }) {
   return useQuery({
     queryKey: menuKeys.overrides(),
     queryFn: getMenuOverrides,
     staleTime: Infinity,
+    enabled: options?.enabled ?? true,
   });
 }
 
@@ -115,9 +118,9 @@ export function useMenuOverrides() {
  */
 export function useMenuWithStatus() {
   const isInitialized = useAuthStore((s) => s.isInitialized);
-  const menusQuery = useAllMenus();
-  const mappingsQuery = useMenuMappings();
-  const overridesQuery = useMenuOverrides();
+  const menusQuery = useAllMenus({ enabled: isInitialized });
+  const mappingsQuery = useMenuMappings({ enabled: isInitialized });
+  const overridesQuery = useMenuOverrides({ enabled: isInitialized });
 
   // 인증 초기화 전이거나 로딩 중이면 로딩 상태 반환
   if (!isInitialized || menusQuery.isLoading || mappingsQuery.isLoading || overridesQuery.isLoading) {
