@@ -3,6 +3,7 @@
  */
 
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useAuthStore } from "@/lib/stores/auth-store";
 import {
   getMenuTree,
   getAllMenus,
@@ -113,12 +114,13 @@ export function useMenuOverrides() {
  * 메뉴를 상태 정보와 함께 반환
  */
 export function useMenuWithStatus() {
+  const isInitialized = useAuthStore((s) => s.isInitialized);
   const menusQuery = useAllMenus();
   const mappingsQuery = useMenuMappings();
   const overridesQuery = useMenuOverrides();
 
-  // 로딩 또는 에러 상태 전파
-  if (menusQuery.isLoading || mappingsQuery.isLoading || overridesQuery.isLoading) {
+  // 인증 초기화 전이거나 로딩 중이면 로딩 상태 반환
+  if (!isInitialized || menusQuery.isLoading || mappingsQuery.isLoading || overridesQuery.isLoading) {
     return {
       menus: [],
       isLoading: true,

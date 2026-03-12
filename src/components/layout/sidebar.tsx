@@ -560,33 +560,11 @@ export function Sidebar(): React.JSX.Element {
   const buildingId = user?.currentBuildingId;
   const { data: menuData, isLoading } = useMenuTree(buildingId);
 
-  const currentSection = detectGnbSection(pathname);
-  const sectionPrefixes = SECTION_PREFIXES[currentSection] ?? [];
-
-  const filterBySection = (all: MenuDTO[]): MenuDTO[] => {
-    if (currentSection === "dashboard") return all;
-    return all
-      .filter((m) => {
-        // depth-1 url 자체가 매치되거나, 자식 중 하나라도 매치되면 표시
-        // (depth-1 url이 비어있거나 "#"인 경우 자식 url로 섹션 판단)
-        const selfMatch = sectionPrefixes.some((p) => mapMenuUrl(m.url).startsWith(p));
-        const childMatch = m.children.some((c) =>
-          sectionPrefixes.some((p) => mapMenuUrl(c.url).startsWith(p))
-        );
-        return selfMatch || childMatch;
-      })
-      .map((m) => ({
-        ...m,
-        children: m.children.filter((c) =>
-          sectionPrefixes.some((p) => mapMenuUrl(c.url).startsWith(p))
-        ),
-      }));
-  };
-
   const allMenus =
     !isLoading && menuData && menuData.length > 0 ? menuData : FALLBACK_MENUS;
 
-  const menus = filterBySection(allMenus);
+  // 전체 메뉴 사용 (섹션 필터링 없음)
+  const menus = allMenus;
 
   return (
     <TooltipProvider delayDuration={0}>
