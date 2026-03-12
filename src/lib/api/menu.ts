@@ -9,6 +9,8 @@ import type {
   MenuDTO,
   PageInfoDTO,
   MenuUrlMappingStore,
+  MenuOverride,
+  MenuOverrideStore,
 } from "@/lib/types/menu";
 
 /**
@@ -93,5 +95,51 @@ export async function deleteMenuMapping(menuId: number): Promise<void> {
   });
   if (!res.ok) {
     throw new Error("메뉴 매핑 삭제에 실패했습니다.");
+  }
+}
+
+/**
+ * 메뉴 오버라이드 조회
+ * 저장된 메뉴 편집 정보 로드
+ * (Route Handler가 data를 직접 반환하므로 raw fetch 사용)
+ */
+export async function getMenuOverrides(): Promise<MenuOverrideStore> {
+  const res = await fetch("/api/settings/menu-overrides", {
+    credentials: "include",
+  });
+  if (!res.ok) {
+    throw new Error("메뉴 오버라이드 조회에 실패했습니다.");
+  }
+  return res.json() as Promise<MenuOverrideStore>;
+}
+
+/**
+ * 메뉴 오버라이드 저장/수정
+ * 메뉴 ID에 대한 이름, 상위 메뉴, 순서, 권한 등 오버라이드 저장
+ */
+export async function saveMenuOverride(
+  override: Omit<MenuOverride, "updatedAt">
+): Promise<void> {
+  const res = await fetch("/api/settings/menu-overrides", {
+    method: "POST",
+    credentials: "include",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(override),
+  });
+  if (!res.ok) {
+    throw new Error("메뉴 오버라이드 저장에 실패했습니다.");
+  }
+}
+
+/**
+ * 메뉴 오버라이드 삭제
+ */
+export async function deleteMenuOverride(menuId: number): Promise<void> {
+  const res = await fetch(`/api/settings/menu-overrides/${menuId}`, {
+    method: "DELETE",
+    credentials: "include",
+  });
+  if (!res.ok) {
+    throw new Error("메뉴 오버라이드 삭제에 실패했습니다.");
   }
 }

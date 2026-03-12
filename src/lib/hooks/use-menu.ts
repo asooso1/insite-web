@@ -11,6 +11,9 @@ import {
   getMenuMappings,
   saveMenuMapping,
   deleteMenuMapping,
+  getMenuOverrides,
+  saveMenuOverride,
+  deleteMenuOverride,
 } from "@/lib/api/menu";
 import { enrichMenuWithStatus } from "@/lib/utils/menu-status-mapper";
 import type {
@@ -18,6 +21,8 @@ import type {
   MenuWithStatus,
   PageInfoDTO,
   MenuUrlMappingStore,
+  MenuOverride,
+  MenuOverrideStore,
 } from "@/lib/types/menu";
 
 // ============================================================================
@@ -32,6 +37,7 @@ export const menuKeys = {
     [...menuKeys.all, "building", buildingId] as const,
   pageInfo: (pageInfoId: number) => ["pageInfo", pageInfoId] as const,
   mappings: () => [...menuKeys.all, "mappings"] as const,
+  overrides: () => [...menuKeys.all, "overrides"] as const,
 };
 
 // ============================================================================
@@ -90,16 +96,29 @@ export function useMenuMappings() {
 }
 
 /**
+ * 메뉴 오버라이드 조회 훅
+ * staleTime: Infinity (거의 변경 없음)
+ */
+export function useMenuOverrides() {
+  return useQuery({
+    queryKey: menuKeys.overrides(),
+    queryFn: getMenuOverrides,
+    staleTime: Infinity,
+  });
+}
+
+/**
  * 메뉴 + 연결 상태 조회 훅
- * useAllMenus + useMenuMappings 조합
+ * useAllMenus + useMenuMappings + useMenuOverrides 조합
  * 메뉴를 상태 정보와 함께 반환
  */
 export function useMenuWithStatus() {
   const menusQuery = useAllMenus();
   const mappingsQuery = useMenuMappings();
+  const overridesQuery = useMenuOverrides();
 
   // 로딩 또는 에러 상태 전파
-  if (menusQuery.isLoading || mappingsQuery.isLoading) {
+  if (menusQuery.isLoading || mappingsQuery.isLoading || overridesQuery.isLoading) {
     return {
       menus: [],
       isLoading: true,
@@ -126,10 +145,24 @@ export function useMenuWithStatus() {
     };
   }
 
+  if (overridesQuery.isError) {
+    return {
+      menus: [],
+      isLoading: false,
+      isError: true,
+      error: overridesQuery.error,
+    };
+  }
+
   const menus = menusQuery.data || [];
   const mappingStore = mappingsQuery.data || { mappings: [], lastUpdated: "" };
+  const overrideStore = overridesQuery.data || { overrides: [], lastUpdated: "" };
 
-  const enrichedMenus = enrichMenuWithStatus(menus, mappingStore.mappings);
+  const enrichedMenus = enrichMenuWithStatus(
+    menus,
+    mappingStore.mappings,
+    overrideStore.overrides
+  );
 
   return {
     menus: enrichedMenus,
@@ -194,6 +227,39 @@ export function useDeleteMenuMapping() {
     mutationFn: (menuId: number) => deleteMenuMapping(menuId),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: menuKeys.mappings() });
+    },
+  });
+}
+
+/**
+ * 메뉴 오버라이드 저장 훅
+ * 성공 시 menuKeys.overrides() + allMenus() 무효화
+ */
+export function useSaveMenuOverride() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (override: Omit<MenuOverride, "updatedAt">) =>
+      saveMenuOverride(override),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: menuKeys.overrides() });
+      queryClient.invalidateQueries({ queryKey: menuKeys.allMenus() });
+    },
+  });
+}
+
+/**
+ * 메뉴 오버라이드 삭제 훅
+ * 성공 시 menuKeys.overrides() + allMenus() 무효화
+ */
+export function useDeleteMenuOverride() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (menuId: number) => deleteMenuOverride(menuId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: menuKeys.overrides() });
+      queryClient.invalidateQueries({ queryKey: menuKeys.allMenus() });
     },
   });
 }

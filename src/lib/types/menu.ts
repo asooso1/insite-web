@@ -55,7 +55,7 @@ export interface PageInfoDTO {
 export type MenuConnectionStatus = "connected" | "unmapped" | "not_implemented";
 
 /**
- * 메뉴 + 연결 상태
+ * 메뉴 + 연결 상태 + 오버라이드 정보
  * 목록/통계 조회에 사용
  */
 export interface MenuWithStatus extends Omit<MenuDTO, "children"> {
@@ -63,6 +63,7 @@ export interface MenuWithStatus extends Omit<MenuDTO, "children"> {
   mappedUrl?: string;
   pageInfo?: PageInfoDTO;
   children: MenuWithStatus[];
+  hasOverride?: boolean;
 }
 
 /**
@@ -82,5 +83,29 @@ export interface MenuUrlMapping {
  */
 export interface MenuUrlMappingStore {
   mappings: MenuUrlMapping[];
+  lastUpdated: string;
+}
+
+/**
+ * 메뉴 오버라이드 정보 (편집 기능)
+ * public/menu-overrides.json 스키마
+ */
+export interface MenuOverride {
+  menuId: number;
+  name?: string;           // 이름 변경
+  parentId?: number;       // 상위 메뉴 변경
+  sortNo?: number;         // 순서 변경
+  isUse?: boolean;         // 사용 여부
+  isShow?: boolean;        // 표시 여부
+  roles?: string[];        // 접근 가능 역할 목록
+  updatedAt: string;
+}
+
+/**
+ * 메뉴 오버라이드 저장소
+ * public/menu-overrides.json 스키마
+ */
+export interface MenuOverrideStore {
+  overrides: MenuOverride[];
   lastUpdated: string;
 }

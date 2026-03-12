@@ -10,6 +10,7 @@ import type {
   MenuDTO,
   MenuConnectionStatus,
   MenuUrlMapping,
+  MenuOverride,
   MenuWithStatus,
 } from "@/lib/types/menu";
 
@@ -83,22 +84,34 @@ export function getMenuConnectionStatus(
 /**
  * 메뉴 트리에 상태 정보 추가 (재귀)
  * children도 재귀적으로 처리
+ * overrides가 있는 경우 해당 필드를 덮어씌움
  */
 export function enrichMenuWithStatus(
   menus: MenuDTO[],
-  mappings: MenuUrlMapping[]
+  mappings: MenuUrlMapping[],
+  overrides: MenuOverride[] = []
 ): MenuWithStatus[] {
   return menus.map((menu) => {
     const status = getMenuConnectionStatus(menu, mappings);
     const manualMapping = mappings.find((m) => m.menuId === menu.id);
     const mappedUrl = manualMapping?.insiteWebUrl ?? mapMenuUrl(menu.url);
+    const override = overrides.find((o) => o.menuId === menu.id);
 
-    return {
+    // 오버라이드 값으로 필드 덮어쓰기
+    const enrichedMenu: MenuWithStatus = {
       ...menu,
       status,
       mappedUrl,
-      children: enrichMenuWithStatus(menu.children, mappings),
+      name: override?.name ?? menu.name,
+      parentId: override?.parentId ?? menu.parentId,
+      sortNo: override?.sortNo ?? menu.sortNo,
+      use: override?.isUse ?? menu.use,
+      show: override?.isShow ?? menu.show,
+      children: enrichMenuWithStatus(menu.children, mappings, overrides),
+      hasOverride: !!override,
     };
+
+    return enrichedMenu;
   });
 }
 

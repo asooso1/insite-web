@@ -6,9 +6,11 @@ import { ArrowLeft, Menu, RefreshCw, Link2, Link2Off, HelpCircle } from "lucide-
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 import { MenuTreeSection } from "./_components/menu-tree-section";
 import { MenuUrlMappingPanel } from "./_components/menu-url-mapping-panel";
+import { MenuEditPanel } from "./_components/menu-edit-panel";
 import { MenuCacheSection } from "./_components/menu-cache-section";
 
 import { useMenuWithStatus } from "@/lib/hooks/use-menu";
@@ -141,11 +143,22 @@ export default function MenuManagementPage() {
           </CardContent>
         </Card>
 
-        {/* 우측: URL 매핑 편집 패널 */}
+        {/* 우측: 편집 패널 (탭) */}
         <div className="flex flex-col gap-4">
           <Card>
             <CardContent className="p-4">
-              <MenuUrlMappingPanel selectedMenu={selectedMenu} />
+              <Tabs defaultValue="url-mapping">
+                <TabsList className="grid w-full grid-cols-2">
+                  <TabsTrigger value="url-mapping">URL 매핑</TabsTrigger>
+                  <TabsTrigger value="edit">메뉴 편집</TabsTrigger>
+                </TabsList>
+                <TabsContent value="url-mapping" className="mt-4">
+                  <MenuUrlMappingPanel selectedMenu={selectedMenu} />
+                </TabsContent>
+                <TabsContent value="edit" className="mt-4">
+                  <MenuEditPanel selectedMenu={selectedMenu} allMenus={menus} />
+                </TabsContent>
+              </Tabs>
             </CardContent>
           </Card>
 
