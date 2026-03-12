@@ -1,11 +1,20 @@
 "use client";
 
 import * as React from "react";
+import dynamic from "next/dynamic";
 import { Header } from "./header";
-import { Sidebar } from "./sidebar";
 import { MobileDrawer } from "./mobile-drawer";
-import { CommandPalette } from "./command-palette";
+
+// SSR 비활성화: Radix UI useId 카운터 서버/클라이언트 불일치 방지
+const Sidebar = dynamic(() => import("./sidebar").then((m) => ({ default: m.Sidebar })), {
+  ssr: false,
+});
+// CommandPalette: Dialog 내부 Radix 컴포넌트가 SSR에서 ID를 소비하여 Header ID 불일치 유발
+const CommandPalette = dynamic(() => import("./command-palette").then((m) => ({ default: m.CommandPalette })), {
+  ssr: false,
+});
 import { useUIStore } from "@/lib/stores/ui-store";
+import { AuthInitializer } from "@/components/auth/auth-initializer";
 import { cn } from "@/lib/utils";
 
 interface AppShellProps {
@@ -39,6 +48,7 @@ export function AppShell({ children }: AppShellProps): React.JSX.Element {
 
   return (
     <div className="flex h-screen flex-col overflow-hidden bg-background">
+      <AuthInitializer />
       <Header onMobileMenuClick={() => setDrawerOpen(true)} />
 
       {/* 모바일/태블릿 드로어 */}
@@ -55,7 +65,7 @@ export function AppShell({ children }: AppShellProps): React.JSX.Element {
       {/* Main Content */}
       <main
         className={cn(
-          "flex-1 overflow-auto pt-[52px] transition-all duration-200",
+          "flex-1 overflow-auto pt-14 transition-all duration-200",
           "bg-[var(--bg-gradient)]"
         )}
         style={{ marginLeft: sidebarOffset }}
