@@ -182,11 +182,11 @@ export function MenuEditPanel({ selectedMenu, allMenus }: MenuEditPanelProps) {
             상위 메뉴
           </Label>
           <Select
-            value={String(formData.parentId ?? selectedMenu.parentId ?? "")}
+            value={String(formData.parentId ?? selectedMenu.parentId ?? "none")}
             onValueChange={(value) =>
               setFormData({
                 ...formData,
-                parentId: value ? Number(value) : undefined,
+                parentId: value === "none" ? undefined : Number(value),
               })
             }
             disabled={isLoading}
@@ -195,7 +195,7 @@ export function MenuEditPanel({ selectedMenu, allMenus }: MenuEditPanelProps) {
               <SelectValue placeholder="선택하세요" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">없음 (최상위)</SelectItem>
+              <SelectItem value="none">없음 (최상위)</SelectItem>
               {depth1Menus.map((menu) => (
                 <SelectItem key={menu.id} value={String(menu.id)}>
                   {menu.name}
