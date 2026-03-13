@@ -1,6 +1,6 @@
 # insite-web 마이그레이션 작업 진행 현황
 
-> 최종 업데이트: 2026-02-12
+> 최종 업데이트: 2026-03-11
 
 ## 📊 전체 진행 상황
 
@@ -19,8 +19,44 @@
 | Phase 9 | ✅ 완료 | 100% | 현장작업(Fieldwork)/분석(Analysis)/설정 고도화 |
 | Phase 10 | ⏳ 추후 구현 | 0% | BEMS (85개 HTML) - 빌딩 에너지 관리 시스템 |
 | Phase 11 | ⏳ 추후 구현 | 0% | BECM (64개 HTML) - 보일러/냉동 모니터링 시스템 |
+| **[필수]** csp-was pageInfoId 이슈 | ❌ 차단됨 | - | csp-was JwtFilter 수정 필요 → `docs/csp-was-pageinfoid-issue.md` |
+| **[필수]** 종합 검토 이슈 수정 | ⏳ 대기 | - | 보안/구현/UX 39건 → `docs/comprehensive-review-plan.md` |
 
 **상태 범례:** ✅ 완료 | 🔄 진행중 | ⏳ 대기 | ❌ 차단됨
+
+---
+
+## 종합 검토 이슈 (2026-03-11)
+
+> 상세 내용: `docs/comprehensive-review-plan.md`
+
+### 🔴 즉시 수정 필요 (보안 Critical)
+
+| # | 이슈 | 파일 | 상태 |
+|---|------|------|------|
+| S-1 | Open Redirect 취약점 | `src/components/forms/login-form.tsx:64` | ✅ |
+| S-2 | JWT_SECRET git 노출 + 하드코딩 폴백 | `middleware.ts`, `.gitignore` | ✅ |
+| S-3 | RichTextEditor URL 주입 (XSS) | `src/components/third-party/rich-text-editor.tsx` | ✅ |
+| S-4 | DOMPurify XSS CVE (v3.3.1) | `package.json` | ✅ |
+| S-12 | npm audit 취약점 4건 | `package.json` | ✅ |
+
+### 🔴 즉시 수정 필요 (구현 Critical)
+
+| # | 이슈 | 파일 | 상태 |
+|---|------|------|------|
+| I-1 | AuthInitializer useEffect 무한루프 위험 | `src/components/auth/auth-initializer.tsx` | ✅ |
+| I-2 | JWT 페이로드 Zod 런타임 검증 없음 | `src/lib/auth/session.ts`, `login/route.ts` | ✅ |
+| I-3 | apiPostForm/apiPutForm 401 처리 누락 | `src/lib/api/client.ts` | ✅ |
+
+### 🟠 단기 수정 (High)
+
+| # | 이슈 | 파일 | 상태 |
+|---|------|------|------|
+| I-4 | 로그아웃 에러 처리 누락/중복 | `sidebar.tsx`, `header.tsx` | ✅ |
+| I-6 | React Query staleTime 미설정 | `src/lib/hooks/*.ts` | ✅ |
+| I-7 | 빌딩 전환 토큰 갱신 미구현 | `tenant-store.ts` | ✅ |
+| S-5 | 메뉴 API URL 파라미터 주입 | `menus/route.ts` | ✅ |
+| S-6 | 로그인 Rate Limiting 미적용 | `login/route.ts` | ✅ |
 
 ---
 

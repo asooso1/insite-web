@@ -54,6 +54,7 @@ export function useWorkOrderList(
   return useQuery({
     queryKey: workOrderKeys.list(params),
     queryFn: () => getWorkOrderList(params),
+    staleTime: 30 * 1000, // 30초 - 목록 쿼리 표준
   });
 }
 
@@ -65,6 +66,7 @@ export function useWorkOrderView(id: number, type: "view" | "edit" = "view") {
     queryKey: workOrderKeys.detail(id, type),
     queryFn: () => getWorkOrderView(type, id),
     enabled: id > 0,
+    staleTime: 60 * 1000, // 1분 - 상세 쿼리 표준
   });
 }
 
@@ -75,6 +77,7 @@ export function useWorkOrderStateCount(params: SearchWorkOrderVO) {
   return useQuery({
     queryKey: workOrderKeys.stateCount(params),
     queryFn: () => getWorkOrderStatePerCount(params),
+    staleTime: 30 * 1000, // 30초 - 목록 쿼리 표준
   });
 }
 
@@ -253,13 +256,18 @@ export function useDownloadWorkOrderExcel() {
     mutationFn: async (params: SearchWorkOrderVO) => {
       const blob = await downloadWorkOrderListExcel(params);
       const url = window.URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = `work-orders-${new Date().toISOString().split("T")[0]}.xlsx`;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      window.URL.revokeObjectURL(url);
+      let a: HTMLAnchorElement | null = null;
+      try {
+        a = document.createElement("a");
+        a.href = url;
+        a.download = `work-orders-${new Date().toISOString().split("T")[0]}.xlsx`;
+        document.body.appendChild(a);
+        a.click();
+      } finally {
+        // 실패해도 DOM 정리 보장
+        if (a?.parentNode) document.body.removeChild(a);
+        window.URL.revokeObjectURL(url);
+      }
     },
   });
 }

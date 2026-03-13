@@ -22,11 +22,49 @@ Phase 1-6 완료 (~75%) | Phase 7 대기
 | Dashboard | 대시보드 |
 | Widget | 위젯 |
 
-**코드 금지:** `any` 타입 / `!important` / 인라인 스타일 / localStorage 토큰 저장
+**코드 금지:** `any` 타입 / `!important` / 인라인 스타일 / localStorage 토큰 저장 / refresh token 패턴 구현
 
-**URL 상태:** 신규 모듈은 `nuqs` 사용 (`useQueryState` + parsers). 기존 모듈은 `useState` 사용중.
+**URL 상태:** 단순 필터 → `useState`. 다중 필터/탭/공유가 필요한 복잡한 경우 → `nuqs` (`useQueryState` + parsers). 신규 모듈은 `nuqs` 권장.
 
 **커밋:** `<type>: <한글 설명>` (예: `feat: 사용자 목록 페이지 구현`)
+
+## 인증 아키텍처
+
+**csp-was 토큰 방식 (변경 금지 사항)**
+- 단일 JWT (`authToken`), **refresh token 없음**
+- 유효시간: **1시간** (만료 시 재로그인만 가능)
+- 알고리즘: HS256, Secret: Base64 디코딩 후 사용
+- 로그인: `POST /api/account/login` → `authToken` 반환
+- 건물/회사 전환 시 새 토큰 발급: `PUT /api/account/token`
+- 모든 API 요청: `Authorization: Bearer {token}` 헤더 필수
+
+**insite-web 토큰 처리 흐름**
+```
+로그인 성공
+  → /api/auth/login (Next.js Route)
+  → authToken → httpOnly 쿠키 "auth-token" 저장
+  → accessToken + user → 클라이언트 Zustand 저장
+
+페이지 리로드 (Zustand 초기화됨)
+  → AuthInitializer 마운트
+  → /api/auth/me 호출 (쿠키 자동 전송)
+  → JWT 디코딩 → Zustand 복원
+
+로그아웃
+  → /api/auth/logout → 쿠키 삭제 → clearAuth()
+```
+
+**인증 관련 파일**
+| 파일 | 역할 |
+|------|------|
+| `src/lib/auth/cookie.ts` | 쿠키 옵션 및 이름 상수 (`auth-token`) |
+| `src/lib/auth/token-config.ts` | JWT 클레임 타입, TTL 상수 |
+| `src/lib/auth/session.ts` | 서버 사이드 JWT 검증 유틸 |
+| `src/app/api/auth/login/route.ts` | 로그인 프록시, 쿠키 설정 |
+| `src/app/api/auth/logout/route.ts` | 쿠키 삭제 |
+| `src/app/api/auth/me/route.ts` | 쿠키 → user 정보 반환 |
+| `src/components/auth/auth-initializer.tsx` | 리로드 시 auth 복원 |
+| `src/lib/stores/auth-store.ts` | 메모리 auth 상태 (Zustand) |
 
 ## 구현 패턴
 
@@ -62,6 +100,18 @@ new/page.tsx          # 등록 (폼)
 _components/          # {module}-form.tsx
 ```
 
+## 규칙 파일 참조
+
+| 파일 | 내용 |
+|------|------|
+| `rules/auth.md` | JWT 처리, 토큰 저장, URL redirect 보안 |
+| `rules/error-handling.md` | API 에러 처리, toast, 로그아웃 패턴 |
+| `rules/component-patterns.md` | 목록/상세/폼 페이지 표준, React Query staleTime |
+| `rules/design-system.md` | 상태 표현, 접근성, 반응형, 타이포그래피 규칙 |
+| `rules/security.md` | OWASP 보안 체크리스트 (강화됨) |
+| `rules/performance.md` | React Query 표준, staleTime 기준 |
+| `rules/coding-style.md` | 코드 스타일, TypeScript 규칙 |
+
 ## 명령어
 
 `npm run dev` | `npm run build` (커밋 전 필수) | `npm run lint`
@@ -88,4 +138,10 @@ _components/          # {module}-form.tsx
 | #1113 | 9:19 AM | 🔄 | Optimized insite-web CLAUDE.md documentation with 66% size reduction | ~704 |
 | #1106 | 9:14 AM | 🔵 | Architect review identified API pattern documentation inaccuracies | ~639 |
 | #1105 | 9:10 AM | ⚖️ | Documentation optimization plan for CLAUDE.md files | ~457 |
+
+### Mar 11, 2026
+
+| ID | Time | T | Title | Read |
+|----|------|---|-------|------|
+| #1640 | 11:31 AM | ✅ | Design System Rules Added to Claude Documentation Index | ~511 |
 </claude-mem-context>

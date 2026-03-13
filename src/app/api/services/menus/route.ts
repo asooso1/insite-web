@@ -12,8 +12,11 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
     const backendUrl =
       process.env.BACKEND_INTERNAL_URL ?? "http://localhost:8080";
 
+    // URLSearchParams로 인코딩하여 파라미터 주입 방지
+    const params = new URLSearchParams();
+    if (buildingId) params.set("buildingId", buildingId);
     const response = await fetch(
-      `${backendUrl}/api/services/menus?buildingId=${buildingId ?? ""}`,
+      `${backendUrl}/api/services/menus?${params.toString()}`,
       {
         headers: {
           ...(authHeader ? { Authorization: authHeader } : {}),

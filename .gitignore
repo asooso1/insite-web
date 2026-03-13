@@ -64,3 +64,6 @@ prisma/*.db-journal
 
 # Turbo
 .turbo/
+
+# MCP 서버 설정 (DB 자격증명 포함)
+.mcp.json

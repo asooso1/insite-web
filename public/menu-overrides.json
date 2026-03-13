@@ -1,4 +1,10 @@
 {
-  "overrides": [],
-  "lastUpdated": "2026-03-12T00:00:00Z"
+  "overrides": [
+    {
+      "menuId": 1343,
+      "name": "2업무결과(확인/승인)2",
+      "updatedAt": "2026-03-12T06:00:43.205Z"
+    }
+  ],
+  "lastUpdated": "2026-03-12T06:00:43.205Z"
 }

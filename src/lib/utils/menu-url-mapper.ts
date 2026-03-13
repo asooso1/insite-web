@@ -12,7 +12,7 @@ const URL_PREFIX_MAP: Array<[string, string]> = [
   // 사용자 관리
   ["/user/", "/users/"],
   ["/user", "/users"],
-  ["/account", "/users"],
+  ["/account", "/account"],
   // 고객사
   ["/client", "/clients"],
   ["/company", "/clients"],
@@ -38,6 +38,28 @@ const URL_PREFIX_MAP: Array<[string, string]> = [
   ["/main", "/dashboard"],
   ["/dashboard", "/dashboard"],
   ["/index", "/dashboard"],
+  // 현장작업
+  ["/fieldwork", "/fieldwork"],
+  // 분석
+  ["/analysis", "/analysis"],
+  // 마이페이지
+  ["/mypage", "/mypage"],
+  // BEMS/BECM
+  ["/bems", "/bems"],
+  ["/becm", "/becm"],
+  // 서비스 관련
+  ["/service", "/service"],
+  ["/site", "/site"],
+  ["/sensor", "/sensor"],
+  ["/nfc", "/nfc"],
+  ["/support", "/support"],
+  ["/invoice", "/invoice"],
+  // 태그/개인/제어
+  ["/tag", "/tag"],
+  ["/personal", "/personal"],
+  ["/control", "/control"],
+  ["/task", "/task"],
+  ["/privacy", "/privacy"],
 ];
 
 /** 이미 insite-web 경로인 접두사 목록 */
@@ -54,6 +76,23 @@ const ALREADY_MAPPED_PREFIXES = [
   "/patrols",
   "/licenses",
   "/dashboard",
+  "/fieldwork",
+  "/analysis",
+  "/mypage",
+  "/account",
+  "/bems",
+  "/becm",
+  "/service",
+  "/site",
+  "/sensor",
+  "/nfc",
+  "/support",
+  "/invoice",
+  "/tag",
+  "/personal",
+  "/control",
+  "/task",
+  "/privacy",
 ];
 
 /**

@@ -69,6 +69,16 @@ export interface RichTextEditorProps {
   className?: string;
 }
 
+// URL 검증: http/https 프로토콜만 허용 (javascript: 등 XSS 방지)
+function isValidUrl(url: string): boolean {
+  try {
+    const obj = new URL(url);
+    return ["http:", "https:"].includes(obj.protocol);
+  } catch {
+    return false;
+  }
+}
+
 // ============================================================================
 // Toolbar Button Component
 // ============================================================================
@@ -124,15 +134,27 @@ function Toolbar({ editor }: ToolbarProps): ReactNode {
       return;
     }
 
+    // http/https 프로토콜만 허용 (javascript: XSS 방지)
+    if (!isValidUrl(url)) {
+      window.alert("https:// 또는 http:// 로 시작하는 URL만 허용됩니다.");
+      return;
+    }
+
     editor.chain().focus().extendMarkRange("link").setLink({ href: url }).run();
   }, [editor]);
 
   const addImage = useCallback(() => {
     const url = window.prompt("이미지 URL을 입력하세요");
 
-    if (url) {
-      editor.chain().focus().setImage({ src: url }).run();
+    if (!url) return;
+
+    // http/https 프로토콜만 허용 (javascript: XSS 방지)
+    if (!isValidUrl(url)) {
+      window.alert("https:// 또는 http:// 로 시작하는 URL만 허용됩니다.");
+      return;
     }
+
+    editor.chain().focus().setImage({ src: url }).run();
   }, [editor]);
 
   return (
@@ -358,6 +380,9 @@ export function RichTextEditor({
       }),
       Link.configure({
         openOnClick: false,
+        protocols: ["http", "https"],
+        // href에 허용되지 않은 프로토콜 주입 방지
+        validate: (url) => isValidUrl(url),
         HTMLAttributes: {
           class: "text-primary underline",
         },

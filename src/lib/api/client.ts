@@ -29,52 +29,45 @@ interface ApiResponse<T> {
 }
 
 /**
- * 토큰 갱신 상태
- * - 중복 갱신 요청 방지
+ * JWT exp 클레임 확인 (서명 검증 없이 만료 여부만 확인)
+ * - 401이 토큰 만료인지 권한 부족인지 구별하기 위해 사용
  */
-let isRefreshing = false;
-let refreshPromise: Promise<string | null> | null = null;
+function isTokenExpired(token: string): boolean {
+  try {
+    const parts = token.split(".");
+    const payloadB64 = parts[1];
+    if (!payloadB64) return true;
+    const payload = JSON.parse(
+      atob(payloadB64.replace(/-/g, "+").replace(/_/g, "/"))
+    );
+    const now = Math.floor(Date.now() / 1000);
+    return !payload.exp || payload.exp <= now;
+  } catch {
+    return true; // 디코딩 실패 시 만료로 처리
+  }
+}
 
 /**
- * 토큰 갱신
+ * 인증 만료 처리 - 로그인 페이지로 리다이렉트
+ * - 토큰이 실제로 만료된 경우만 로그아웃 (권한 부족 401은 무시)
+ * - csp-was 토큰 갱신 미구현 - 추후 구현 예정
  */
-async function refreshToken(): Promise<string | null> {
-  if (isRefreshing && refreshPromise) {
-    return refreshPromise;
+function handleAuthExpired(url?: string): void {
+  const { accessToken, isInitialized, clearAuth } = useAuthStore.getState();
+
+  // 초기화 중이면 무시 (페이지 로드 시 세션 복원 전 API 호출 race condition 방지)
+  if (!isInitialized) {
+    return;
   }
 
-  isRefreshing = true;
-  refreshPromise = (async () => {
-    try {
-      const response = await fetch("/api/auth/refresh", {
-        method: "POST",
-        credentials: "include",
-      });
+  // 토큰이 있고 아직 유효하면 권한 부족 오류 - 로그아웃 불필요
+  if (accessToken && !isTokenExpired(accessToken)) {
+    return;
+  }
 
-      if (!response.ok) {
-        useAuthStore.getState().clearAuth();
-        return null;
-      }
-
-      const data = await response.json();
-      const newToken = data.accessToken;
-
-      if (newToken) {
-        useAuthStore.getState().setAccessToken(newToken);
-        return newToken;
-      }
-
-      return null;
-    } catch {
-      useAuthStore.getState().clearAuth();
-      return null;
-    } finally {
-      isRefreshing = false;
-      refreshPromise = null;
-    }
-  })();
-
-  return refreshPromise;
+  // 토큰 없거나 만료된 경우 로그아웃
+  clearAuth();
+  window.location.href = "/login";
 }
 
 /**
@@ -120,25 +113,11 @@ export async function apiRequest<T>(
     credentials: "include",
   });
 
-  // 401 에러 시 토큰 갱신 후 재시도
+  // 401 에러 시 로그인 페이지로 리다이렉트
+  // (csp-was 토큰 갱신 미구현 - 추후 구현 예정)
   if (response.status === 401 && !skipAuth) {
-    const newToken = await refreshToken();
-
-    if (newToken) {
-      headers.set("Authorization", `Bearer ${newToken}`);
-      response = await fetch(url, {
-        ...fetchOptions,
-        headers,
-        body: body ? JSON.stringify(body) : undefined,
-        credentials: "include",
-      });
-    } else {
-      // 토큰 갱신 실패 - 로그인 페이지로 리다이렉트
-      if (typeof window !== "undefined") {
-        window.location.href = "/login";
-      }
-      throw new ApiError("E00401", "인증이 만료되었습니다.", 401);
-    }
+    handleAuthExpired(url);
+    throw new ApiError("E00401", "인증이 만료되었습니다.", 401);
   }
 
   // 에러 응답 처리
@@ -220,6 +199,12 @@ export async function apiPostForm<T>(
     credentials: "include",
   });
 
+  // 401 에러 시 로그인 페이지로 리다이렉트
+  if (response.status === 401) {
+    handleAuthExpired(url);
+    throw new ApiError("E00401", "인증이 만료되었습니다.", 401);
+  }
+
   if (!response.ok) {
     throw await extractApiError(response);
   }
@@ -253,6 +238,12 @@ export async function apiPutForm<T>(
     body: formData,
     credentials: "include",
   });
+
+  // 401 에러 시 로그인 페이지로 리다이렉트
+  if (response.status === 401) {
+    handleAuthExpired(url);
+    throw new ApiError("E00401", "인증이 만료되었습니다.", 401);
+  }
 
   if (!response.ok) {
     throw await extractApiError(response);

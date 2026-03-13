@@ -1,6 +1,25 @@
 import { http, HttpResponse } from "msw";
 
 /**
+ * 개발 환경 mock 사용자
+ * - csp-was JWT의 accountName = 사용자 표시 이름
+ * - userName과 accountName은 동일한 값 (JWT claim: accountName)
+ */
+const MOCK_USER = {
+  accountId: "1",
+  userId: "admin",
+  userName: "관리자",
+  userRoles: ["ROLE_ADMIN"],
+  accountName: "관리자",
+  accountType: "LABS",
+  currentCompanyId: "1",
+  currentCompanyName: "테스트 회사",
+  currentBuildingId: "1",
+  currentBuildingName: "테스트 빌딩",
+  accountCompanyId: "1",
+};
+
+/**
  * MSW API 핸들러
  * - 개발/테스트 환경에서 API 모킹
  */
@@ -13,19 +32,7 @@ export const handlers = [
     if (body.userId === "admin" && body.passwd === "admin123") {
       return HttpResponse.json({
         accessToken: "mock-access-token",
-        user: {
-          accountId: "1",
-          userId: "admin",
-          userName: "관리자",
-          userRoles: ["ROLE_ADMIN"],
-          accountName: "테스트 회사",
-          accountType: "LABS",
-          currentCompanyId: "1",
-          currentCompanyName: "테스트 회사",
-          currentBuildingId: "1",
-          currentBuildingName: "테스트 빌딩",
-          accountCompanyId: "1",
-        },
+        user: MOCK_USER,
       });
     }
 
@@ -35,16 +42,17 @@ export const handlers = [
     );
   }),
 
+  // 현재 사용자 정보 (페이지 리로드 시 auth 상태 복원)
+  http.get("/api/auth/me", () => {
+    return HttpResponse.json({
+      accessToken: "mock-access-token",
+      user: MOCK_USER,
+    });
+  }),
+
   // 로그아웃
   http.post("/api/auth/logout", () => {
     return HttpResponse.json({ success: true });
-  }),
-
-  // 토큰 갱신
-  http.post("/api/auth/refresh", () => {
-    return HttpResponse.json({
-      accessToken: "mock-new-access-token",
-    });
   }),
 
   // 사용자 정보

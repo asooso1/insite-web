@@ -41,7 +41,8 @@ const PUBLIC_PATHS = [
   "/guest",
   "/m",
   "/api/auth/login",
-  "/api/auth/refresh",
+  "/api/auth/logout",
+  "/api/auth/me",
   ...(process.env.NODE_ENV === "development" ? ["/ui-preview"] : []),
 ];
 
@@ -92,9 +93,11 @@ function base64Decode(str: string): Uint8Array {
 /**
  * JWT Secret 가져오기
  * - csp-was TokenProvider와 동일하게 Base64 디코딩 후 사용
+ * - JWT_SECRET 미설정 시 null 반환 (검증 미사용)
  */
-function getJWTSecret(): Uint8Array {
-  const secret = process.env.JWT_SECRET ?? "development-secret-key-32chars!!";
+function getJWTSecret(): Uint8Array | null {
+  const secret = process.env.JWT_SECRET;
+  if (!secret) return null;
   return base64Decode(secret);
 }
 
@@ -146,11 +149,11 @@ export async function middleware(request: NextRequest): Promise<NextResponse> {
   }
 
   // Authorization 헤더 또는 쿠키에서 토큰 추출
-  // refresh-token 쿠키에 authToken이 저장됨 (백엔드는 단일 토큰 사용)
+  // auth-token 쿠키에 csp-was authToken 저장 (단일 토큰, 1시간 유효)
   const authHeader = request.headers.get("authorization");
   const token = authHeader?.startsWith("Bearer ")
     ? authHeader.slice(7)
-    : request.cookies.get("refresh-token")?.value;
+    : request.cookies.get("auth-token")?.value;
 
   // 토큰이 없으면 로그인 페이지로 리다이렉트
   if (!token) {
@@ -159,35 +162,9 @@ export async function middleware(request: NextRequest): Promise<NextResponse> {
     return NextResponse.redirect(loginUrl);
   }
 
-  try {
-    // JWT 검증
-    const { payload } = await jwtVerify(token, getJWTSecret());
-    const userRoles = (payload.userRoles as string[]) ?? [];
-
-    // 관리자 경로 권한 체크
-    if (isAdminPath(pathname)) {
-      const isAdmin = ADMIN_ROLES.some((role) => userRoles.includes(role));
-      if (!isAdmin) {
-        return NextResponse.redirect(new URL("/", request.url));
-      }
-    }
-
-    // 요청 헤더에 사용자 정보 추가 (서버 컴포넌트에서 사용)
-    const requestHeaders = new Headers(request.headers);
-    requestHeaders.set("x-user-id", payload.userId as string);
-    requestHeaders.set("x-user-roles", userRoles.join(","));
-
-    return NextResponse.next({
-      request: {
-        headers: requestHeaders,
-      },
-    });
-  } catch {
-    // 토큰 검증 실패 시 로그인 페이지로 리다이렉트
-    const loginUrl = new URL("/login", request.url);
-    loginUrl.searchParams.set("redirect", pathname);
-    return NextResponse.redirect(loginUrl);
-  }
+  // csp-was JWT 검증은 API 호출 시 백엔드에서 처리
+  // 미들웨어는 쿠키 존재 여부만 확인 (토큰 갱신 미구현 - 추후 구현 예정)
+  return NextResponse.next();
 }
 
 /**

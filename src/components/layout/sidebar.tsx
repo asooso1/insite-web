@@ -551,9 +551,14 @@ export function Sidebar(): React.JSX.Element {
   const isPinned = sidebarMode === "pinned";
 
   const handleLogout = async (): Promise<void> => {
-    await fetch("/api/auth/logout", { method: "POST" });
-    clearAuth();
-    router.push("/login");
+    try {
+      await fetch("/api/auth/logout", { method: "POST" });
+    } catch {
+      // API 실패해도 클라이언트 상태 정리
+    } finally {
+      clearAuth();
+      router.push("/login");
+    }
   };
 
   // 메뉴 데이터

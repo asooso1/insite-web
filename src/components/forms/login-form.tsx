@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, type ReactNode } from "react";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
@@ -21,11 +21,23 @@ import { useAuthStore } from "@/lib/stores/auth-store";
 import { loginSchema, type LoginFormData } from "@/lib/validations/auth";
 
 /**
+ * redirect 파라미터 검증 - 내부 경로만 허용
+ * @param url - 검증할 URL
+ * @returns 내부 경로 여부
+ */
+function isValidRedirectUrl(url: string): boolean {
+  if (!url.startsWith("/")) return false;
+  if (/^\/\//i.test(url)) return false; // protocol-relative 차단
+  return true;
+}
+
+/**
  * 로그인 폼 컴포넌트
  */
 export function LoginForm(): ReactNode {
   const searchParams = useSearchParams();
   const { setAuth } = useAuthStore();
+  const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
 
   const form = useForm<LoginFormData>({
@@ -59,9 +71,11 @@ export function LoginForm(): ReactNode {
 
       toast.success("로그인되었습니다.");
 
-      // 리다이렉트 처리 (전체 페이지 리로드로 미들웨어 재실행)
-      const redirectUrl = searchParams.get("redirect") || "/";
-      window.location.href = redirectUrl;
+      // 클라이언트 사이드 네비게이션 (Zustand 상태 유지)
+      // redirect 파라미터 검증: 내부 경로만 허용 (외부 URL 및 protocol-relative 차단)
+      const rawRedirect = searchParams.get("redirect");
+      const redirectUrl = rawRedirect && isValidRedirectUrl(rawRedirect) ? rawRedirect : "/dashboard";
+      router.push(redirectUrl);
     } catch (error) {
       const message = error instanceof Error ? error.message : "로그인에 실패했습니다.";
       toast.error(message);

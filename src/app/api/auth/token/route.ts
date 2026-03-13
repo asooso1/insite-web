@@ -2,22 +2,24 @@ import { NextRequest, NextResponse } from "next/server";
 import { decodeJwt } from "jose";
 import { z } from "zod";
 import { AUTH_COOKIE_OPTIONS } from "@/lib/auth/cookie";
+import { getAuthUser } from "@/lib/auth/session";
 import type { JWTPayload } from "@/lib/auth/token-config";
 import type { AuthUser } from "@/lib/stores/auth-store";
 
 /**
- * 백엔드 로그인 응답 타입
- * csp-was AccountController → ResponseDTO(code, message, data: AccountLoginDTO, authToken)
+ * 빌딩 전환 시 토큰 갱신 요청 바디 타입
  */
-interface BackendLoginResponse {
+interface TokenRefreshRequest {
+  buildingId: number;
+}
+
+/**
+ * 백엔드 토큰 갱신 응답 타입
+ * csp-was AccountController → PUT /api/account/token
+ */
+interface BackendTokenResponse {
   code: string;
   message: string;
-  data: {
-    isInitPassword: boolean;
-    currentBuildingId: number;
-    userRoles: string[];
-    isAgreePrivacy: boolean;
-  } | null;
   authToken: string | null;
 }
 
@@ -38,67 +40,61 @@ const JWTPayloadSchema = z.object({
   exp: z.number().optional(),
 });
 
-// ============================================================================
-// 인메모리 Rate Limiting (단일 인스턴스용, 프로덕션 다중 인스턴스는 Redis 권장)
-// 15분 내 5회 초과 시 429 응답
-// ============================================================================
-
-interface RateLimitEntry {
-  count: number;
-  resetAt: number;
-}
-
-const loginAttempts = new Map<string, RateLimitEntry>();
-const RATE_LIMIT_MAX = 5;
-const RATE_LIMIT_WINDOW_MS = 15 * 60 * 1000; // 15분
-
-function checkRateLimit(ip: string): boolean {
-  const now = Date.now();
-  const entry = loginAttempts.get(ip);
-
-  if (!entry || now > entry.resetAt) {
-    loginAttempts.set(ip, { count: 1, resetAt: now + RATE_LIMIT_WINDOW_MS });
-    return true;
-  }
-
-  if (entry.count >= RATE_LIMIT_MAX) return false;
-
-  entry.count += 1;
-  return true;
-}
-
 /**
- * 로그인 API Route
- * - csp-was POST /api/account/login 프록시
+ * 토큰 갱신 API Route
+ * - csp-was PUT /api/account/token 프록시
+ * - 빌딩 전환 시 새 토큰 발급 받아 쿠키 업데이트
  * - authToken → httpOnly 쿠키 (auth-token)
  * - accessToken + user 정보 → response body
  */
-export async function POST(request: NextRequest): Promise<NextResponse> {
-  // IP 기반 Rate Limiting
-  const ip =
-    request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ??
-    request.headers.get("x-real-ip") ??
-    "unknown";
-
-  if (!checkRateLimit(ip)) {
-    return NextResponse.json(
-      { code: "E00429", message: "로그인 시도 횟수를 초과했습니다. 15분 후 다시 시도해주세요." },
-      { status: 429 }
-    );
-  }
+export async function PUT(request: NextRequest): Promise<NextResponse> {
   try {
-    const body = await request.json();
+    // 현재 인증 사용자 조회 (쿠키에서 auth-token 읽음)
+    const currentUser = await getAuthUser();
+
+    if (!currentUser) {
+      return NextResponse.json(
+        { code: "E00401", message: "인증이 필요합니다." },
+        { status: 401 }
+      );
+    }
+
+    // 요청 바디 파싱
+    const body: TokenRefreshRequest = await request.json();
+
+    if (!body.buildingId || typeof body.buildingId !== "number") {
+      return NextResponse.json(
+        { code: "E00400", message: "buildingId는 필수입니다." },
+        { status: 400 }
+      );
+    }
+
+    // 백엔드 토큰 갱신 요청
     const backendUrl = process.env.BACKEND_INTERNAL_URL ?? "http://localhost:8081";
 
-    const authResponse = await fetch(`${backendUrl}/api/account/login`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(body),
+    // 현재 auth-token 쿠키 값 추출
+    const cookieStore = request.cookies;
+    const authToken = cookieStore.get("auth-token")?.value;
+
+    if (!authToken) {
+      return NextResponse.json(
+        { code: "E00401", message: "인증이 필요합니다." },
+        { status: 401 }
+      );
+    }
+
+    const tokenResponse = await fetch(`${backendUrl}/api/account/token`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${authToken}`,
+      },
+      body: JSON.stringify({ buildingId: body.buildingId }),
     });
 
-    const data: BackendLoginResponse = await authResponse.json();
+    const data: BackendTokenResponse = await tokenResponse.json();
 
-    // 인증 실패 (백엔드는 항상 200 반환, code로 성공/실패 구분)
+    // 토큰 갱신 실패
     if (data.code !== "success" || !data.authToken) {
       return NextResponse.json(
         { code: data.code, message: data.message },
@@ -110,12 +106,14 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     // Zod 스키마로 런타임 검증
     const rawClaims = decodeJwt(data.authToken);
     const claimsResult = JWTPayloadSchema.safeParse(rawClaims);
+
     if (!claimsResult.success) {
       return NextResponse.json(
         { code: "E00500", message: "서버 오류가 발생했습니다." },
         { status: 500 }
       );
     }
+
     const claims = claimsResult.data as JWTPayload;
 
     const user: AuthUser = {
@@ -135,11 +133,9 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
     const response = NextResponse.json({
       accessToken: data.authToken,
       user,
-      isInitPassword: data.data?.isInitPassword ?? false,
-      isAgreePrivacy: data.data?.isAgreePrivacy ?? true,
     });
 
-    // authToken을 httpOnly 쿠키로 저장
+    // 새 authToken을 httpOnly 쿠키로 저장
     response.cookies.set("auth-token", data.authToken, AUTH_COOKIE_OPTIONS);
 
     return response;

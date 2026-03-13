@@ -23,23 +23,27 @@ interface AuthState {
   accessToken: string | null;
   user: AuthUser | null;
   isAuthenticated: boolean;
+  /** 초기 세션 복원 완료 여부 (페이지 로드 시 /api/auth/me 응답 후 true) */
+  isInitialized: boolean;
 
   // 액션
   setAccessToken: (token: string) => void;
   setUser: (user: AuthUser) => void;
   setAuth: (token: string, user: AuthUser) => void;
   clearAuth: () => void;
+  setInitialized: () => void;
 }
 
 /**
  * 인증 상태 스토어
- * - Access token은 메모리에만 저장 (보안)
- * - 페이지 새로고침 시 /api/auth/refresh로 재발급
+ * - 토큰은 메모리에만 저장 (보안)
+ * - 페이지 새로고침 시 /api/auth/me로 httpOnly 쿠키에서 복원
  */
 export const useAuthStore = create<AuthState>()((set) => ({
   accessToken: null,
   user: null,
   isAuthenticated: false,
+  isInitialized: false,
 
   setAccessToken: (token) => {
     set({ accessToken: token, isAuthenticated: true });
@@ -62,6 +66,11 @@ export const useAuthStore = create<AuthState>()((set) => ({
       accessToken: null,
       user: null,
       isAuthenticated: false,
+      isInitialized: true,
     });
+  },
+
+  setInitialized: () => {
+    set({ isInitialized: true });
   },
 }));

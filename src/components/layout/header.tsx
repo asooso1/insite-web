@@ -70,9 +70,54 @@ const GNB_SECTIONS: readonly GnbSection[] = [
 // ============================================================================
 
 function BuildingSelector(): React.JSX.Element {
-  const { user } = useAuthStore();
+  const { user, setAuth } = useAuthStore();
   const { currentBuilding, currentCompany, setContext } = useTenantStore();
   const { buildings } = useUserBuildings(user?.userId);
+
+  // 빌딩 전환 시 토큰 갱신 처리
+  const handleBuildingSwitch = async (buildingId: number, buildingName: string): Promise<void> => {
+    try {
+      // 백엔드에서 새 토큰 발급
+      const response = await fetch("/api/auth/token", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ buildingId }),
+        credentials: "include", // 쿠키 자동 전송
+      });
+
+      if (!response.ok) {
+        // 토큰 갱신 실패 - 컨텍스트만 변경 (폴백)
+        setContext(
+          { id: currentCompany?.id ?? "", name: currentCompany?.name ?? "" },
+          { id: String(buildingId), name: buildingName }
+        );
+        return;
+      }
+
+      const data = await response.json();
+
+      if (data.accessToken && data.user) {
+        // 토큰 갱신 성공 - auth 상태 업데이트 후 컨텍스트 변경
+        setAuth(data.accessToken, data.user);
+        setContext(
+          { id: currentCompany?.id ?? "", name: currentCompany?.name ?? "" },
+          { id: String(buildingId), name: buildingName }
+        );
+      } else {
+        // 응답 형식 오류 - 컨텍스트만 변경 (폴백)
+        setContext(
+          { id: currentCompany?.id ?? "", name: currentCompany?.name ?? "" },
+          { id: String(buildingId), name: buildingName }
+        );
+      }
+    } catch {
+      // 네트워크 오류 - 컨텍스트만 변경 (폴백)
+      setContext(
+        { id: currentCompany?.id ?? "", name: currentCompany?.name ?? "" },
+        { id: String(buildingId), name: buildingName }
+      );
+    }
+  };
 
   return (
     <DropdownMenu>
@@ -112,12 +157,7 @@ function BuildingSelector(): React.JSX.Element {
               <DropdownMenuItem
                 key={b.buildingId}
                 className="gap-2.5"
-                onClick={() =>
-                  setContext(
-                    { id: currentCompany?.id ?? "", name: currentCompany?.name ?? "" },
-                    { id: String(b.buildingId), name: b.buildingName }
-                  )
-                }
+                onClick={() => void handleBuildingSwitch(b.buildingId, b.buildingName)}
               >
                 <div
                   className={cn(
@@ -317,9 +357,14 @@ export function Header({ onMobileMenuClick }: HeaderProps): React.JSX.Element {
   }, [setCommandPaletteOpen]);
 
   const handleLogout = async (): Promise<void> => {
-    await fetch("/api/auth/logout", { method: "POST" });
-    clearAuth();
-    router.push("/login");
+    try {
+      await fetch("/api/auth/logout", { method: "POST" });
+    } catch {
+      // API 실패해도 클라이언트 상태 정리
+    } finally {
+      clearAuth();
+      router.push("/login");
+    }
   };
 
   const activeSection =

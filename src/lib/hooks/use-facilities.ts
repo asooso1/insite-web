@@ -50,6 +50,7 @@ export function useFacilityList(
   return useQuery({
     queryKey: facilityKeys.list(params),
     queryFn: () => getFacilityList(params),
+    staleTime: 30 * 1000, // 30초 - 목록 쿼리 표준
   });
 }
 
@@ -61,6 +62,7 @@ export function useFacilityListByBuilding(buildingId: number) {
     queryKey: facilityKeys.listByBuilding(buildingId),
     queryFn: () => getFacilityListByBuilding(buildingId),
     enabled: buildingId > 0,
+    staleTime: 30 * 1000, // 30초 - 목록 쿼리 표준
   });
 }
 
@@ -72,6 +74,7 @@ export function useFacilityView(id: number) {
     queryKey: facilityKeys.detail(id),
     queryFn: () => getFacilityView(id),
     enabled: id > 0,
+    staleTime: 60 * 1000, // 1분 - 상세 쿼리 표준
   });
 }
 
@@ -83,6 +86,7 @@ export function useFacilityNos(buildingId: number) {
     queryKey: facilityKeys.facilityNos(buildingId),
     queryFn: () => getFacilityNos(buildingId),
     enabled: buildingId > 0,
+    staleTime: 30 * 1000, // 30초 - 목록 쿼리 표준
   });
 }
 
@@ -98,6 +102,7 @@ export function useFacilityWorkOrderList(params: {
     queryKey: facilityKeys.workOrders(params.facilityId, params.page, params.size),
     queryFn: () => getFacilityWorkOrderList(params),
     enabled: params.facilityId > 0,
+    staleTime: 30 * 1000, // 30초 - 목록 쿼리 표준
   });
 }
 
@@ -110,6 +115,7 @@ export function useFacilityHistoryList(
   return useQuery({
     queryKey: facilityKeys.history(params),
     queryFn: () => getFacilityHistoryList(params),
+    staleTime: 30 * 1000, // 30초 - 목록 쿼리 표준
   });
 }
 
