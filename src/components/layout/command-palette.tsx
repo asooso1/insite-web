@@ -140,7 +140,7 @@ export function CommandPalette(): ReactNode {
           <CommandGroup heading="메뉴">
             {flatMenus.map((item) => {
               const Icon = getMenuIcon(item.icon);
-              const href = mapMenuUrl(item.url);
+              const href = item.insiteUrl ?? mapMenuUrl(item.url);
               return (
                 <CommandItem
                   key={item.id}

@@ -182,7 +182,8 @@ function SidebarMenuItem({
   depth?: number;
 }): React.JSX.Element {
   const Icon = getMenuIcon(item.icon);
-  const mappedUrl = mapMenuUrl(item.url);
+  // insiteUrl(수동 매핑)이 있으면 우선, 없으면 하드코딩 변환 폴백
+  const mappedUrl = item.insiteUrl ?? mapMenuUrl(item.url);
   const hasChildren =
     item.children.length > 0 && item.children.some((c) => c.use && c.show);
   const isActive = pathname.startsWith(mappedUrl);

@@ -17,6 +17,11 @@ export interface MenuDTO {
   show: boolean;
   icon: string;
   children: MenuDTO[];
+  /**
+   * insite-web 경로 (수동 매핑 또는 백엔드 menu_insite_mapping 테이블에서 설정)
+   * 존재하면 mapMenuUrl() 하드코딩 변환보다 우선 적용
+   */
+  insiteUrl?: string;
 }
 
 /**
