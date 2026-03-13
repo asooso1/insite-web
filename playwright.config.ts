@@ -1,4 +1,5 @@
 import { defineConfig, devices } from "@playwright/test";
+import { AUTH_STORAGE_PATH } from "./e2e/constants";
 
 /**
  * Playwright E2E 테스트 설정
@@ -11,11 +12,14 @@ export default defineConfig({
   retries: process.env.CI ? 2 : 0,
   workers: process.env.CI ? 1 : undefined,
   reporter: "html",
+  globalSetup: "./e2e/global-setup.ts",
 
   use: {
     baseURL: "http://localhost:3000",
     trace: "on-first-retry",
     screenshot: "only-on-failure",
+    // 전역 기본값: 인증 상태 사용 (auth-redirect.spec.ts는 test.use로 오버라이드)
+    storageState: AUTH_STORAGE_PATH,
   },
 
   projects: [
