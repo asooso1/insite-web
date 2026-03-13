@@ -58,6 +58,19 @@
 | S-5 | 메뉴 API URL 파라미터 주입 | `menus/route.ts` | ✅ |
 | S-6 | 로그인 Rate Limiting 미적용 | `login/route.ts` | ✅ |
 
+### 🟡 중기 수정 (Medium)
+
+| # | 이슈 | 파일 | 상태 |
+|---|------|------|------|
+| I-8 | 파일 다운로드 DOM 정리 누락 | `use-work-orders.ts` | ✅ |
+| I-9 | TenantStore localStorage 보안 주석 | `tenant-store.ts` | ✅ |
+| I-10 | 사이드바 ARIA 속성 누락 | `sidebar.tsx` | ✅ |
+| S-7 | CORS Origin 검증 부재 | `middleware.ts` | ✅ |
+| S-8 | 로그인 폼 whitespace 미제거 | `validations/auth.ts` | ✅ |
+| S-9/I-5 | 미들웨어 JWT 만료 미검증 | `middleware.ts` | ✅ |
+| S-10 | CSP 헤더 미설정 | `next.config.ts` | ✅ |
+| S-11 | console.error 프로덕션 노출 | `error-handler.ts` | ✅ |
+
 ---
 
 ## Phase 0: 사전 준비 및 분석

@@ -50,8 +50,10 @@ const ERROR_HANDLERS: Record<string, (error: ApiErrorResponse) => void> = {
   },
   E00500: (error) => {
     toast.error("서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
-    // Sentry 보고 (향후 추가)
-    console.error("서버 오류:", error);
+    // 개발 환경에서만 로그 출력 (프로덕션은 Sentry 등 모니터링 서비스 연동 예정)
+    if (process.env.NODE_ENV === "development") {
+      console.error("서버 오류:", error);
+    }
   },
   E01003: () => {
     // 조회 데이터 없음 - UI에서 빈 상태로 처리
@@ -75,7 +77,9 @@ export function handleApiError(error: ApiErrorResponse | Error): void {
   } else {
     // 일반 에러
     toast.error("오류가 발생했습니다.");
-    console.error("에러:", error);
+    if (process.env.NODE_ENV === "development") {
+      console.error("에러:", error);
+    }
   }
 }
 

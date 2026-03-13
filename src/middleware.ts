@@ -57,6 +57,23 @@ const ADMIN_PATHS = ["/admin"];
 const ADMIN_ROLES = ["ROLE_SYSTEM_ADMIN", "ROLE_LABS_SYSTEM_ADMIN"];
 
 /**
+ * JWT 만료 여부 체크 (서명 미검증 - Edge Runtime 클라이언트사이드)
+ * - 빠른 만료 리다이렉트용. 실제 보안 검증은 csp-was API에서 수행
+ */
+function isTokenExpired(token: string): boolean {
+  try {
+    const parts = token.split(".");
+    if (parts.length !== 3) return true;
+    const base64 = (parts[1] ?? "").replace(/-/g, "+").replace(/_/g, "/");
+    const payload = JSON.parse(atob(base64)) as { exp?: number };
+    if (typeof payload.exp !== "number") return false;
+    return Date.now() >= payload.exp * 1000;
+  } catch {
+    return true;
+  }
+}
+
+/**
  * Base64 디코딩 (Edge Runtime 호환)
  */
 function base64Decode(str: string): Uint8Array {
@@ -99,6 +116,26 @@ function getJWTSecret(): Uint8Array | null {
   const secret = process.env.JWT_SECRET;
   if (!secret) return null;
   return base64Decode(secret);
+}
+
+/**
+ * CORS Origin 검증 (Next.js API 라우트 전용)
+ * - Origin 헤더가 없으면 허용 (서버사이드 호출 또는 같은 출처)
+ * - 허용된 출처 목록: ALLOWED_ORIGINS 환경변수 (쉼표 구분) 또는 요청 호스트
+ */
+function isCorsAllowed(request: NextRequest): boolean {
+  const origin = request.headers.get("origin");
+  if (!origin) return true; // Origin 없음 = 서버사이드 또는 동일 출처
+
+  const host = request.headers.get("host");
+  const proto = request.nextUrl.protocol;
+  const ownOrigin = `${proto}//${host}`;
+
+  const allowedOrigins = process.env.ALLOWED_ORIGINS
+    ? process.env.ALLOWED_ORIGINS.split(",").map((o) => o.trim())
+    : [];
+
+  return origin === ownOrigin || allowedOrigins.includes(origin);
 }
 
 /**
@@ -148,6 +185,11 @@ export async function middleware(request: NextRequest): Promise<NextResponse> {
     return NextResponse.next();
   }
 
+  // API 라우트 CORS 검증 (외부 출처 요청 차단)
+  if (pathname.startsWith("/api/") && !isCorsAllowed(request)) {
+    return NextResponse.json({ code: "E00403", message: "허용되지 않은 출처입니다." }, { status: 403 });
+  }
+
   // Authorization 헤더 또는 쿠키에서 토큰 추출
   // auth-token 쿠키에 csp-was authToken 저장 (단일 토큰, 1시간 유효)
   const authHeader = request.headers.get("authorization");
@@ -162,8 +204,14 @@ export async function middleware(request: NextRequest): Promise<NextResponse> {
     return NextResponse.redirect(loginUrl);
   }
 
-  // csp-was JWT 검증은 API 호출 시 백엔드에서 처리
-  // 미들웨어는 쿠키 존재 여부만 확인 (토큰 갱신 미구현 - 추후 구현 예정)
+  // JWT 만료 체크 (서명 미검증 - 빠른 UX 리다이렉트용)
+  // 실제 API 데이터 보안은 csp-was JWT Bearer 검증이 담당
+  if (isTokenExpired(token)) {
+    const loginUrl = new URL("/login", request.url);
+    loginUrl.searchParams.set("redirect", pathname);
+    return NextResponse.redirect(loginUrl);
+  }
+
   return NextResponse.next();
 }
 
