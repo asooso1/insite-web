@@ -70,6 +70,28 @@
 | S-9/I-5 | 미들웨어 JWT 만료 미검증 | `middleware.ts` | ✅ |
 | S-10 | CSP 헤더 미설정 | `next.config.ts` | ✅ |
 | S-11 | console.error 프로덕션 노출 | `error-handler.ts` | ✅ |
+| I-11 | 메뉴 URL 매핑 DB 연동 (csp-was + menu_insite_mapping) | `menus/route.ts`, `csp-was MenuService` | ✅ |
+
+### I-11 완료 내역 (2026-03-13)
+
+**csp-was 변경사항:**
+- `V28__menu_insite_mapping.sql` — `menu_insite_mapping` 테이블 생성 + `insite_app` DB 계정 생성
+  - `insite_app`: 기존 csp 테이블 SELECT만 / `menu_insite_mapping` CRUD 허용
+  - `insite_app` 비밀번호: `InSite@2024!` (`.env.local`에 `DB_INSITE_APP_PASSWORD` 추가 필요)
+- `MenuInsiteMapping.java` — JPA 엔티티 생성
+- `MenuInsiteMappingRepository.java` — Spring JPA 리포지토리 (`findAllAsMap()` 편의 메서드 포함)
+- `MenuDTO.java` — `insiteUrl` 필드 추가 (nullable String)
+- `MenuService.java` — `getMenuTree()` / `getMenuListLikeKeyword()` 내 `applyInsiteMappings()` 호출
+
+**insite-web 변경사항:**
+- `src/app/api/services/menus/route.ts` — 파일 기반 `mergeManualMappings()` 제거, 백엔드 응답 그대로 반환
+- 사이드바/커맨드팔레트: `item.insiteUrl ?? mapMenuUrl(item.url)` fallback 패턴 유지
+
+**추후 구현 필요:**
+- insite-web Admin UI (`/settings/menu-management`) — menu_insite_mapping CRUD
+  - 현재: `public/menu-mappings.json` 파일 수동 편집 방식
+  - 목표: Admin UI에서 메뉴 선택 → insite URL 입력 → DB 저장
+  - 저장 후 캐시 무효화: `revalidateTag('insite-menu-mappings')` + csp-was Redis 캐시 evict API
 
 ---
 

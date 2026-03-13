@@ -5,7 +5,7 @@ import { NuqsAdapter } from "nuqs/adapters/next/app";
 import { ThemeProvider } from "./theme-provider";
 import { QueryProvider } from "./query-provider";
 import { Toaster } from "@/components/ui/sonner";
-import { AuthInitializer } from "./auth-initializer";
+import { AuthInitializer } from "@/components/auth/auth-initializer";
 
 interface ProvidersProps {
   children: React.ReactNode;

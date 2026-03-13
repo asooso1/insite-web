@@ -67,3 +67,8 @@ prisma/*.db-journal
 
 # MCP 서버 설정 (DB 자격증명 포함)
 .mcp.json
+
+# Playwright E2E
+/e2e/.auth/
+/playwright-report/
+/test-results/
