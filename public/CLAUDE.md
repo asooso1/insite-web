@@ -7,5 +7,5 @@
 
 | ID | Time | T | Title | Read |
 |----|------|---|-------|------|
-| #1866 | 11:02 AM | ✅ | Comprehensive Security and Implementation Fixes Committed | ~659 |
+| #1841 | 8:31 AM | 🔵 | Current menu-overrides.json Structure | ~287 |
 </claude-mem-context>

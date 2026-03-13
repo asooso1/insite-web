@@ -17,4 +17,11 @@
 | #1111 | 9:18 AM | ✅ | Revised CLAUDE.md optimization draft addressing API pattern inconsistencies | ~473 |
 | #1110 | 9:16 AM | ⚖️ | Revised CLAUDE.md optimization approved after addressing critic feedback | ~592 |
 | #1106 | 9:14 AM | 🔵 | Architect review identified API pattern documentation inaccuracies | ~639 |
+
+### Mar 11, 2026
+
+| ID | Time | T | Title | Read |
+|----|------|---|-------|------|
+| #1658 | 2:34 PM | 🔵 | Insite-Web Menu Infrastructure and URL Mapping System | ~646 |
+| #1657 | 2:33 PM | 🔵 | Menu Management API and UI Gaps Identified | ~544 |
 </claude-mem-context>

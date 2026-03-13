@@ -7,5 +7,6 @@
 
 | ID | Time | T | Title | Read |
 |----|------|---|-------|------|
-| #1866 | 11:02 AM | ✅ | Comprehensive Security and Implementation Fixes Committed | ~659 |
+| #1850 | 10:35 AM | 🔴 | Critical Security and Implementation Issues Batch Fix | ~620 |
+| #1847 | 10:25 AM | 🔴 | Added Zod Runtime Validation for JWT Payload in Login Route | ~450 |
 </claude-mem-context>
