@@ -245,20 +245,45 @@ export interface WorkOrderDTO {
 }
 
 /**
- * 작업지시 목록 아이템 DTO
+ * 작업지시 목록 아이템 DTO (csp-was WorkOrderListViewDTO 매핑)
  */
 export interface WorkOrderListDTO {
-  workOrderDTO: WorkOrderDTO;
-  buildingDTO: BuildingDTO;
-  workOrderWriteUserDateDTO: WorkOrderActionDateDTO | null;
-  workOrderIssueUserDateDTO: WorkOrderActionDateDTO | null;
-  workOrderViewUserDateDTO: WorkOrderActionDateDTO | null;
-  workOrderStartUserDateDTO: WorkOrderActionDateDTO | null;
-  workOrderDoneUserDateDTO: WorkOrderActionDateDTO | null;
-  workOrderReqCompleteUserDateDTO: WorkOrderActionDateDTO | null;
-  workOrderApproveUserDateDTO: WorkOrderActionDateDTO | null;
-  workOrderRejectUserDateDTO: WorkOrderActionDateDTO | null;
-  workOrderCancelUserDateDTO: WorkOrderActionDateDTO | null;
+  id: number;
+  name: string;
+
+  buildingId: number;
+  buildingName: string;
+
+  firstClassId: number;
+  firstClassName: string;
+  secondClassId: number;
+  secondClassName: string;
+  secondClassCategoryName: string | null;
+
+  writeUserId: number;
+  writeUserName: string;
+  writerUserRoleName: string | null;
+  writeActionDateTime: string | null;
+
+  buildingUserGroupId: number;
+  buildingUserGroupName: string;
+
+  state: string;
+  stateName: string;
+  stateStyle: string;
+  type: string;
+
+  viewUserId: number;
+  viewUserName: string | null;
+  viewUserRoleName: string | null;
+
+  approveUserId: number;
+  approveUserName: string | null;
+  approveUserRoleName: string | null;
+  approveActionDateTime: string | null;
+
+  tbmTemplateId: number | null;
+  hasTbmTemplate: boolean;
 }
 
 /**
@@ -296,13 +321,14 @@ export interface WorkOrderItemListDTO {
  * 작업지시 검색 조건
  */
 export interface SearchWorkOrderVO {
-  // 기간
-  startDate?: string;
-  endDate?: string;
+  // 기간 (csp-was: termDateFrom/termDateTo/termType)
+  termDateFrom?: string;
+  termDateTo?: string;
+  termType?: "write_date" | "issue_date" | "req_complete_date" | "approve_date";
 
   // 필터
   companyId?: number;
-  regionId?: number;
+  wideAreaId?: number;
   buildingId?: number;
   buildingFloorId?: number;
 
@@ -319,12 +345,12 @@ export interface SearchWorkOrderVO {
   secondClassId?: number;
 
   // 담당
-  chargeAccountId?: number;
+  accountId?: number;
   buildingUserGroupId?: number;
 
   // 검색어
   keyword?: string;
-  searchType?: "name" | "description" | "writer";
+  searchCode?: "title" | "writerAccountName" | "chargeAccountName" | "confirmAccountName";
 
   // 정렬
   sort?: string;

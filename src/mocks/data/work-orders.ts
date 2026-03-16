@@ -131,103 +131,37 @@ function buildWorkOrder(state: WorkOrderState, idx: number): WorkOrderListDTO {
   const secondClass = pick(secondClasses, idx);
   const type = pick(typesList, idx);
   const workName = pick(workNames, idx);
-  const description = pick(descriptions, idx);
   const woId = globalId++;
 
-  const workOrderDTO: WorkOrderListDTO["workOrderDTO"] = {
+  return {
     id: woId,
     name: workName,
+    buildingId: building.id,
+    buildingName: building.name,
     firstClassId: firstClass.id,
     firstClassName: firstClass.name,
     secondClassId: secondClass.id,
     secondClassName: secondClass.name,
     secondClassCategoryName: secondClass.category,
-    type,
-    typeName: typeNames[type],
-    tbmType: null,
-    autoConfirm: false,
-    movieLinkUrl: null,
-    planStartDate: makeDateOffset(30 - idx),
-    planEndDate: makeDateOffset(20 - idx),
-    deadline: 7,
-    reqCompleteDate: makeDateOffset(15 - idx),
-    doneDate: state === WorkOrderState.COMPLETE ? makeDateOffset(10) : null,
-    description,
+    writeUserId: writer.id,
+    writeUserName: writer.name,
+    writerUserRoleName: writer.role,
+    writeActionDateTime: makeDateOffset(60 - idx),
+    buildingUserGroupId: 10 + (idx % 5),
+    buildingUserGroupName: `${building.name} 시설팀`,
     state,
     stateName: stateNames[state],
     stateStyle: "inProgress",
-    buildingUserGroupId: 10 + (idx % 5),
-    buildingUserGroupName: `${building.name} 시설팀`,
-    sendPush: true,
-    vocSendPush: false,
-    autoIssued: false,
-    writerId: writer.id,
-    writerName: writer.name,
-    writerCompanyName: writer.company,
-    writerRoleName: writer.role,
-    writerUserId: writer.userId,
-    writeDate: makeDateOffset(60 - idx),
-    lastModifierId: writer.id,
-    lastModifierName: writer.name,
-    lastModifierCompanyName: writer.company,
-    lastModifierRoleName: writer.role,
-    lastModifierUserId: writer.userId,
-    lastModifyDate: makeDateOffset(40 - idx),
-    buildingId: building.id,
-    buildingName: building.name,
-    buildingFloorId: 100 + (idx % 10),
-    buildingFloorName: `${(idx % 20) + 1}층`,
-    buildingFloorZoneId: 200 + (idx % 5),
-    buildingFloorZoneName: `A구역`,
-    facilityId: 300 + idx,
-    facilityName: `시설-${idx + 1}`,
-    templateId: 0,
-    workOrderFileDTOs: [],
-    workOrderResultDTOs: [],
-    workOrderChargeAccountDTOs: [],
-    workOrderCcAccountDTOs: [],
-    workOrderApproveAccountDTOs: [],
-    workOrderActionDateDTOs: [],
-  };
-
-  const writeDTO = makeActionDate(WorkOrderActionType.WRITE, woId * 10 + 1, idx);
-  const issueDTO =
-    state !== WorkOrderState.WRITE
-      ? makeActionDate(WorkOrderActionType.ISSUE, woId * 10 + 2, idx)
-      : null;
-  const startDTO =
-    ([WorkOrderState.PROCESSING, WorkOrderState.REQ_COMPLETE, WorkOrderState.COMPLETE] as WorkOrderState[]).includes(state)
-      ? makeActionDate(WorkOrderActionType.START, woId * 10 + 3, idx)
-      : null;
-  const doneDTO =
-    ([WorkOrderState.REQ_COMPLETE, WorkOrderState.COMPLETE] as WorkOrderState[]).includes(state)
-      ? makeActionDate(WorkOrderActionType.DONE, woId * 10 + 4, idx)
-      : null;
-  const reqCompleteDTO =
-    state === WorkOrderState.REQ_COMPLETE
-      ? makeActionDate(WorkOrderActionType.REQ_COMPLETE, woId * 10 + 5, idx)
-      : null;
-  const approveDTO =
-    state === WorkOrderState.COMPLETE
-      ? makeActionDate(WorkOrderActionType.APPROVE, woId * 10 + 6, idx)
-      : null;
-  const cancelDTO =
-    state === WorkOrderState.CANCEL
-      ? makeActionDate(WorkOrderActionType.CANCEL, woId * 10 + 7, idx)
-      : null;
-
-  return {
-    workOrderDTO,
-    buildingDTO: building,
-    workOrderWriteUserDateDTO: writeDTO,
-    workOrderIssueUserDateDTO: issueDTO,
-    workOrderViewUserDateDTO: null,
-    workOrderStartUserDateDTO: startDTO,
-    workOrderDoneUserDateDTO: doneDTO,
-    workOrderReqCompleteUserDateDTO: reqCompleteDTO,
-    workOrderApproveUserDateDTO: approveDTO,
-    workOrderRejectUserDateDTO: null,
-    workOrderCancelUserDateDTO: cancelDTO,
+    type,
+    viewUserId: 0,
+    viewUserName: null,
+    viewUserRoleName: null,
+    approveUserId: 0,
+    approveUserName: null,
+    approveUserRoleName: null,
+    approveActionDateTime: null,
+    tbmTemplateId: null,
+    hasTbmTemplate: false,
   };
 }
 

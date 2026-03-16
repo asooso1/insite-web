@@ -26,19 +26,19 @@ export async function getWorkOrderList(
 ): Promise<WorkOrderListResponse> {
   const searchParams = new URLSearchParams();
 
-  // 기간
-  if (params.startDate) searchParams.set("startDate", params.startDate);
-  if (params.endDate) searchParams.set("endDate", params.endDate);
+  // 기간 (null이면 csp-was NPE 발생 → 항상 전송)
+  searchParams.set("termDateFrom", params.termDateFrom ?? "");
+  searchParams.set("termDateTo", params.termDateTo ?? "");
+  if (params.termType) searchParams.set("termType", params.termType);
 
   // 필터
   if (params.companyId) searchParams.set("companyId", String(params.companyId));
-  if (params.regionId) searchParams.set("regionId", String(params.regionId));
-  if (params.buildingId) searchParams.set("buildingId", String(params.buildingId));
+  if (params.wideAreaId) searchParams.set("wideAreaId", String(params.wideAreaId));
   if (params.buildingFloorId)
     searchParams.set("buildingFloorId", String(params.buildingFloorId));
 
-  // 상태
-  if (params.state) searchParams.set("state", params.state);
+  // 상태 (null이면 csp-was NPE 발생 → 항상 전송)
+  searchParams.set("state", params.state ?? "");
   if (params.states) params.states.forEach((s) => searchParams.append("states", s));
 
   // 유형
@@ -52,14 +52,14 @@ export async function getWorkOrderList(
     searchParams.set("secondClassId", String(params.secondClassId));
 
   // 담당
-  if (params.chargeAccountId)
-    searchParams.set("chargeAccountId", String(params.chargeAccountId));
+  if (params.accountId)
+    searchParams.set("accountId", String(params.accountId));
   if (params.buildingUserGroupId)
     searchParams.set("buildingUserGroupId", String(params.buildingUserGroupId));
 
   // 검색어
   if (params.keyword) searchParams.set("keyword", params.keyword);
-  if (params.searchType) searchParams.set("searchType", params.searchType);
+  if (params.searchCode) searchParams.set("searchCode", params.searchCode);
 
   // 정렬
   if (params.sort) searchParams.set("sort", params.sort);
@@ -92,9 +92,25 @@ export async function getWorkOrderStatePerCount(
 ): Promise<Record<string, number>> {
   const searchParams = new URLSearchParams();
 
-  if (params.startDate) searchParams.set("startDate", params.startDate);
-  if (params.endDate) searchParams.set("endDate", params.endDate);
-  if (params.buildingId) searchParams.set("buildingId", String(params.buildingId));
+  // 기간 (null이면 csp-was NPE 발생 → 항상 전송)
+  searchParams.set("termDateFrom", params.termDateFrom ?? "");
+  searchParams.set("termDateTo", params.termDateTo ?? "");
+  if (params.termType) searchParams.set("termType", params.termType);
+  if (params.companyId) searchParams.set("companyId", String(params.companyId));
+  if (params.wideAreaId) searchParams.set("wideAreaId", String(params.wideAreaId));
+  if (params.buildingFloorId)
+    searchParams.set("buildingFloorId", String(params.buildingFloorId));
+  if (params.type) searchParams.set("type", params.type);
+  if (params.types) params.types.forEach((t) => searchParams.append("types", t));
+  if (params.firstClassId)
+    searchParams.set("firstClassId", String(params.firstClassId));
+  if (params.secondClassId)
+    searchParams.set("secondClassId", String(params.secondClassId));
+  if (params.accountId) searchParams.set("accountId", String(params.accountId));
+  if (params.buildingUserGroupId)
+    searchParams.set("buildingUserGroupId", String(params.buildingUserGroupId));
+  if (params.keyword) searchParams.set("keyword", params.keyword);
+  if (params.searchCode) searchParams.set("searchCode", params.searchCode);
 
   return apiClient.get<Record<string, number>>(
     `/open/workOrder/workOrderStatePerCount?${searchParams.toString()}`
@@ -312,11 +328,28 @@ export async function downloadWorkOrderListExcel(
 ): Promise<Blob> {
   const searchParams = new URLSearchParams();
 
-  if (params.startDate) searchParams.set("startDate", params.startDate);
-  if (params.endDate) searchParams.set("endDate", params.endDate);
-  if (params.buildingId) searchParams.set("buildingId", String(params.buildingId));
-  if (params.state) searchParams.set("state", params.state);
+  // 기간 (null이면 csp-was NPE 발생 → 항상 전송)
+  searchParams.set("termDateFrom", params.termDateFrom ?? "");
+  searchParams.set("termDateTo", params.termDateTo ?? "");
+  if (params.termType) searchParams.set("termType", params.termType);
+  if (params.companyId) searchParams.set("companyId", String(params.companyId));
+  if (params.wideAreaId) searchParams.set("wideAreaId", String(params.wideAreaId));
+  if (params.buildingFloorId)
+    searchParams.set("buildingFloorId", String(params.buildingFloorId));
+  // 상태 (null이면 csp-was NPE 발생 → 항상 전송)
+  searchParams.set("state", params.state ?? "");
+  if (params.states) params.states.forEach((s) => searchParams.append("states", s));
   if (params.type) searchParams.set("type", params.type);
+  if (params.types) params.types.forEach((t) => searchParams.append("types", t));
+  if (params.firstClassId)
+    searchParams.set("firstClassId", String(params.firstClassId));
+  if (params.secondClassId)
+    searchParams.set("secondClassId", String(params.secondClassId));
+  if (params.accountId) searchParams.set("accountId", String(params.accountId));
+  if (params.buildingUserGroupId)
+    searchParams.set("buildingUserGroupId", String(params.buildingUserGroupId));
+  if (params.keyword) searchParams.set("keyword", params.keyword);
+  if (params.searchCode) searchParams.set("searchCode", params.searchCode);
 
   return apiClient.getBlob(
     `/api/workOrder/workOrderListExcelDownload?${searchParams.toString()}`

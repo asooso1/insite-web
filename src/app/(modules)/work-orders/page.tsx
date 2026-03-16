@@ -22,12 +22,11 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { DataTable } from "@/components/data-display/data-table";
 import { StatusBadge } from "@/components/data-display/status-badge";
 import { EmptyState } from "@/components/data-display/empty-state";
 import { PageHeader } from "@/components/common/page-header";
-import { Input } from "@/components/ui/input";
+import { FilterBar, type FilterDef } from "@/components/common/filter-bar";
 
 import {
   useWorkOrderList,
@@ -39,6 +38,7 @@ import {
   WorkOrderState,
   WorkOrderStateLabel,
   WorkOrderStateStyle,
+  WorkOrderType,
   WorkOrderTypeLabel,
   type WorkOrderListDTO,
   type SearchWorkOrderVO,
@@ -46,18 +46,62 @@ import {
 import type { ColumnDef, Row } from "@tanstack/react-table";
 
 // ============================================================================
-// 상태 필터 탭
+// 필터 정의
 // ============================================================================
 
-const STATE_TABS = [
-  { value: "", label: "전체" },
-  { value: WorkOrderState.WRITE, label: "작성" },
-  { value: WorkOrderState.ISSUE, label: "발행" },
-  { value: WorkOrderState.PROCESSING, label: "처리중" },
-  { value: WorkOrderState.REQ_COMPLETE, label: "완료요청" },
-  { value: WorkOrderState.COMPLETE, label: "완료" },
-  { value: WorkOrderState.CANCEL, label: "취소" },
-] as const;
+const INITIAL_FILTERS = {
+  state: "",
+  termType: "write_date",
+  termDateFrom: "",
+  termDateTo: "",
+  searchCode: "title",
+  keyword: "",
+};
+
+const FILTER_DEFS: FilterDef[] = [
+  {
+    type: "tabs",
+    key: "state",
+    options: [
+      { value: "", label: "전체" },
+      { value: WorkOrderState.WRITE, label: "작성" },
+      { value: WorkOrderState.ISSUE, label: "발행" },
+      { value: WorkOrderState.PROCESSING, label: "처리중" },
+      { value: WorkOrderState.REQ_COMPLETE, label: "완료요청" },
+      { value: WorkOrderState.COMPLETE, label: "완료" },
+      { value: WorkOrderState.CANCEL, label: "취소" },
+    ],
+  },
+  {
+    type: "select",
+    key: "termType",
+    options: [
+      { value: "write_date", label: "작성일자" },
+      { value: "issue_date", label: "발행일자" },
+      { value: "approve_date", label: "완료일자" },
+    ],
+  },
+  {
+    type: "date-range",
+    fromKey: "termDateFrom",
+    toKey: "termDateTo",
+  },
+  {
+    type: "select",
+    key: "searchCode",
+    options: [
+      { value: "title", label: "업무명" },
+      { value: "writerAccountName", label: "작성자" },
+      { value: "chargeAccountName", label: "처리자" },
+      { value: "confirmAccountName", label: "승인자" },
+    ],
+  },
+  {
+    type: "search",
+    key: "keyword",
+    placeholder: "검색어를 입력하세요",
+  },
+];
 
 // ============================================================================
 // 컬럼 정의
@@ -93,97 +137,84 @@ function useColumns(): ColumnDef<WorkOrderListDTO>[] {
         size: 40,
       },
       {
-        accessorKey: "workOrderDTO.id",
+        accessorKey: "id",
         header: "No",
         cell: ({ row }) => (
-          <span className="text-muted-foreground">
-            {row.original.workOrderDTO.id}
-          </span>
+          <span className="text-muted-foreground">{row.original.id}</span>
         ),
         size: 80,
       },
       {
-        accessorKey: "workOrderDTO.state",
+        accessorKey: "state",
         header: "상태",
         cell: ({ row }) => {
-          const state = row.original.workOrderDTO.state;
+          const state = row.original.state;
           return (
             <StatusBadge
-              status={WorkOrderStateStyle[state]}
-              label={WorkOrderStateLabel[state]}
+              status={WorkOrderStateStyle[state as WorkOrderState]}
+              label={WorkOrderStateLabel[state as WorkOrderState]}
             />
           );
         },
         size: 100,
       },
       {
-        accessorKey: "workOrderDTO.name",
+        accessorKey: "name",
         header: "작업명",
         cell: ({ row }) => (
           <button
-            onClick={() =>
-              router.push(`/work-orders/${row.original.workOrderDTO.id}`)
-            }
+            onClick={() => router.push(`/work-orders/${row.original.id}`)}
             className="text-left font-medium text-primary hover:underline"
           >
-            {row.original.workOrderDTO.name}
+            {row.original.name}
           </button>
         ),
         size: 250,
       },
       {
-        accessorKey: "workOrderDTO.type",
+        accessorKey: "type",
         header: "유형",
         cell: ({ row }) => (
-          <span>{WorkOrderTypeLabel[row.original.workOrderDTO.type]}</span>
+          <span>{WorkOrderTypeLabel[row.original.type as WorkOrderType]}</span>
         ),
         size: 80,
       },
       {
-        accessorKey: "workOrderDTO.firstClassName",
+        accessorKey: "firstClassName",
         header: "작업 구분",
         cell: ({ row }) => (
           <span>
-            {row.original.workOrderDTO.firstClassName} &gt;{" "}
-            {row.original.workOrderDTO.secondClassName}
+            {row.original.firstClassName} &gt; {row.original.secondClassName}
           </span>
         ),
         size: 200,
       },
       {
-        accessorKey: "buildingDTO.name",
+        accessorKey: "buildingName",
         header: "빌딩",
-        cell: ({ row }) => <span>{row.original.buildingDTO.name}</span>,
+        cell: ({ row }) => <span>{row.original.buildingName}</span>,
         size: 150,
       },
       {
-        accessorKey: "workOrderDTO.buildingUserGroupName",
+        accessorKey: "buildingUserGroupName",
         header: "작업팀",
+        cell: ({ row }) => <span>{row.original.buildingUserGroupName}</span>,
+        size: 120,
+      },
+      {
+        accessorKey: "writeActionDateTime",
+        header: "작성일",
         cell: ({ row }) => (
-          <span>{row.original.workOrderDTO.buildingUserGroupName}</span>
+          <span className="text-sm">
+            {row.original.writeActionDateTime?.split(" ")[0] ?? "-"}
+          </span>
         ),
         size: 120,
       },
       {
-        accessorKey: "workOrderDTO.planStartDate",
-        header: "작업예정일",
-        cell: ({ row }) => {
-          const start = row.original.workOrderDTO.planStartDate;
-          const end = row.original.workOrderDTO.planEndDate;
-          if (!start || start === "-") return <span>-</span>;
-          return (
-            <span className="text-sm">
-              {start.split(" ")[0]}
-              {end && end !== "-" && ` ~ ${end.split(" ")[0]}`}
-            </span>
-          );
-        },
-        size: 180,
-      },
-      {
-        accessorKey: "workOrderDTO.writerName",
+        accessorKey: "writeUserName",
         header: "작성자",
-        cell: ({ row }) => <span>{row.original.workOrderDTO.writerName}</span>,
+        cell: ({ row }) => <span>{row.original.writeUserName}</span>,
         size: 100,
       },
       {
@@ -203,7 +234,7 @@ function useColumns(): ColumnDef<WorkOrderListDTO>[] {
 
 function RowActions({ row }: { row: Row<WorkOrderListDTO> }) {
   const router = useRouter();
-  const workOrder = row.original.workOrderDTO;
+  const item = row.original;
 
   return (
     <DropdownMenu>
@@ -215,13 +246,13 @@ function RowActions({ row }: { row: Row<WorkOrderListDTO> }) {
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuItem
-          onClick={() => router.push(`/work-orders/${workOrder.id}`)}
+          onClick={() => router.push(`/work-orders/${item.id}`)}
         >
           <Eye className="mr-2 h-4 w-4" />
           상세 보기
         </DropdownMenuItem>
         <DropdownMenuItem
-          onClick={() => router.push(`/work-orders/${workOrder.id}/edit`)}
+          onClick={() => router.push(`/work-orders/${item.id}/edit`)}
         >
           수정
         </DropdownMenuItem>
@@ -230,8 +261,8 @@ function RowActions({ row }: { row: Row<WorkOrderListDTO> }) {
           <Copy className="mr-2 h-4 w-4" />
           복사
         </DropdownMenuItem>
-        {workOrder.state !== WorkOrderState.CANCEL &&
-          workOrder.state !== WorkOrderState.COMPLETE && (
+        {item.state !== WorkOrderState.CANCEL &&
+          item.state !== WorkOrderState.COMPLETE && (
             <DropdownMenuItem className="text-destructive">
               <Ban className="mr-2 h-4 w-4" />
               취소
@@ -249,21 +280,33 @@ function RowActions({ row }: { row: Row<WorkOrderListDTO> }) {
 export default function WorkOrderListPage() {
   const router = useRouter();
 
-  // 로컬 상태 (URL 동기화는 추후 nuqs 셋업 후 적용)
   const [page, setPage] = useState(0);
   const [size] = useState(20);
-  const [state, setState] = useState<string>("");
-  const [keyword, setKeyword] = useState("");
+  const [filters, setFilters] = useState(INITIAL_FILTERS);
+
+  const handleFilterChange = useCallback((key: string, value: string) => {
+    setFilters((prev) => ({ ...prev, [key]: value }));
+    setPage(0);
+  }, []);
+
+  const handleFilterReset = useCallback(() => {
+    setFilters(INITIAL_FILTERS);
+    setPage(0);
+  }, []);
 
   // 검색 파라미터
   const searchParams: SearchWorkOrderVO & { page: number; size: number } = useMemo(
     () => ({
       page,
       size,
-      state: (state as WorkOrderState) || undefined,
-      keyword: keyword || undefined,
+      state: (filters.state as WorkOrderState) || undefined,
+      termType: filters.termType as SearchWorkOrderVO["termType"],
+      termDateFrom: filters.termDateFrom || undefined,
+      termDateTo: filters.termDateTo || undefined,
+      searchCode: filters.searchCode as SearchWorkOrderVO["searchCode"],
+      keyword: filters.keyword || undefined,
     }),
-    [page, size, state, keyword]
+    [page, size, filters]
   );
 
   // 데이터 조회
@@ -282,17 +325,6 @@ export default function WorkOrderListPage() {
   // 컬럼
   const columns = useColumns();
 
-  // 핸들러
-  const handleSearch = useCallback((value: string) => {
-    setKeyword(value);
-    setPage(0);
-  }, []);
-
-  const handleStateChange = useCallback((value: string) => {
-    setState(value);
-    setPage(0);
-  }, []);
-
   const handlePageChange = useCallback((newPage: number) => {
     setPage(newPage);
   }, []);
@@ -302,7 +334,7 @@ export default function WorkOrderListPage() {
   }, [downloadExcel, searchParams]);
 
   const handleApproveSelected = useCallback(() => {
-    const ids = selectedRows.map((r) => r.workOrderDTO.id);
+    const ids = selectedRows.map((r) => r.id);
     approveMulti.mutate(ids, {
       onSuccess: () => {
         setSelectedRows([]);
@@ -312,7 +344,7 @@ export default function WorkOrderListPage() {
   }, [selectedRows, approveMulti, refetch]);
 
   const handleCancelSelected = useCallback(() => {
-    const ids = selectedRows.map((r) => r.workOrderDTO.id);
+    const ids = selectedRows.map((r) => r.id);
     cancelMulti.mutate(ids, {
       onSuccess: () => {
         setSelectedRows([]);
@@ -348,28 +380,14 @@ export default function WorkOrderListPage() {
         }
       />
 
-      {/* 상태 탭 */}
-      <Tabs
-        value={state || "ALL"}
-        onValueChange={(v) => handleStateChange(v === "ALL" ? "" : v)}
-      >
-        <TabsList className="h-auto gap-1 bg-transparent p-0 border-b rounded-none w-full justify-start">
-          {STATE_TABS.map((tab) => (
-            <TabsTrigger
-              key={tab.value || "ALL"}
-              value={tab.value || "ALL"}
-              className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none px-4 py-2"
-            >
-              {tab.label}
-            </TabsTrigger>
-          ))}
-        </TabsList>
-      </Tabs>
-
-      {/* 툴바 */}
-      <div className="flex items-center justify-between gap-4">
-        <div className="flex items-center gap-2">
-          {selectedRows.length > 0 && (
+      {/* 필터 */}
+      <FilterBar
+        filters={FILTER_DEFS}
+        values={filters}
+        onChange={handleFilterChange}
+        onReset={handleFilterReset}
+        leftSlot={
+          selectedRows.length > 0 && (
             <>
               <span className="text-sm text-muted-foreground">
                 {selectedRows.length}개 선택됨
@@ -391,15 +409,9 @@ export default function WorkOrderListPage() {
                 일괄 취소
               </Button>
             </>
-          )}
-        </div>
-        <div className="flex items-center gap-2">
-          <Input
-            placeholder="작업명 검색..."
-            value={keyword}
-            onChange={(e) => handleSearch(e.target.value)}
-            className="w-64"
-          />
+          )
+        }
+        rightSlot={
           <Button
             variant="outline"
             size="sm"
@@ -409,8 +421,8 @@ export default function WorkOrderListPage() {
             <Download className="mr-2 h-4 w-4" />
             엑셀
           </Button>
-        </div>
-      </div>
+        }
+      />
 
       {/* 테이블 */}
       <DataTable

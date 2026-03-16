@@ -36,26 +36,26 @@ const STATE_TABS = [
 // ============================================================================
 
 function WorkOrderCard({ item }: { item: WorkOrderListDTO }): React.JSX.Element {
-  const { workOrderDTO, buildingDTO } = item;
   return (
     <Link
-      href={`/m/work-orders/${workOrderDTO.id}`}
+      href={`/m/work-orders/${item.id}`}
       className="flex items-center justify-between px-4 py-3 active:bg-accent"
     >
       <div className="flex-1 min-w-0">
         <div className="flex items-center gap-2 mb-0.5">
           <StatusBadge
-            status={WorkOrderStateStyle[workOrderDTO.state]}
-            label={WorkOrderStateLabel[workOrderDTO.state]}
+            status={WorkOrderStateStyle[item.state as WorkOrderState]}
+            label={WorkOrderStateLabel[item.state as WorkOrderState]}
           />
           <span className="text-xs text-muted-foreground truncate">
-            {WorkOrderTypeLabel[workOrderDTO.type]}
+            {item.type in WorkOrderTypeLabel
+              ? WorkOrderTypeLabel[item.type as keyof typeof WorkOrderTypeLabel]
+              : item.type}
           </span>
         </div>
-        <p className="text-sm font-medium truncate">{workOrderDTO.name}</p>
+        <p className="text-sm font-medium truncate">{item.name}</p>
         <p className="text-xs text-muted-foreground truncate">
-          {buildingDTO.name}
-          {workOrderDTO.buildingFloorName && ` · ${workOrderDTO.buildingFloorName}`}
+          {item.buildingName}
         </p>
       </div>
       <ChevronRight className="ml-2 h-4 w-4 flex-shrink-0 text-muted-foreground" />
@@ -190,7 +190,7 @@ export default function MobileWorkOrderListPage(): React.JSX.Element {
           <>
             <div className="divide-y divide-border rounded-lg border bg-card overflow-hidden">
               {items.map((item) => (
-                <WorkOrderCard key={item.workOrderDTO.id} item={item} />
+                <WorkOrderCard key={item.id} item={item} />
               ))}
             </div>
 
