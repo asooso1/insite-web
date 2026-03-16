@@ -72,3 +72,10 @@ prisma/*.db-journal
 /e2e/.auth/
 /playwright-report/
 /test-results/
+
+# Storybook
+storybook-static/
+*.log
+STORYBOOK_*.txt
+STORYBOOK_*.md
+debug-storybook.log
