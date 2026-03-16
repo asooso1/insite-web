@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { useQueryClient } from "@tanstack/react-query";
 import { usePathname, useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { useTheme } from "next-themes";
@@ -30,7 +31,8 @@ import Link from "next/link";
 import { useUIStore } from "@/lib/stores/ui-store";
 import { useAuthStore } from "@/lib/stores/auth-store";
 import { useTenantStore } from "@/lib/stores/tenant-store";
-import { useUserBuildings } from "@/lib/hooks/use-buildings";
+import { useUserBuildings, useAdminBuildings } from "@/lib/hooks/use-buildings";
+import type { CommonListDTO } from "@/lib/api/building";
 import { cn } from "@/lib/utils";
 
 // ============================================================================
@@ -69,20 +71,53 @@ const GNB_SECTIONS: readonly GnbSection[] = [
 // 서브 컴포넌트: 빌딩 셀렉터
 // ============================================================================
 
+const ADMIN_ROLES = ["ROLE_LABS_SYSTEM_ADMIN", "ROLE_SYSTEM_ADMIN"] as const;
+
 function BuildingSelector(): React.JSX.Element {
   const { user, setAuth } = useAuthStore();
   const { currentBuilding, currentCompany, setContext } = useTenantStore();
-  const { buildings } = useUserBuildings(user?.userId);
+  const queryClient = useQueryClient();
+  const [searchQuery, setSearchQuery] = React.useState("");
 
-  // 빌딩 전환 시 토큰 갱신 처리
+  const isAdmin = user?.userRoles.some((r) => ADMIN_ROLES.includes(r as typeof ADMIN_ROLES[number])) ?? false;
+  const isViewingAll = currentBuilding?.id === "0";
+
+  // 관리자: 전체 빌딩 목록 / 일반: 배정된 빌딩 목록
+  const { buildings: userBuildings } = useUserBuildings(isAdmin ? undefined : user?.userId);
+  const { buildings: adminBuildings } = useAdminBuildings(isAdmin);
+
+  // 통합 빌딩 목록 (공통 표시 형태로 변환)
+  const allBuildings: Array<{ buildingId: number; buildingName: string }> = isAdmin
+    ? adminBuildings.map((b: CommonListDTO) => ({
+        buildingId: b.buildingId,
+        buildingName: b.buildingName,
+      }))
+    : userBuildings;
+
+  // 검색어 필터링
+  const buildings = searchQuery.trim()
+    ? allBuildings.filter((b) =>
+        b.buildingName.toLowerCase().includes(searchQuery.toLowerCase())
+      )
+    : allBuildings;
+
+  // 관리자 전용 - 전체 빌딩 보기 (토큰 갱신 없이 컨텍스트만 초기화)
+  const handleViewAll = (): void => {
+    setContext(
+      { id: currentCompany?.id ?? "", name: currentCompany?.name ?? "" },
+      { id: "0", name: "전체 빌딩" }
+    );
+    void queryClient.invalidateQueries();
+  };
+
+  // 특정 빌딩 전환 - 토큰 갱신 후 캐시 무효화
   const handleBuildingSwitch = async (buildingId: number, buildingName: string): Promise<void> => {
     try {
-      // 백엔드에서 새 토큰 발급
       const response = await fetch("/api/auth/token", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ buildingId }),
-        credentials: "include", // 쿠키 자동 전송
+        credentials: "include",
       });
 
       if (!response.ok) {
@@ -97,30 +132,26 @@ function BuildingSelector(): React.JSX.Element {
       const data = await response.json();
 
       if (data.accessToken && data.user) {
-        // 토큰 갱신 성공 - auth 상태 업데이트 후 컨텍스트 변경
         setAuth(data.accessToken, data.user);
-        setContext(
-          { id: currentCompany?.id ?? "", name: currentCompany?.name ?? "" },
-          { id: String(buildingId), name: buildingName }
-        );
-      } else {
-        // 응답 형식 오류 - 컨텍스트만 변경 (폴백)
-        setContext(
-          { id: currentCompany?.id ?? "", name: currentCompany?.name ?? "" },
-          { id: String(buildingId), name: buildingName }
-        );
       }
+      setContext(
+        { id: currentCompany?.id ?? "", name: currentCompany?.name ?? "" },
+        { id: String(buildingId), name: buildingName }
+      );
     } catch {
       // 네트워크 오류 - 컨텍스트만 변경 (폴백)
       setContext(
         { id: currentCompany?.id ?? "", name: currentCompany?.name ?? "" },
         { id: String(buildingId), name: buildingName }
       );
+    } finally {
+      // 빌딩 전환 후 전체 캐시 무효화
+      await queryClient.invalidateQueries();
     }
   };
 
   return (
-    <DropdownMenu>
+    <DropdownMenu onOpenChange={(open) => { if (!open) setSearchQuery(""); }}>
       <DropdownMenuTrigger asChild>
         <button
           className={cn(
@@ -145,45 +176,100 @@ function BuildingSelector(): React.JSX.Element {
         </button>
       </DropdownMenuTrigger>
 
-      <DropdownMenuContent align="start" className="w-64">
+      <DropdownMenuContent
+        align="start"
+        className="w-64 z-[150]"
+        onCloseAutoFocus={(e) => e.preventDefault()}
+      >
         <DropdownMenuLabel className="pb-1 text-[11px] font-medium uppercase tracking-wider text-muted-foreground">
           빌딩 전환
         </DropdownMenuLabel>
 
-        {buildings.length > 0 ? (
-          buildings.map((b) => {
-            const isActive = currentBuilding?.id === String(b.buildingId);
-            return (
-              <DropdownMenuItem
-                key={b.buildingId}
-                className="gap-2.5"
-                onClick={() => void handleBuildingSwitch(b.buildingId, b.buildingName)}
+        {/* 빌딩 검색 */}
+        <div className="px-2 pb-1.5">
+          <div className="flex items-center gap-1.5 rounded-md border border-border/60 bg-muted/40 px-2 py-1.5">
+            <Search className="h-3 w-3 shrink-0 text-muted-foreground" />
+            <input
+              className="flex-1 bg-transparent text-[12px] outline-none placeholder:text-muted-foreground/60"
+              placeholder="빌딩 검색..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              onKeyDown={(e) => e.stopPropagation()}
+            />
+            {searchQuery && (
+              <button
+                className="text-muted-foreground/60 hover:text-muted-foreground"
+                onClick={() => setSearchQuery("")}
+                aria-label="검색어 지우기"
               >
-                <div
+                ×
+              </button>
+            )}
+          </div>
+        </div>
+
+        {/* 관리자 전용: 전체 빌딩 보기 */}
+        {isAdmin && (
+          <>
+            <DropdownMenuItem className="gap-2.5" onClick={handleViewAll}>
+              <div
+                className={cn(
+                  "flex h-6 w-6 shrink-0 items-center justify-center rounded-md",
+                  isViewingAll ? "bg-primary/15" : "bg-muted"
+                )}
+              >
+                <Building2
                   className={cn(
-                    "flex h-6 w-6 shrink-0 items-center justify-center rounded-md",
-                    isActive ? "bg-primary/15" : "bg-muted"
+                    "h-3.5 w-3.5",
+                    isViewingAll ? "text-primary" : "text-muted-foreground"
                   )}
-                >
-                  <Building2
-                    className={cn(
-                      "h-3.5 w-3.5",
-                      isActive ? "text-primary" : "text-muted-foreground"
-                    )}
-                  />
-                </div>
-                <span className={cn("flex-1 text-[13px]", isActive && "font-semibold")}>
-                  {b.buildingName}
-                </span>
-                {isActive && <Check className="h-3.5 w-3.5 text-primary" />}
-              </DropdownMenuItem>
-            );
-          })
-        ) : (
-          <DropdownMenuItem disabled className="text-xs text-muted-foreground">
-            배정된 빌딩이 없습니다
-          </DropdownMenuItem>
+                />
+              </div>
+              <span className={cn("flex-1 text-[13px]", isViewingAll && "font-semibold")}>
+                전체 빌딩
+              </span>
+              {isViewingAll && <Check className="h-3.5 w-3.5 text-primary" />}
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+          </>
         )}
+
+        <div className="max-h-[280px] overflow-y-auto">
+          {buildings.length > 0 ? (
+            buildings.map((b) => {
+              const isActive = !isViewingAll && currentBuilding?.id === String(b.buildingId);
+              return (
+                <DropdownMenuItem
+                  key={b.buildingId}
+                  className="gap-2.5"
+                  onClick={() => void handleBuildingSwitch(b.buildingId, b.buildingName)}
+                >
+                  <div
+                    className={cn(
+                      "flex h-6 w-6 shrink-0 items-center justify-center rounded-md",
+                      isActive ? "bg-primary/15" : "bg-muted"
+                    )}
+                  >
+                    <Building2
+                      className={cn(
+                        "h-3.5 w-3.5",
+                        isActive ? "text-primary" : "text-muted-foreground"
+                      )}
+                    />
+                  </div>
+                  <span className={cn("flex-1 text-[13px]", isActive && "font-semibold")}>
+                    {b.buildingName}
+                  </span>
+                  {isActive && <Check className="h-3.5 w-3.5 text-primary" />}
+                </DropdownMenuItem>
+              );
+            })
+          ) : (
+            <DropdownMenuItem disabled className="text-xs text-muted-foreground">
+              배정된 빌딩이 없습니다
+            </DropdownMenuItem>
+          )}
+        </div>
       </DropdownMenuContent>
     </DropdownMenu>
   );
@@ -277,7 +363,7 @@ function UserDropdown({
         </button>
       </DropdownMenuTrigger>
 
-      <DropdownMenuContent align="end" className="w-56">
+      <DropdownMenuContent align="end" className="w-56 z-[150]">
         <DropdownMenuLabel className="py-2">
           <div className="flex items-center gap-2.5">
             <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-[#0064FF] to-[#4B90FF]">

@@ -5,6 +5,23 @@ export interface BuildingInfoDTO {
   buildingName: string;
 }
 
+/**
+ * 관리자 빌딩 통합검색 결과 DTO
+ * GET /open/common/searchCommonList 응답
+ */
+export interface CommonListDTO {
+  companyId: number;
+  companyName: string;
+  wideAreaId: number | null;
+  wideAreaName: string | null;
+  baseAreaId: number | null;
+  baseAreaName: string | null;
+  buildingId: number;
+  buildingName: string;
+  address: string | null;
+  officePhone: string | null;
+}
+
 export interface UserBuildingListDTO {
   accountId: number;
   userId: string;
@@ -30,6 +47,17 @@ export interface BuildingFloorZoneDTO {
   id: number;
   buildingFloorId: number;
   name: string;
+}
+
+/**
+ * 관리자 전용 전체 빌딩 목록 조회
+ * Next.js API Route → GET /open/common/searchCommonList
+ * keyword 빈 문자열 전달 시 전체 빌딩 반환
+ */
+export function getAdminBuildings(keyword: string = ""): Promise<CommonListDTO[]> {
+  return apiClient.get<CommonListDTO[]>(
+    `/api/buildings/admin-list?keyword=${encodeURIComponent(keyword)}&size=500`
+  );
 }
 
 /**

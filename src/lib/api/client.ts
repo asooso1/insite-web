@@ -1,4 +1,5 @@
 import { useAuthStore } from "@/lib/stores/auth-store";
+import { useTenantStore } from "@/lib/stores/tenant-store";
 import { ApiError, extractApiError } from "./error-handler";
 
 /**
@@ -84,14 +85,40 @@ function handleAuthExpired(url?: string): void {
  *   body: { title: "새 작업" }
  * });
  */
+/**
+ * buildingId 자동 주입이 불필요한 경로 prefix 목록
+ * - 인증/세션: /api/auth/
+ * - 빌딩 목록 자체: /api/buildings/
+ * - 서비스 메뉴: /api/services/
+ */
+const SKIP_BUILDING_ID_PREFIXES = ["/api/auth/", "/api/buildings/", "/api/services/"];
+
+/**
+ * 현재 선택된 빌딩 ID를 쿼리 파라미터로 주입
+ * - buildingId가 null이거나 "0"(전체 빌딩 모드)이면 주입하지 않음
+ * - SKIP_BUILDING_ID_PREFIXES에 해당하는 경로는 주입하지 않음
+ * - 외부 URL(http로 시작)은 주입하지 않음
+ */
+function injectBuildingId(endpoint: string): string {
+  if (endpoint.startsWith("http")) return endpoint;
+  if (SKIP_BUILDING_ID_PREFIXES.some((p) => endpoint.startsWith(p))) return endpoint;
+
+  const buildingId = useTenantStore.getState().currentBuilding?.id;
+  if (!buildingId || buildingId === "0") return endpoint;
+
+  const separator = endpoint.includes("?") ? "&" : "?";
+  return `${endpoint}${separator}buildingId=${buildingId}`;
+}
+
 export async function apiRequest<T>(
   endpoint: string,
   options: RequestOptions = {}
 ): Promise<T> {
   const { body, skipAuth = false, ...fetchOptions } = options;
-  const url = endpoint.startsWith("http")
-    ? endpoint
-    : `${API_BASE_URL}${endpoint}`;
+  const endpointWithBuilding = injectBuildingId(endpoint);
+  const url = endpointWithBuilding.startsWith("http")
+    ? endpointWithBuilding
+    : `${API_BASE_URL}${endpointWithBuilding}`;
 
   // 헤더 구성
   const headers = new Headers(fetchOptions.headers);

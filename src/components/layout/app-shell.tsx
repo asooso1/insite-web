@@ -14,6 +14,7 @@ const CommandPalette = dynamic(() => import("./command-palette").then((m) => ({ 
   ssr: false,
 });
 import { useUIStore } from "@/lib/stores/ui-store";
+import { useAuthStore } from "@/lib/stores/auth-store";
 import { AuthInitializer } from "@/components/auth/auth-initializer";
 import { cn } from "@/lib/utils";
 
@@ -28,6 +29,7 @@ interface AppShellProps {
  */
 export function AppShell({ children }: AppShellProps): React.JSX.Element {
   const { sidebarMode, sidebarWidth } = useUIStore();
+  const isInitialized = useAuthStore((s) => s.isInitialized);
   const [drawerOpen, setDrawerOpen] = React.useState(false);
   const [isDesktop, setIsDesktop] = React.useState(false);
 
@@ -62,7 +64,7 @@ export function AppShell({ children }: AppShellProps): React.JSX.Element {
       {/* Command Palette (전역) */}
       <CommandPalette />
 
-      {/* Main Content */}
+      {/* Main Content - auth 초기화 완료 후 렌더링 (새로고침 시 401 race condition 방지) */}
       <main
         className={cn(
           "flex-1 overflow-auto pt-14 transition-all duration-200",
@@ -71,7 +73,7 @@ export function AppShell({ children }: AppShellProps): React.JSX.Element {
         style={{ marginLeft: sidebarOffset }}
       >
         <div className="mx-auto max-w-[1920px] p-4 md:p-6">
-          {children}
+          {isInitialized ? children : null}
         </div>
       </main>
     </div>
