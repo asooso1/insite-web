@@ -13,12 +13,15 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { DataTable } from "@/components/data-display/data-table";
 import { EmptyState } from "@/components/data-display/empty-state";
+import { FilterBar, type FilterDef, type FilterOption } from "@/components/common/filter-bar";
 
 import { usePatrolList, usePatrolTeamList } from "@/lib/hooks/use-patrols";
 import {
   PatrolPlanStateLabel,
   PatrolPlanStateStyle,
+  PatrolPlanType,
   PatrolPlanTypeLabel,
+  PatrolTeamState,
   PatrolTeamStateLabel,
   PatrolTeamStateStyle,
   type PatrolPlanDTO,
@@ -29,7 +32,7 @@ import {
 import type { ColumnDef, Row } from "@tanstack/react-table";
 
 // ============================================================================
-// 탭 정의
+// 탭 정의 및 필터 설정
 // ============================================================================
 
 const TABS = [
@@ -38,6 +41,34 @@ const TABS = [
 ] as const;
 
 type TabValue = (typeof TABS)[number]["value"];
+
+const INITIAL_PLAN_FILTERS = {
+  planType: "",
+};
+
+const INITIAL_TEAM_FILTERS = {
+  teamState: "",
+};
+
+const PLAN_TYPE_OPTIONS: FilterOption[] = [
+  { value: "", label: "전체" },
+  { value: PatrolPlanType.SCHEDULED, label: PatrolPlanTypeLabel[PatrolPlanType.SCHEDULED] },
+  { value: PatrolPlanType.NONSCHEDULED, label: PatrolPlanTypeLabel[PatrolPlanType.NONSCHEDULED] },
+];
+
+const TEAM_STATE_OPTIONS: FilterOption[] = [
+  { value: "", label: "전체" },
+  { value: PatrolTeamState.ACTIVE, label: PatrolTeamStateLabel[PatrolTeamState.ACTIVE] },
+  { value: PatrolTeamState.INACTIVE, label: PatrolTeamStateLabel[PatrolTeamState.INACTIVE] },
+];
+
+const PLAN_FILTER_DEFS: FilterDef[] = [
+  { type: "tabs", key: "planType", options: PLAN_TYPE_OPTIONS },
+];
+
+const TEAM_FILTER_DEFS: FilterDef[] = [
+  { type: "tabs", key: "teamState", options: TEAM_STATE_OPTIONS },
+];
 
 // ============================================================================
 // 계획 컬럼 정의
@@ -248,9 +279,26 @@ export default function PatrolListPage() {
   const [activeTab, setActiveTab] = useState<TabValue>("plans");
   const [page, setPage] = useState(0);
   const [size] = useState(20);
+  const [planFilters, setPlanFilters] = useState(INITIAL_PLAN_FILTERS);
+  const [teamFilters, setTeamFilters] = useState(INITIAL_TEAM_FILTERS);
 
-  const planParams: SearchPatrolPlanVO = useMemo(() => ({ page, size }), [page, size]);
-  const teamParams: SearchPatrolTeamVO = useMemo(() => ({ page, size }), [page, size]);
+  const planParams: SearchPatrolPlanVO = useMemo(
+    () => ({
+      page,
+      size,
+      planType: (planFilters.planType as SearchPatrolPlanVO["planType"]) || undefined,
+    }),
+    [page, size, planFilters]
+  );
+
+  const teamParams: SearchPatrolTeamVO = useMemo(
+    () => ({
+      page,
+      size,
+      teamState: (teamFilters.teamState as SearchPatrolTeamVO["teamState"]) || undefined,
+    }),
+    [page, size, teamFilters]
+  );
 
   const {
     data: planData,
@@ -269,9 +317,30 @@ export default function PatrolListPage() {
   const planColumns = usePlanColumns();
   const teamColumns = useTeamColumns();
 
+  const handlePlanFilterChange = useCallback((key: string, value: string) => {
+    setPlanFilters((prev) => ({ ...prev, [key]: value }));
+    setPage(0);
+  }, []);
+
+  const handleTeamFilterChange = useCallback((key: string, value: string) => {
+    setTeamFilters((prev) => ({ ...prev, [key]: value }));
+    setPage(0);
+  }, []);
+
+  const handleFilterReset = useCallback(() => {
+    if (activeTab === "plans") {
+      setPlanFilters(INITIAL_PLAN_FILTERS);
+    } else {
+      setTeamFilters(INITIAL_TEAM_FILTERS);
+    }
+    setPage(0);
+  }, [activeTab]);
+
   const handleTabChange = useCallback((tab: TabValue) => {
     setActiveTab(tab);
     setPage(0);
+    setPlanFilters(INITIAL_PLAN_FILTERS);
+    setTeamFilters(INITIAL_TEAM_FILTERS);
   }, []);
 
   const handlePageChange = useCallback((newPage: number) => {
@@ -329,6 +398,14 @@ export default function PatrolListPage() {
           </button>
         ))}
       </div>
+
+      {/* 필터 */}
+      <FilterBar
+        filters={isPlans ? PLAN_FILTER_DEFS : TEAM_FILTER_DEFS}
+        values={isPlans ? planFilters : teamFilters}
+        onChange={isPlans ? handlePlanFilterChange : handleTeamFilterChange}
+        onReset={handleFilterReset}
+      />
 
       {/* 테이블 */}
       {isPlans ? (

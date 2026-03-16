@@ -25,6 +25,7 @@ import {
 import { DataTable } from "@/components/data-display/data-table";
 import { StatusBadge } from "@/components/data-display/status-badge";
 import { EmptyState } from "@/components/data-display/empty-state";
+import { FilterBar, type FilterDef } from "@/components/common/filter-bar";
 
 import { useNoticeList, useDeleteNotice } from "@/lib/hooks/use-boards";
 import { useReferenceDataList, useDeleteReferenceData } from "@/lib/hooks/use-boards";
@@ -41,7 +42,7 @@ import {
 import type { ColumnDef, Row } from "@tanstack/react-table";
 
 // ============================================================================
-// 탭 타입
+// 탭 타입 및 필터 설정
 // ============================================================================
 
 type BoardTab = "notice" | "data";
@@ -49,6 +50,17 @@ type BoardTab = "notice" | "data";
 const BOARD_TABS: { value: BoardTab; label: string; icon: React.ComponentType<{ className?: string }> }[] = [
   { value: "notice", label: "공지사항", icon: Megaphone },
   { value: "data", label: "자료실", icon: FileText },
+];
+
+const INITIAL_FILTERS = {
+  writeDateFrom: "",
+  writeDateTo: "",
+  keyword: "",
+};
+
+const FILTER_DEFS: FilterDef[] = [
+  { type: "date-range", fromKey: "writeDateFrom", toKey: "writeDateTo" },
+  { type: "search", key: "keyword", placeholder: "검색어 입력..." },
 ];
 
 // ============================================================================
@@ -324,16 +336,18 @@ export default function BoardListPage() {
   const [activeTab, setActiveTab] = useState<BoardTab>("notice");
   const [page, setPage] = useState(0);
   const [size] = useState(20);
-  const [keyword, setKeyword] = useState("");
+  const [filters, setFilters] = useState(INITIAL_FILTERS);
 
   // 공지사항 쿼리
   const noticeParams: SearchNoticeVO = useMemo(
     () => ({
       page,
       size,
-      searchKeyword: keyword || undefined,
+      writeDateFrom: filters.writeDateFrom || undefined,
+      writeDateTo: filters.writeDateTo || undefined,
+      searchKeyword: filters.keyword || undefined,
     }),
-    [page, size, keyword]
+    [page, size, filters]
   );
 
   const {
@@ -348,9 +362,11 @@ export default function BoardListPage() {
     () => ({
       page,
       size,
-      searchKeyword: keyword || undefined,
+      writeDateFrom: filters.writeDateFrom || undefined,
+      writeDateTo: filters.writeDateTo || undefined,
+      searchKeyword: filters.keyword || undefined,
     }),
-    [page, size, keyword]
+    [page, size, filters]
   );
 
   const {
@@ -363,15 +379,20 @@ export default function BoardListPage() {
   const noticeColumns = useNoticeColumns();
   const dataColumns = useDataColumns();
 
-  const handleSearch = useCallback((value: string) => {
-    setKeyword(value);
+  const handleFilterChange = useCallback((key: string, value: string) => {
+    setFilters((prev) => ({ ...prev, [key]: value }));
+    setPage(0);
+  }, []);
+
+  const handleFilterReset = useCallback(() => {
+    setFilters(INITIAL_FILTERS);
     setPage(0);
   }, []);
 
   const handleTabChange = useCallback((tab: BoardTab) => {
     setActiveTab(tab);
     setPage(0);
-    setKeyword("");
+    setFilters(INITIAL_FILTERS);
   }, []);
 
   const handlePageChange = useCallback((newPage: number) => {
@@ -438,16 +459,13 @@ export default function BoardListPage() {
         })}
       </div>
 
-      {/* 검색 */}
-      <div className="flex items-center justify-end gap-2">
-        <input
-          type="text"
-          placeholder={activeTab === "notice" ? "공지사항 검색..." : "자료 검색..."}
-          value={keyword}
-          onChange={(e) => handleSearch(e.target.value)}
-          className="h-9 w-64 rounded-md border bg-background px-3 text-sm"
-        />
-      </div>
+      {/* 필터 */}
+      <FilterBar
+        filters={FILTER_DEFS}
+        values={filters}
+        onChange={handleFilterChange}
+        onReset={handleFilterReset}
+      />
 
       {/* 테이블 */}
       {activeTab === "notice" ? (
