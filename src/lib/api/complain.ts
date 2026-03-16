@@ -29,7 +29,7 @@ export async function getComplainList(
     searchParams.set("buildingFloorId", String(params.buildingFloorId));
   if (params.buildingFloorZoneId)
     searchParams.set("buildingFloorZoneId", String(params.buildingFloorZoneId));
-  if (params.state) searchParams.set("state", params.state);
+  searchParams.set("state", params.state || "all");
   if (params.searchCode) searchParams.set("searchCode", params.searchCode);
   if (params.searchKeyword) searchParams.set("searchKeyword", params.searchKeyword);
   if (params.writeDateFrom) searchParams.set("writeDateFrom", params.writeDateFrom);

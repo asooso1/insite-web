@@ -393,10 +393,10 @@ function SidebarLogo({ isCollapsed }: { isCollapsed: boolean }): React.JSX.Eleme
             transition={{ duration: 0.15, ease: "easeOut" }}
             className="flex min-w-0 flex-col"
           >
-            <span className="font-display text-[15px] font-bold leading-none tracking-wide text-white/95">
+            <span className="font-display text-[15px] font-bold leading-none tracking-wide text-slate-800 dark:text-white/95">
               INSITE
             </span>
-            <span className="mt-[3px] text-[9px] font-semibold uppercase tracking-[0.2em] text-white/30">
+            <span className="mt-[3px] text-[9px] font-semibold uppercase tracking-[0.2em] text-slate-400/80 dark:text-white/30">
               BEMS Platform
             </span>
           </motion.div>

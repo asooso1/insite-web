@@ -226,14 +226,14 @@
   --backdrop-header: saturate(180%) blur(10px);
   --bg-header-upgrade: rgba(255,255,255,0.80);
 
-  /* 다크 사이드바 고정 토큰 (테마 무관) */
-  --sidebar-dark-bg: #0F1623;
-  --sidebar-dark-hover: rgba(255,255,255,0.05);
-  --sidebar-dark-active: rgba(0,100,255,0.15);
-  --sidebar-dark-border: rgba(255,255,255,0.06);
-  --sidebar-dark-text: rgba(255,255,255,0.55);
-  --sidebar-dark-text-active: rgba(255,255,255,0.95);
-  --sidebar-dark-label: rgba(255,255,255,0.28);
+  /* 사이드바 테마 토큰 (라이트 모드) */
+  --sidebar-dark-bg: #FFFFFF;
+  --sidebar-dark-hover: rgba(0,100,255,0.06);
+  --sidebar-dark-active: rgba(0,100,255,0.10);
+  --sidebar-dark-border: rgba(0,0,0,0.06);
+  --sidebar-dark-text: rgba(44,44,44,0.65);
+  --sidebar-dark-text-active: #2C2C2C;
+  --sidebar-dark-label: rgba(44,44,44,0.35);
 
   /* ==================== 인터랙션 상태 토큰 ==================== */
   /* Easing 함수 (Framer Motion과 동일한 값) */
@@ -362,7 +362,7 @@
   --shadow-panel: 0 0 0 1px rgba(255,255,255,0.06), 0 1px 2px rgba(0,0,0,0.20);
   --bg-header-upgrade: rgba(15,15,20,0.80);
 
-  /* 다크 사이드바 고정 토큰 (테마 무관) */
+  /* 사이드바 테마 토큰 (다크 모드) */
   --sidebar-dark-bg: #0F1623;
   --sidebar-dark-hover: rgba(255,255,255,0.05);
   --sidebar-dark-active: rgba(0,100,255,0.15);
