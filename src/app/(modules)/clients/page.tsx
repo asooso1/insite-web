@@ -26,14 +26,7 @@ import { DataTable } from "@/components/data-display/data-table";
 import { StatusBadge } from "@/components/data-display/status-badge";
 import { EmptyState } from "@/components/data-display/empty-state";
 import { PageHeader } from "@/components/common/page-header";
-import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { FilterBar, type FilterDef } from "@/components/common/filter-bar";
 
 import {
   useClientList,
@@ -49,13 +42,31 @@ import {
 import type { ColumnDef, Row } from "@tanstack/react-table";
 
 // ============================================================================
-// 검색 유형
+// 필터 설정
 // ============================================================================
 
-const SEARCH_CODES = [
+const INITIAL_FILTERS = {
+  writeDateFrom: "",
+  writeDateTo: "",
+  searchCode: "companyName" as const,
+  searchKeyword: "",
+};
+
+const SEARCH_CODE_OPTIONS = [
   { value: "companyName", label: "회사명" },
   { value: "businessNo", label: "사업자번호" },
-] as const;
+];
+
+const FILTER_DEFS: FilterDef[] = [
+  { type: "date-range", fromKey: "writeDateFrom", toKey: "writeDateTo" },
+  {
+    type: "select",
+    key: "searchCode",
+    options: SEARCH_CODE_OPTIONS,
+    allLabel: undefined,
+  },
+  { type: "search", key: "searchKeyword", placeholder: "검색어 입력..." },
+];
 
 // ============================================================================
 // 컬럼 정의
@@ -209,21 +220,22 @@ function RowActions({ row }: { row: Row<CompanyDTO> }) {
 export default function ClientListPage() {
   const router = useRouter();
 
-  // 로컬 상태
+  // 필터 상태
+  const [filters, setFilters] = useState(INITIAL_FILTERS);
   const [page, setPage] = useState(0);
   const [size] = useState(20);
-  const [searchCode, setSearchCode] = useState<string>("companyName");
-  const [searchKeyword, setSearchKeyword] = useState("");
 
   // 검색 파라미터
   const searchParams: SearchClientVO & { page: number; size: number } = useMemo(
     () => ({
       page,
       size,
-      searchCode: (searchCode as SearchClientVO["searchCode"]) || undefined,
-      searchKeyword: searchKeyword || undefined,
+      searchCode: (filters.searchCode as SearchClientVO["searchCode"]) || undefined,
+      searchKeyword: filters.searchKeyword || undefined,
+      writeDateFrom: filters.writeDateFrom || undefined,
+      writeDateTo: filters.writeDateTo || undefined,
     }),
-    [page, size, searchCode, searchKeyword]
+    [page, size, filters]
   );
 
   // 데이터 조회
@@ -236,8 +248,13 @@ export default function ClientListPage() {
   const columns = useColumns();
 
   // 핸들러
-  const handleSearch = useCallback((value: string) => {
-    setSearchKeyword(value);
+  const handleFilterChange = useCallback((key: string, value: string) => {
+    setFilters((prev) => ({ ...prev, [key]: value }));
+    setPage(0);
+  }, []);
+
+  const handleFilterReset = useCallback(() => {
+    setFilters(INITIAL_FILTERS);
     setPage(0);
   }, []);
 
@@ -276,28 +293,13 @@ export default function ClientListPage() {
         }
       />
 
-      {/* 툴바 */}
-      <div className="flex items-center justify-between gap-4">
-        <div />
-        <div className="flex items-center gap-2">
-          <Select value={searchCode} onValueChange={setSearchCode}>
-            <SelectTrigger className="w-32">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              {SEARCH_CODES.map((code) => (
-                <SelectItem key={code.value} value={code.value}>
-                  {code.label}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-          <Input
-            placeholder="검색어 입력..."
-            value={searchKeyword}
-            onChange={(e) => handleSearch(e.target.value)}
-            className="w-64"
-          />
+      {/* 필터 */}
+      <FilterBar
+        filters={FILTER_DEFS}
+        values={filters}
+        onChange={handleFilterChange}
+        onReset={handleFilterReset}
+        rightSlot={
           <Button
             variant="outline"
             size="sm"
@@ -307,8 +309,8 @@ export default function ClientListPage() {
             <Download className="mr-2 h-4 w-4" />
             엑셀
           </Button>
-        </div>
-      </div>
+        }
+      />
 
       {/* 테이블 */}
       <DataTable

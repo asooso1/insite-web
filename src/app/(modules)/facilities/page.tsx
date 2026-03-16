@@ -20,12 +20,11 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { DataTable } from "@/components/data-display/data-table";
 import { StatusBadge } from "@/components/data-display/status-badge";
 import { EmptyState } from "@/components/data-display/empty-state";
 import { PageHeader } from "@/components/common/page-header";
-import { Input } from "@/components/ui/input";
+import { FilterBar, type FilterDef, type FilterOption } from "@/components/common/filter-bar";
 
 import {
   useFacilityList,
@@ -41,17 +40,27 @@ import {
 import type { ColumnDef, Row } from "@tanstack/react-table";
 
 // ============================================================================
-// 상태 필터 탭
+// 필터 설정
 // ============================================================================
 
-const STATE_TABS = [
+const INITIAL_FILTERS = {
+  state: "",
+  keyword: "",
+};
+
+const STATE_TABS_OPTIONS: FilterOption[] = [
   { value: "", label: "전체" },
   { value: FacilityState.ONGOING_OPERATING, label: "운영중" },
   { value: FacilityState.BEFORE_OPERATING, label: "운영전" },
   { value: FacilityState.NOW_CHECK, label: "점검중" },
   { value: FacilityState.END_OPERATING, label: "운영완료" },
   { value: FacilityState.DISCARD, label: "폐기" },
-] as const;
+];
+
+const FILTER_DEFS: FilterDef[] = [
+  { type: "tabs", key: "state", options: STATE_TABS_OPTIONS },
+  { type: "search", key: "keyword", placeholder: "시설명 검색..." },
+];
 
 // ============================================================================
 // 컬럼 정의
@@ -213,18 +222,17 @@ export default function FacilityListPage() {
   // 로컬 상태
   const [page, setPage] = useState(0);
   const [size] = useState(20);
-  const [state, setState] = useState<string>("");
-  const [keyword, setKeyword] = useState("");
+  const [filters, setFilters] = useState(INITIAL_FILTERS);
 
   // 검색 파라미터
   const searchParams: SearchFacilityVO & { page: number; size: number } = useMemo(
     () => ({
       page,
       size,
-      state: (state as FacilityState) || undefined,
-      keyword: keyword || undefined,
+      state: (filters.state as FacilityState) || undefined,
+      keyword: filters.keyword || undefined,
     }),
-    [page, size, state, keyword]
+    [page, size, filters]
   );
 
   // 데이터 조회
@@ -236,14 +244,14 @@ export default function FacilityListPage() {
   // 컬럼
   const columns = useColumns();
 
-  // 핸들러
-  const handleSearch = useCallback((value: string) => {
-    setKeyword(value);
+  // 필터 핸들러
+  const handleFilterChange = useCallback((key: string, value: string) => {
+    setFilters((prev) => ({ ...prev, [key]: value }));
     setPage(0);
   }, []);
 
-  const handleStateChange = useCallback((value: string) => {
-    setState(value);
+  const handleFilterReset = useCallback(() => {
+    setFilters(INITIAL_FILTERS);
     setPage(0);
   }, []);
 
@@ -282,34 +290,13 @@ export default function FacilityListPage() {
         }
       />
 
-      {/* 상태 탭 */}
-      <Tabs
-        value={state || "ALL"}
-        onValueChange={(v) => handleStateChange(v === "ALL" ? "" : v)}
-      >
-        <TabsList className="h-auto gap-1 bg-transparent p-0 border-b rounded-none w-full justify-start">
-          {STATE_TABS.map((tab) => (
-            <TabsTrigger
-              key={tab.value || "ALL"}
-              value={tab.value || "ALL"}
-              className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none px-4 py-2"
-            >
-              {tab.label}
-            </TabsTrigger>
-          ))}
-        </TabsList>
-      </Tabs>
-
-      {/* 툴바 */}
-      <div className="flex items-center justify-between gap-4">
-        <div />
-        <div className="flex items-center gap-2">
-          <Input
-            placeholder="시설명 검색..."
-            value={keyword}
-            onChange={(e) => handleSearch(e.target.value)}
-            className="w-64"
-          />
+      {/* 필터 */}
+      <FilterBar
+        filters={FILTER_DEFS}
+        values={filters}
+        onChange={handleFilterChange}
+        onReset={handleFilterReset}
+        rightSlot={
           <Button
             variant="outline"
             size="sm"
@@ -319,8 +306,8 @@ export default function FacilityListPage() {
             <Download className="mr-2 h-4 w-4" />
             엑셀
           </Button>
-        </div>
-      </div>
+        }
+      />
 
       {/* 테이블 */}
       <DataTable

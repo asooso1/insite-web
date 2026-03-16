@@ -5,12 +5,11 @@ import { useRouter } from "next/navigation";
 import { Plus, AlertCircle, Inbox } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { DataTable } from "@/components/data-display/data-table";
 import { StatusBadge } from "@/components/data-display/status-badge";
 import { EmptyState } from "@/components/data-display/empty-state";
 import { PageHeader } from "@/components/common/page-header";
-import { Input } from "@/components/ui/input";
+import { FilterBar, type FilterDef, type FilterOption } from "@/components/common/filter-bar";
 
 import { useComplainList } from "@/lib/hooks/use-complains";
 import { useAuthStore } from "@/lib/stores/auth-store";
@@ -24,16 +23,37 @@ import {
 import type { ColumnDef } from "@tanstack/react-table";
 
 // ============================================================================
-// 상태 필터 탭
+// 필터 설정
 // ============================================================================
 
-const STATE_TABS = [
+const INITIAL_FILTERS = {
+  state: "",
+  writeDateFrom: "",
+  writeDateTo: "",
+  searchCode: "title",
+  keyword: "",
+};
+
+const STATE_TABS_OPTIONS: FilterOption[] = [
   { value: "", label: "전체" },
   { value: VocState.ASK, label: "접수" },
   { value: VocState.PROCESS, label: "처리중" },
   { value: VocState.FINISH, label: "완료" },
   { value: VocState.REJECT, label: "반려" },
-] as const;
+];
+
+const SEARCH_CODE_OPTIONS: FilterOption[] = [
+  { value: "title", label: "제목" },
+  { value: "vocUserName", label: "민원인" },
+  { value: "phone", label: "연락처" },
+];
+
+const FILTER_DEFS: FilterDef[] = [
+  { type: "tabs", key: "state", options: STATE_TABS_OPTIONS },
+  { type: "date-range", fromKey: "writeDateFrom", toKey: "writeDateTo" },
+  { type: "select", key: "searchCode", options: SEARCH_CODE_OPTIONS },
+  { type: "search", key: "keyword", placeholder: "검색어 입력..." },
+];
 
 // ============================================================================
 // 컬럼 정의
@@ -134,8 +154,7 @@ export default function ComplainListPage() {
 
   const [page, setPage] = useState(0);
   const [size] = useState(20);
-  const [state, setState] = useState<string>("");
-  const [keyword, setKeyword] = useState("");
+  const [filters, setFilters] = useState(INITIAL_FILTERS);
 
   // 빌딩 ID 가져오기
   const buildingId = user ? Number(user.currentBuildingId) : 0;
@@ -146,10 +165,13 @@ export default function ComplainListPage() {
       buildingId,
       page,
       size,
-      state: (state as VocState) || undefined,
-      searchKeyword: keyword || undefined,
+      state: (filters.state as VocState) || undefined,
+      searchCode: filters.searchCode as "title" | "vocUserName" | "phone",
+      searchKeyword: filters.keyword || undefined,
+      writeDateFrom: filters.writeDateFrom || undefined,
+      writeDateTo: filters.writeDateTo || undefined,
     }),
-    [buildingId, page, size, state, keyword]
+    [buildingId, page, size, filters]
   );
 
   // 데이터 조회
@@ -158,14 +180,14 @@ export default function ComplainListPage() {
   // 컬럼
   const columns = useColumns();
 
-  // 핸들러
-  const handleSearch = useCallback((value: string) => {
-    setKeyword(value);
+  // 필터 핸들러
+  const handleFilterChange = useCallback((key: string, value: string) => {
+    setFilters((prev) => ({ ...prev, [key]: value }));
     setPage(0);
   }, []);
 
-  const handleStateChange = useCallback((value: string) => {
-    setState(value);
+  const handleFilterReset = useCallback(() => {
+    setFilters(INITIAL_FILTERS);
     setPage(0);
   }, []);
 
@@ -199,33 +221,13 @@ export default function ComplainListPage() {
         }
       />
 
-      {/* 상태 탭 */}
-      <Tabs
-        value={state || "ALL"}
-        onValueChange={(v) => handleStateChange(v === "ALL" ? "" : v)}
-      >
-        <TabsList className="h-auto gap-1 bg-transparent p-0 border-b rounded-none w-full justify-start">
-          {STATE_TABS.map((tab) => (
-            <TabsTrigger
-              key={tab.value || "ALL"}
-              value={tab.value || "ALL"}
-              className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none px-4 py-2"
-            >
-              {tab.label}
-            </TabsTrigger>
-          ))}
-        </TabsList>
-      </Tabs>
-
-      {/* 검색 */}
-      <div className="flex justify-end">
-        <Input
-          placeholder="제목 검색..."
-          value={keyword}
-          onChange={(e) => handleSearch(e.target.value)}
-          className="w-64"
-        />
-      </div>
+      {/* 필터 */}
+      <FilterBar
+        filters={FILTER_DEFS}
+        values={filters}
+        onChange={handleFilterChange}
+        onReset={handleFilterReset}
+      />
 
       {/* 테이블 */}
       <DataTable

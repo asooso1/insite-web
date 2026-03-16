@@ -26,15 +26,7 @@ import { DataTable } from "@/components/data-display/data-table";
 import { StatusBadge } from "@/components/data-display/status-badge";
 import { EmptyState } from "@/components/data-display/empty-state";
 import { PageHeader } from "@/components/common/page-header";
-import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { FilterBar, type FilterDef } from "@/components/common/filter-bar";
 
 import {
   useUserList,
@@ -51,26 +43,42 @@ import {
 import type { ColumnDef, Row } from "@tanstack/react-table";
 
 // ============================================================================
-// 상태 필터 탭
+// 필터 설정
 // ============================================================================
 
-const STATE_TABS = [
+const INITIAL_FILTERS = {
+  accountState: "",
+  writeDateFrom: "",
+  writeDateTo: "",
+  searchCode: "name" as const,
+  searchKeyword: "",
+};
+
+const STATE_TABS_OPTIONS = [
   { value: "", label: "전체" },
-  { value: AccountState.HIRED, label: "재직중" },
-  { value: AccountState.LEAVE, label: "휴직" },
-  { value: AccountState.RETIRED, label: "퇴사" },
-  { value: AccountState.TEMPORAL, label: "임시" },
-] as const;
+  { value: "HIRED", label: "재직중" },
+  { value: "LEAVE", label: "휴직" },
+  { value: "RETIRED", label: "퇴사" },
+  { value: "TEMPORAL", label: "임시" },
+];
 
-// ============================================================================
-// 검색 유형
-// ============================================================================
-
-const SEARCH_CODES = [
+const SEARCH_CODE_OPTIONS = [
   { value: "name", label: "이름" },
   { value: "userId", label: "아이디" },
   { value: "mobile", label: "휴대폰" },
-] as const;
+];
+
+const FILTER_DEFS: FilterDef[] = [
+  { type: "tabs", key: "accountState", options: STATE_TABS_OPTIONS },
+  { type: "date-range", fromKey: "writeDateFrom", toKey: "writeDateTo" },
+  {
+    type: "select",
+    key: "searchCode",
+    options: SEARCH_CODE_OPTIONS,
+    allLabel: undefined,
+  },
+  { type: "search", key: "searchKeyword", placeholder: "검색어 입력..." },
+];
 
 // ============================================================================
 // 컬럼 정의
@@ -221,23 +229,23 @@ function RowActions({ row }: { row: Row<AccountDTO> }) {
 export default function UserListPage() {
   const router = useRouter();
 
-  // 로컬 상태
+  // 필터 상태
+  const [filters, setFilters] = useState(INITIAL_FILTERS);
   const [page, setPage] = useState(0);
   const [size] = useState(20);
-  const [accountState, setAccountState] = useState<string>("");
-  const [searchCode, setSearchCode] = useState<string>("name");
-  const [searchKeyword, setSearchKeyword] = useState("");
 
   // 검색 파라미터
   const searchParams: SearchUserVO & { page: number; size: number } = useMemo(
     () => ({
       page,
       size,
-      accountState: (accountState as AccountState) || undefined,
-      searchCode: (searchCode as SearchUserVO["searchCode"]) || undefined,
-      searchKeyword: searchKeyword || undefined,
+      accountState: (filters.accountState as AccountState) || undefined,
+      writeDateFrom: filters.writeDateFrom || undefined,
+      writeDateTo: filters.writeDateTo || undefined,
+      searchCode: (filters.searchCode as SearchUserVO["searchCode"]) || undefined,
+      searchKeyword: filters.searchKeyword || undefined,
     }),
-    [page, size, accountState, searchCode, searchKeyword]
+    [page, size, filters]
   );
 
   // 데이터 조회
@@ -250,13 +258,13 @@ export default function UserListPage() {
   const columns = useColumns();
 
   // 핸들러
-  const handleSearch = useCallback((value: string) => {
-    setSearchKeyword(value);
+  const handleFilterChange = useCallback((key: string, value: string) => {
+    setFilters((prev) => ({ ...prev, [key]: value }));
     setPage(0);
   }, []);
 
-  const handleStateChange = useCallback((value: string) => {
-    setAccountState(value);
+  const handleFilterReset = useCallback(() => {
+    setFilters(INITIAL_FILTERS);
     setPage(0);
   }, []);
 
@@ -295,46 +303,13 @@ export default function UserListPage() {
         }
       />
 
-      {/* 상태 탭 */}
-      <Tabs
-        value={accountState || "ALL"}
-        onValueChange={(v) => handleStateChange(v === "ALL" ? "" : v)}
-      >
-        <TabsList className="h-auto gap-1 bg-transparent p-0 border-b rounded-none w-full justify-start">
-          {STATE_TABS.map((tab) => (
-            <TabsTrigger
-              key={tab.value || "ALL"}
-              value={tab.value || "ALL"}
-              className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none px-4 py-2"
-            >
-              {tab.label}
-            </TabsTrigger>
-          ))}
-        </TabsList>
-      </Tabs>
-
-      {/* 툴바 */}
-      <div className="flex items-center justify-between gap-4">
-        <div />
-        <div className="flex items-center gap-2">
-          <Select value={searchCode} onValueChange={setSearchCode}>
-            <SelectTrigger className="w-28">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              {SEARCH_CODES.map((code) => (
-                <SelectItem key={code.value} value={code.value}>
-                  {code.label}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-          <Input
-            placeholder="검색어 입력..."
-            value={searchKeyword}
-            onChange={(e) => handleSearch(e.target.value)}
-            className="w-64"
-          />
+      {/* 필터 */}
+      <FilterBar
+        filters={FILTER_DEFS}
+        values={filters}
+        onChange={handleFilterChange}
+        onReset={handleFilterReset}
+        rightSlot={
           <Button
             variant="outline"
             size="sm"
@@ -344,8 +319,8 @@ export default function UserListPage() {
             <Download className="mr-2 h-4 w-4" />
             엑셀
           </Button>
-        </div>
-      </div>
+        }
+      />
 
       {/* 테이블 */}
       <DataTable
