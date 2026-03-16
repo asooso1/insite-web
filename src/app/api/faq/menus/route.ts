@@ -20,16 +20,22 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
     }
 
     const keyword = request.nextUrl.searchParams.get("keyword") ?? "";
-    const authHeader = request.headers.get("Authorization");
+    const authToken = request.cookies.get("auth-token")?.value;
     const backendUrl =
       process.env.BACKEND_INTERNAL_URL ?? "http://localhost:8080";
 
+    if (!authToken) {
+      return NextResponse.json(
+        { code: "E00401", message: "인증이 필요합니다." },
+        { status: 401 }
+      );
+    }
+
     const response = await fetch(`${backendUrl}/api/common/menuList?keyword=${encodeURIComponent(keyword)}`, {
       headers: {
-        ...(authHeader ? { Authorization: authHeader } : {}),
+        Authorization: `Bearer ${authToken}`,
         "Content-Type": "application/json",
       },
-      credentials: "include",
     });
 
     if (!response.ok) {

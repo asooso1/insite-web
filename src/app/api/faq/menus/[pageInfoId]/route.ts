@@ -40,18 +40,24 @@ export async function GET(
       );
     }
 
-    const authHeader = request.headers.get("Authorization");
+    const authToken = request.cookies.get("auth-token")?.value;
     const backendUrl =
       process.env.BACKEND_INTERNAL_URL ?? "http://localhost:8080";
+
+    if (!authToken) {
+      return NextResponse.json(
+        { code: "E00401", message: "인증이 필요합니다." },
+        { status: 401 }
+      );
+    }
 
     const response = await fetch(
       `${backendUrl}/api/faq/getMenuPage/${encodeURIComponent(pageInfoId)}`,
       {
         headers: {
-          ...(authHeader ? { Authorization: authHeader } : {}),
+          Authorization: `Bearer ${authToken}`,
           "Content-Type": "application/json",
         },
-        credentials: "include",
       }
     );
 

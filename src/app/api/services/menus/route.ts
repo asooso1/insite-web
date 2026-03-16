@@ -12,9 +12,16 @@ import type { MenuDTO } from "@/lib/types/menu";
 export async function GET(request: NextRequest): Promise<NextResponse> {
   try {
     const buildingId = request.nextUrl.searchParams.get("buildingId");
-    const authHeader = request.headers.get("Authorization");
+    const authToken = request.cookies.get("auth-token")?.value;
     const backendUrl =
       process.env.BACKEND_INTERNAL_URL ?? "http://localhost:8080";
+
+    if (!authToken) {
+      return NextResponse.json(
+        { code: "E00401", message: "인증이 필요합니다." },
+        { status: 401 }
+      );
+    }
 
     // URLSearchParams로 인코딩하여 파라미터 주입 방지
     const params = new URLSearchParams();
@@ -23,10 +30,9 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
       `${backendUrl}/api/services/menus?${params.toString()}`,
       {
         headers: {
-          ...(authHeader ? { Authorization: authHeader } : {}),
+          Authorization: `Bearer ${authToken}`,
           "Content-Type": "application/json",
         },
-        credentials: "include",
       }
     );
 
