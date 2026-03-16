@@ -93,6 +93,12 @@
   - 목표: Admin UI에서 메뉴 선택 → insite URL 입력 → DB 저장
   - 저장 후 캐시 무효화: `revalidateTag('insite-menu-mappings')` + csp-was Redis 캐시 evict API
 
+**추후 정리 필요 (csp-web v1 종료 후):**
+- `page_info`, `role_page_function`, `page_function` 테이블 제거
+  - 현재 제거 불가 이유: csp-web v1 운영 중이며 csp-was `JwtFilter`/`AuthService`가 `page_info` 기반 권한 검사에 의존
+  - 제거 조건: csp-web v1 완전 종료 + csp-was 권한 검사 로직 insite-web 전용 menu-level 모델로 교체
+  - 제거 순서: ① csp-web v1 서비스 종료 → ② csp-was JwtFilter/AuthService에서 page_info 참조 제거 → ③ DB 테이블 drop
+
 ---
 
 ## Phase 0: 사전 준비 및 분석
