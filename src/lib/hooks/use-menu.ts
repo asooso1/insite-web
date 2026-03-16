@@ -53,7 +53,7 @@ export function useMenuTree(buildingId: string | undefined) {
   return useQuery({
     queryKey: menuKeys.byBuilding(buildingId ?? ""),
     queryFn: () => getMenuTree(buildingId!),
-    enabled: !!buildingId,
+    enabled: !!buildingId && buildingId !== "0",
     staleTime: 5 * 60 * 1000,
   });
 }
