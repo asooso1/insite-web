@@ -262,15 +262,15 @@ export default async function UIPreviewPage(): Promise<ReactNode> {
                 </thead>
                 <tbody>
                   {mockWorkOrders.map((wo, i) => (
-                    <tr key={wo.workOrderDTO.id} className={i % 2 === 0 ? "bg-background" : "bg-muted/20"}>
-                      <td className="px-4 py-2.5 text-muted-foreground">{wo.workOrderDTO.id}</td>
-                      <td className="px-4 py-2.5 font-medium max-w-[200px] truncate">{wo.workOrderDTO.name}</td>
+                    <tr key={wo.id} className={i % 2 === 0 ? "bg-background" : "bg-muted/20"}>
+                      <td className="px-4 py-2.5 text-muted-foreground">{wo.id}</td>
+                      <td className="px-4 py-2.5 font-medium max-w-[200px] truncate">{wo.name}</td>
                       <td className="px-4 py-2.5">
-                        <StatusBadge status={wo.workOrderDTO.state} />
+                        <StatusBadge status={wo.stateStyle as any} />
                       </td>
-                      <td className="px-4 py-2.5 text-muted-foreground">{wo.buildingDTO.name}</td>
-                      <td className="px-4 py-2.5 text-muted-foreground">{wo.workOrderDTO.writerName}</td>
-                      <td className="px-4 py-2.5 text-muted-foreground">{wo.workOrderDTO.writeDate}</td>
+                      <td className="px-4 py-2.5 text-muted-foreground">{wo.buildingName}</td>
+                      <td className="px-4 py-2.5 text-muted-foreground">{wo.writeUserName}</td>
+                      <td className="px-4 py-2.5 text-muted-foreground">{wo.writeActionDateTime}</td>
                     </tr>
                   ))}
                 </tbody>
