@@ -124,7 +124,7 @@ export const WorkOrderProgress: Story = {
     <div className="space-y-6">
       <div>
         <div className="flex items-center justify-between mb-2">
-          <p className="font-medium text-sm">작업지시 #WO-2026-001: 에어컨 정비</p>
+          <p className="font-medium text-sm">수시업무 #WO-2026-001: 에어컨 정비</p>
           <p className="text-sm text-gray-600">75% 완료</p>
         </div>
         <Progress value={75} variant="success" />
@@ -140,7 +140,7 @@ export const WorkOrderProgress: Story = {
 
       <div>
         <div className="flex items-center justify-between mb-2">
-          <p className="font-medium text-sm">작업지시 #WO-2026-003: 보일러 점검</p>
+          <p className="font-medium text-sm">수시업무 #WO-2026-003: 보일러 점검</p>
           <p className="text-sm text-gray-600">0% 대기중</p>
         </div>
         <Progress value={0} variant="default" />
@@ -148,7 +148,7 @@ export const WorkOrderProgress: Story = {
 
       <div>
         <div className="flex items-center justify-between mb-2">
-          <p className="font-medium text-sm">작업지시 #WO-2026-004: 창 수리</p>
+          <p className="font-medium text-sm">수시업무 #WO-2026-004: 창 수리</p>
           <p className="text-sm text-gray-600">미납기 - 연장 필요</p>
         </div>
         <Progress value={20} variant="error" />

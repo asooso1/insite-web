@@ -256,7 +256,7 @@ export const ActionButtons: StoryObj = {
   render: () => (
     <TooltipProvider>
       <div className="flex items-center gap-2 rounded-lg border p-3">
-        <span className="text-sm">작업지시 ID: #12345</span>
+        <span className="text-sm">수시업무 ID: #12345</span>
         <Tooltip>
           <TooltipTrigger asChild>
             <Button variant="ghost" size="sm" className="h-6 w-6 p-0">

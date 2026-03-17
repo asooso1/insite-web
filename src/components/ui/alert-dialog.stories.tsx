@@ -113,7 +113,7 @@ export const WithDescription: StoryObj = {
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>작업지시 완료 처리</AlertDialogTitle>
+          <AlertDialogTitle>수시업무 완료 처리</AlertDialogTitle>
           <AlertDialogDescription>
             이 작업지시를 완료 상태로 변경하시겠습니까?
           </AlertDialogDescription>
@@ -123,7 +123,7 @@ export const WithDescription: StoryObj = {
             완료 처리 시 다음이 수행됩니다:
           </p>
           <ul className="list-disc list-inside space-y-1">
-            <li>작업지시 상태가 완료로 변경됩니다</li>
+            <li>수시업무 상태가 완료로 변경됩니다</li>
             <li>시설 현황이 자동 업데이트됩니다</li>
             <li>담당자에게 알림이 전송됩니다</li>
           </ul>

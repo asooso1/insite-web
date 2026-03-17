@@ -175,9 +175,9 @@ export const InContext: Story = {
     <div className="space-y-4">
       <Alert variant="success">
         <CheckCircle2 className="h-4 w-4" />
-        <AlertTitle>작업지시 완료됨</AlertTitle>
+        <AlertTitle>수시업무 완료됨</AlertTitle>
         <AlertDescription>
-          작업지시 #WO-2026-001 &quot;에어컨 정기 점검&quot;이 완료되었습니다.
+          수시업무 #WO-2026-001 &quot;에어컨 정기 점검&quot;이 완료되었습니다.
           담당자: 김철수 | 완료일: 2026-03-17
         </AlertDescription>
       </Alert>

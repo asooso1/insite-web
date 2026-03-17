@@ -96,11 +96,11 @@ export const WithForm: Story = {
     return (
       <Sheet open={open} onOpenChange={setOpen}>
         <SheetTrigger asChild>
-          <Button variant="outline">작업지시 생성</Button>
+          <Button variant="outline">수시업무 생성</Button>
         </SheetTrigger>
         <SheetContent>
           <SheetHeader>
-            <SheetTitle>새 작업지시</SheetTitle>
+            <SheetTitle>새 수시업무</SheetTitle>
             <SheetDescription>빌딩 시설물 유지보수 작업을 추가합니다.</SheetDescription>
           </SheetHeader>
           <form className="space-y-4 py-4">
@@ -164,7 +164,7 @@ export const InContext: Story = {
     return (
       <div className="space-y-4">
         <div className="rounded-lg border p-4">
-          <h2 className="font-semibold">작업지시 상세</h2>
+          <h2 className="font-semibold">수시업무 상세</h2>
           <p className="text-sm text-muted-foreground">
             제목: 에어컨 필터 교체 | 상태: 진행중 | 우선순위: 높음
           </p>
@@ -175,7 +175,7 @@ export const InContext: Story = {
           </SheetTrigger>
           <SheetContent>
             <SheetHeader>
-              <SheetTitle>작업지시 편집</SheetTitle>
+              <SheetTitle>수시업무 편집</SheetTitle>
               <SheetDescription>작업의 세부사항을 수정합니다.</SheetDescription>
             </SheetHeader>
             <form className="space-y-4 py-4">

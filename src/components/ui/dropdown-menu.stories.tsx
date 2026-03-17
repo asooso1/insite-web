@@ -238,7 +238,7 @@ export const RadioGroup: StoryObj = {
             </DropdownMenuRadioItem>
             <DropdownMenuRadioItem value="workorders">
               <Save className="mr-2 h-4 w-4" />
-              작업지시
+              수시업무
             </DropdownMenuRadioItem>
             <DropdownMenuRadioItem value="users">
               <Users className="mr-2 h-4 w-4" />

@@ -114,9 +114,9 @@ const FALLBACK_MENUS: MenuDTO[] = [
   },
   {
     id: 10, depth: 1, sortNo: 10, parentId: 0,
-    name: "작업 관리", use: true, url: "/work-orders", show: true, icon: "workorder",
+    name: "업무 관리", use: true, url: "/work-orders", show: true, icon: "workorder",
     children: [
-      { id: 11, depth: 2, sortNo: 1, parentId: 10, name: "작업지시", use: true, url: "/work-orders", show: true, icon: "workorder", children: [] },
+      { id: 11, depth: 2, sortNo: 1, parentId: 10, name: "수시업무", use: true, url: "/work-orders", show: true, icon: "workorder", children: [] },
       { id: 12, depth: 2, sortNo: 2, parentId: 10, name: "SOP", use: true, url: "/work-orders/sop", show: true, icon: "workorder", children: [] },
       { id: 13, depth: 2, sortNo: 3, parentId: 10, name: "민원", use: true, url: "/work-orders/complain", show: true, icon: "workorder", children: [] },
       { id: 14, depth: 2, sortNo: 4, parentId: 10, name: "TBM", use: true, url: "/work-orders/tbm", show: true, icon: "workorder", children: [] },

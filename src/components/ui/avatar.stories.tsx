@@ -88,7 +88,7 @@ export const AvatarGroup: Story = {
   render: () => (
     <div className="space-y-6">
       <div>
-        <p className="text-sm font-semibold mb-3">작업팀 (3명)</p>
+        <p className="text-sm font-semibold mb-3">담당팀 (3명)</p>
         <div className="flex -space-x-2">
           <Avatar size="md">
             <AvatarImage src="https://github.com/shadcn.png" />
@@ -139,7 +139,7 @@ export const InContext: Story = {
             <AvatarFallback>김철수</AvatarFallback>
           </Avatar>
           <div className="flex-1">
-            <p className="font-medium">작업지시 #WO-2026-001</p>
+            <p className="font-medium">수시업무 #WO-2026-001</p>
             <p className="text-sm text-gray-600">담당자: 김철수 (설비팀)</p>
             <p className="text-sm text-gray-600">에어컨 정비 및 점검</p>
           </div>
@@ -154,7 +154,7 @@ export const InContext: Story = {
             <AvatarFallback>이영희</AvatarFallback>
           </Avatar>
           <div className="flex-1">
-            <p className="font-medium">작업지시 #WO-2026-002</p>
+            <p className="font-medium">수시업무 #WO-2026-002</p>
             <p className="text-sm text-gray-600">담당자: 이영희 (전기팀)</p>
             <p className="text-sm text-gray-600">조명 회로 점검 및 교체</p>
           </div>
@@ -169,7 +169,7 @@ export const InContext: Story = {
             <AvatarFallback>박민준</AvatarFallback>
           </Avatar>
           <div className="flex-1">
-            <p className="font-medium">작업지시 #WO-2026-003</p>
+            <p className="font-medium">수시업무 #WO-2026-003</p>
             <p className="text-sm text-gray-600">담당자: 박민준 (보일러팀)</p>
             <p className="text-sm text-gray-600">보일러 정기 점검</p>
           </div>

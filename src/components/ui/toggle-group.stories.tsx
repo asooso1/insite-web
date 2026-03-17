@@ -95,7 +95,7 @@ export const ViewSwitcher: Story = {
     return (
       <div className="space-y-4">
         <div className="flex items-center justify-between">
-          <h3 className="font-semibold">작업지시 목록</h3>
+          <h3 className="font-semibold">수시업무 목록</h3>
           <ToggleGroup type="single" value={view} onValueChange={setView}>
             <ToggleGroupItem value="list" aria-label="목록 보기">
               <List className="h-4 w-4" />
@@ -109,9 +109,9 @@ export const ViewSwitcher: Story = {
           </ToggleGroup>
         </div>
         <div className="rounded-lg border p-4 min-h-60 flex items-center justify-center text-muted-foreground">
-          {view === "list" && "목록 뷰: 작업지시가 행 형식으로 표시됩니다."}
-          {view === "grid" && "그리드 뷰: 작업지시가 카드 형식으로 표시됩니다."}
-          {view === "calendar" && "캘린더 뷰: 작업지시가 달력 형식으로 표시됩니다."}
+          {view === "list" && "목록 뷰: 수시업무가 행 형식으로 표시됩니다."}
+          {view === "grid" && "그리드 뷰: 수시업무가 카드 형식으로 표시됩니다."}
+          {view === "calendar" && "캘린더 뷰: 수시업무가 달력 형식으로 표시됩니다."}
         </div>
       </div>
     )
