@@ -298,7 +298,7 @@ export default function UserListPage() {
         actions={
           <Button onClick={() => router.push("/users/new")}>
             <Plus className="mr-2 h-4 w-4" />
-            새 사용자
+            등록
           </Button>
         }
       />
@@ -317,7 +317,7 @@ export default function UserListPage() {
             disabled={downloadExcel.isPending}
           >
             <Download className="mr-2 h-4 w-4" />
-            엑셀
+            엑셀 다운로드
           </Button>
         }
       />
@@ -334,10 +334,10 @@ export default function UserListPage() {
       {!isLoading && (!data?.content || data.content.length === 0) && (
         <EmptyState
           icon={Inbox}
-          title="사용자가 없습니다"
-          description="새 사용자를 등록해보세요."
+          title="데이터가 없습니다."
+          description="사용자를 등록해보세요."
           action={{
-            label: "새 사용자 등록",
+            label: "등록",
             onClick: () => router.push("/users/new"),
           }}
         />

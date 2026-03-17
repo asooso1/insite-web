@@ -32,8 +32,6 @@ import {
 } from "@/lib/hooks/use-facilities";
 import {
   FacilityState,
-  FacilityStateLabel,
-  FacilityStateStyle,
   type FacilityListDTO,
   type SearchFacilityVO,
 } from "@/lib/types/facility";
@@ -86,12 +84,7 @@ function useColumns(): ColumnDef<FacilityListDTO>[] {
         header: "상태",
         cell: ({ row }) => {
           const state = row.original.facilityDTO.state;
-          return (
-            <StatusBadge
-              status={FacilityStateStyle[state]}
-              label={FacilityStateLabel[state]}
-            />
-          );
+          return <StatusBadge status={state as FacilityState} />;
         },
         size: 100,
       },
@@ -153,7 +146,7 @@ function useColumns(): ColumnDef<FacilityListDTO>[] {
       },
       {
         accessorKey: "facilityDTO.buildingUserGroupName",
-        header: "작업팀",
+        header: "담당팀",
         cell: ({ row }) => (
           <span>{row.original.facilityDTO.buildingUserGroupName || "-"}</span>
         ),
@@ -285,7 +278,7 @@ export default function FacilityListPage() {
         actions={
           <Button onClick={() => router.push("/facilities/new")}>
             <Plus className="mr-2 h-4 w-4" />
-            새 시설
+            등록
           </Button>
         }
       />
@@ -304,7 +297,7 @@ export default function FacilityListPage() {
             disabled={downloadExcel.isPending}
           >
             <Download className="mr-2 h-4 w-4" />
-            엑셀
+            엑셀 다운로드
           </Button>
         }
       />
@@ -321,10 +314,10 @@ export default function FacilityListPage() {
       {!isLoading && (!data?.content || data.content.length === 0) && (
         <EmptyState
           icon={Inbox}
-          title="시설이 없습니다"
-          description="새 시설을 등록해보세요."
+          title="데이터가 없습니다."
+          description="시설을 등록해보세요."
           action={{
-            label: "새 시설 등록",
+            label: "등록",
             onClick: () => router.push("/facilities/new"),
           }}
         />

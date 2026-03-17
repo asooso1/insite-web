@@ -293,7 +293,7 @@ export default function MaterialListPage() {
         actions={
           <Button onClick={() => router.push("/materials/new")}>
             <Plus className="mr-2 h-4 w-4" />
-            새 자재
+            등록
           </Button>
         }
       />
@@ -318,10 +318,10 @@ export default function MaterialListPage() {
       {!isLoading && filteredData.length === 0 && (
         <EmptyState
           icon={Package}
-          title="자재가 없습니다"
-          description="새 자재를 등록해보세요."
+          title="데이터가 없습니다."
+          description="자재를 등록해보세요."
           action={{
-            label: "새 자재 등록",
+            label: "등록",
             onClick: () => router.push("/materials/new"),
           }}
         />

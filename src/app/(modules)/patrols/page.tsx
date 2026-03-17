@@ -378,7 +378,7 @@ export default function PatrolListPage() {
           }
         >
           <Plus className="mr-2 h-4 w-4" />
-          {isPlans ? "새 순찰 계획" : "새 순찰 팀"}
+          등록
         </Button>
       </div>
 
@@ -419,9 +419,9 @@ export default function PatrolListPage() {
           {!planLoading && (planData?.content ?? []).length === 0 && (
             <EmptyState
               icon={Shield}
-              title="순찰 계획이 없습니다"
-              description="새 순찰 계획을 등록해보세요."
-              action={{ label: "새 순찰 계획", onClick: () => router.push("/patrols/new") }}
+              title="데이터가 없습니다."
+              description="순찰 계획을 등록해보세요."
+              action={{ label: "등록", onClick: () => router.push("/patrols/new") }}
             />
           )}
         </>
@@ -436,9 +436,9 @@ export default function PatrolListPage() {
           {!teamLoading && (teamData?.content ?? []).length === 0 && (
             <EmptyState
               icon={Shield}
-              title="순찰 팀이 없습니다"
-              description="새 순찰 팀을 등록해보세요."
-              action={{ label: "새 순찰 팀", onClick: () => router.push("/patrols/teams/new") }}
+              title="데이터가 없습니다."
+              description="순찰 팀을 등록해보세요."
+              action={{ label: "등록", onClick: () => router.push("/patrols/teams/new") }}
             />
           )}
         </>

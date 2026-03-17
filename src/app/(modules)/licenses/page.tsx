@@ -192,7 +192,7 @@ export default function LicenseListPage() {
         </div>
         <Button onClick={() => router.push("/licenses/new")}>
           <Plus className="mr-2 h-4 w-4" />
-          새 자격증
+          등록
         </Button>
       </div>
 
@@ -219,10 +219,10 @@ export default function LicenseListPage() {
       {!isLoading && filteredData.length === 0 && (
         <EmptyState
           icon={Award}
-          title="자격증이 없습니다"
-          description="새 자격증을 등록해보세요."
+          title="데이터가 없습니다."
+          description="자격증을 등록해보세요."
           action={{
-            label: "새 자격증 등록",
+            label: "등록",
             onClick: () => router.push("/licenses/new"),
           }}
         />

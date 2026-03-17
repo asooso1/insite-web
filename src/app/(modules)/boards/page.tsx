@@ -434,7 +434,7 @@ export default function BoardListPage() {
           }
         >
           <Plus className="mr-2 h-4 w-4" />
-          {activeTab === "notice" ? "새 공지" : "새 자료"}
+          등록
         </Button>
       </div>
 
@@ -479,10 +479,10 @@ export default function BoardListPage() {
           {!noticeLoading && (noticeData?.content ?? []).length === 0 && (
             <EmptyState
               icon={Megaphone}
-              title="공지사항이 없습니다"
-              description="새 공지사항을 등록해보세요."
+              title="데이터가 없습니다."
+              description="공지사항을 등록해보세요."
               action={{
-                label: "새 공지 등록",
+                label: "등록",
                 onClick: () => router.push("/boards/notices/new"),
               }}
             />
@@ -499,10 +499,10 @@ export default function BoardListPage() {
           {!dataLoading && (refData?.content ?? []).length === 0 && (
             <EmptyState
               icon={FileText}
-              title="자료가 없습니다"
-              description="새 자료를 등록해보세요."
+              title="데이터가 없습니다."
+              description="자료를 등록해보세요."
               action={{
-                label: "새 자료 등록",
+                label: "등록",
                 onClick: () => router.push("/boards/data/new"),
               }}
             />

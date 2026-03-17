@@ -288,7 +288,7 @@ export default function ClientListPage() {
         actions={
           <Button onClick={() => router.push("/clients/new")}>
             <Plus className="mr-2 h-4 w-4" />
-            새 고객사
+            등록
           </Button>
         }
       />
@@ -307,7 +307,7 @@ export default function ClientListPage() {
             disabled={downloadExcel.isPending}
           >
             <Download className="mr-2 h-4 w-4" />
-            엑셀
+            엑셀 다운로드
           </Button>
         }
       />
@@ -324,10 +324,10 @@ export default function ClientListPage() {
       {!isLoading && (!data?.content || data.content.length === 0) && (
         <EmptyState
           icon={Inbox}
-          title="고객사가 없습니다"
-          description="새 고객사를 등록해보세요."
+          title="데이터가 없습니다."
+          description="고객사를 등록해보세요."
           action={{
-            label: "새 고객사 등록",
+            label: "등록",
             onClick: () => router.push("/clients/new"),
           }}
         />
