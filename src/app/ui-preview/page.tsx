@@ -157,7 +157,7 @@ export default async function UIPreviewPage(): Promise<ReactNode> {
         <div className="space-y-3">
           <div>
             <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-2">
-              작업지시 상태 (WorkOrderState)
+              수시업무 상태 (WorkOrderState)
             </p>
             <div className="flex flex-wrap gap-2">
               <StatusBadge status="WRITE" />
@@ -242,10 +242,10 @@ export default async function UIPreviewPage(): Promise<ReactNode> {
       </Section>
 
       {/* Section 5: Data Table */}
-      <Section id="data-table" title="데이터 테이블 — 작업지시 50개">
+      <Section id="data-table" title="데이터 테이블 — 수시업무 50개">
         <Card className="shadow-[var(--shadow-card)]">
           <CardHeader className="pb-3">
-            <CardTitle className="text-base">작업지시 목록 ({mockWorkOrders.length}건)</CardTitle>
+            <CardTitle className="text-base">수시업무 목록 ({mockWorkOrders.length}건)</CardTitle>
           </CardHeader>
           <CardContent className="p-0">
             <div className="overflow-auto max-h-[400px]">
@@ -253,7 +253,7 @@ export default async function UIPreviewPage(): Promise<ReactNode> {
                 <thead className="bg-muted/50 sticky top-0 backdrop-blur-sm">
                   <tr>
                     <th className="px-4 py-3 text-left font-medium text-muted-foreground">ID</th>
-                    <th className="px-4 py-3 text-left font-medium text-muted-foreground">작업명</th>
+                    <th className="px-4 py-3 text-left font-medium text-muted-foreground">업무명</th>
                     <th className="px-4 py-3 text-left font-medium text-muted-foreground">상태</th>
                     <th className="px-4 py-3 text-left font-medium text-muted-foreground">빌딩</th>
                     <th className="px-4 py-3 text-left font-medium text-muted-foreground">작성자</th>
