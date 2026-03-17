@@ -71,6 +71,16 @@ Stories 파일을 읽지 않고 컴포넌트를 사용하는 것은 **금지**. 
 | `ScrollArea` | UI/ScrollArea | 커스텀 스크롤 영역 |
 | `Command` | UI/Command | 검색/명령 팔레트 |
 | `Toggle` | UI/Toggle | 토글 버튼 |
+| `ToggleGroup` | UI/ToggleGroup | 토글 그룹 (뷰 전환, 다중 선택) |
+| `Avatar` | UI/Avatar | 사용자 아바타 (이미지 + 이니셜 폴백) |
+| `Progress` | UI/Progress | 진행 상태 바 (variant: default/success/warning/error) |
+| `Alert` | UI/Alert | 인라인 알림 (variant: default/destructive/warning/success/info) |
+| `Sheet` | UI/Sheet | 슬라이드 패널 (side: right/left/bottom/top) |
+| `Slider` | UI/Slider | 범위 슬라이더 (단일값/범위) |
+| `NumberInput` | UI/NumberInput | 숫자 증감 입력 (-/+ 버튼) |
+| `RadioGroup` | UI/RadioGroup | 라디오 그룹 |
+| `AspectRatio` | UI/AspectRatio | 비율 고정 컨테이너 |
+| `Sonner` | UI/Sonner | 토스트 알림 (sonner 라이브러리) |
 
 ### 데이터 표시 (`src/components/data-display/`)
 
@@ -101,6 +111,8 @@ Stories 파일을 읽지 않고 컴포넌트를 사용하는 것은 **금지**. 
 | `DatePicker` | Forms/DatePicker | 날짜 선택 |
 | `FileUpload` | Forms/FileUpload | 파일 업로드 |
 | `CascadingSelect` | Forms/CascadingSelect | 계층형 선택 (빌딩→층→구역 등) |
+| `MultiSelect` | Forms/MultiSelect | 다중 선택 (검색 가능, 칩 표시) |
+| `Combobox` | Forms/Combobox | 검색 가능한 단일 선택 드롭다운 |
 
 ### 차트 (`src/components/charts/`)
 
@@ -463,6 +475,14 @@ npm run storybook   # http://localhost:6006
 - [ ] 확인 다이얼로그: `AlertDialog` 사용 (`window.confirm` 금지)
 - [ ] 드롭다운: `DropdownMenu` 사용
 - [ ] 폼 필드: `FormField` 래퍼 사용 (label + input + error 묶음)
+- [ ] 다중 선택: `MultiSelect` 사용 (일반 select 중복 금지)
+- [ ] 검색 선택: `Combobox` 사용 (긴 목록 검색 필요 시)
+- [ ] 슬라이드 패널: `Sheet` 사용 (모바일 상세/폼 패널)
+- [ ] 인라인 알림: `Alert` 사용 (`toast` 아닌 페이지 내 메시지)
+- [ ] 사용자 아바타: `Avatar` 사용
+- [ ] 진행률: `Progress` 사용
+- [ ] 라디오: `RadioGroup` 사용 (raw `<input type="radio">` 금지)
+- [ ] 숫자 입력: `NumberInput` 사용 (증감 필요 시)
 
 ### 상태 처리
 - [ ] 로딩/빈/에러 3가지 상태 모두 처리됨
