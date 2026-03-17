@@ -41,7 +41,7 @@ const facilitySchema = z.object({
   facilityName: z.string().min(1, "시설명을 입력해주세요"),
   use: z.string().min(1, "용도를 입력해주세요"),
   state: z.nativeEnum(FacilityState),
-  buildingUserGroupId: z.number().min(1, "작업팀을 선택해주세요"),
+  buildingUserGroupId: z.number().min(1, "담당팀을 선택해주세요"),
   makingCompany: z.string().optional(),
   makeDate: z.string().optional(),
   sellCompany: z.string().optional(),
@@ -457,7 +457,7 @@ export function FacilityForm({
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="space-y-2">
-                  <Label>작업팀 *</Label>
+                  <Label>담당팀 *</Label>
                   <Select
                     value={String(form.watch("buildingUserGroupId") || "")}
                     onValueChange={(value) =>
@@ -465,10 +465,10 @@ export function FacilityForm({
                     }
                   >
                     <SelectTrigger>
-                      <SelectValue placeholder="작업팀 선택" />
+                      <SelectValue placeholder="담당팀 선택" />
                     </SelectTrigger>
                     <SelectContent>
-                      {/* TODO: 작업팀 목록 API 연동 */}
+                      {/* TODO: 담당팀 목록 API 연동 */}
                       <SelectItem value="1">시설팀</SelectItem>
                       <SelectItem value="2">기계팀</SelectItem>
                     </SelectContent>

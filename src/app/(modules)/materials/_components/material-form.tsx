@@ -274,7 +274,7 @@ export function MaterialForm({ mode, initialData, materialId }: MaterialFormProp
                     {...form.register("connectWorkOrder")}
                     className="h-4 w-4 rounded border"
                   />
-                  <Label htmlFor="connectWorkOrder">작업지시 연동</Label>
+                  <Label htmlFor="connectWorkOrder">수시업무 연동</Label>
                 </div>
               </CardContent>
             </Card>

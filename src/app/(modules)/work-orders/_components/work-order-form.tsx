@@ -46,7 +46,7 @@ import {
 // ============================================================================
 
 const workOrderSchema = z.object({
-  name: z.string().min(1, "작업명을 입력해주세요"),
+  name: z.string().min(1, "업무명을 입력해주세요"),
   description: z.string().optional(),
   type: z.nativeEnum(WorkOrderType),
   autoConfirm: z.boolean(),
@@ -58,7 +58,7 @@ const workOrderSchema = z.object({
   buildingFloorZoneId: z.number().optional(),
   firstClassId: z.number().min(1, "작업 구분을 선택해주세요"),
   secondClassId: z.number().min(1, "작업 상세 구분을 선택해주세요"),
-  buildingUserGroupId: z.number().min(1, "작업팀을 선택해주세요"),
+  buildingUserGroupId: z.number().min(1, "담당팀을 선택해주세요"),
   chargeAccountIds: z.array(z.number()).min(1, "담당자를 선택해주세요"),
   ccAccountIds: z.array(z.number()).optional(),
   approveAccountIds: z.array(z.number()).optional(),
@@ -232,8 +232,8 @@ export function WorkOrderForm({
             </h1>
             <p className="text-muted-foreground">
               {mode === "create"
-                ? "새로운 작업지시를 등록합니다."
-                : "작업지시 정보를 수정합니다."}
+                ? "새로운 수시업무를 등록합니다."
+                : "수시업무 정보를 수정합니다."}
             </p>
           </div>
         </div>
@@ -267,10 +267,10 @@ export function WorkOrderForm({
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="space-y-2">
-                  <Label htmlFor="name">작업명 *</Label>
+                  <Label htmlFor="name">업무명 *</Label>
                   <Input
                     id="name"
-                    placeholder="작업명을 입력하세요"
+                    placeholder="업무명을 입력하세요"
                     {...form.register("name")}
                   />
                   {form.formState.errors.name && (
@@ -515,7 +515,7 @@ export function WorkOrderForm({
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="space-y-2">
-                  <Label>작업팀 *</Label>
+                  <Label>담당팀 *</Label>
                   <Select
                     value={String(form.watch("buildingUserGroupId") || "")}
                     onValueChange={(value) =>
@@ -523,10 +523,10 @@ export function WorkOrderForm({
                     }
                   >
                     <SelectTrigger>
-                      <SelectValue placeholder="작업팀 선택" />
+                      <SelectValue placeholder="담당팀 선택" />
                     </SelectTrigger>
                     <SelectContent>
-                      {/* TODO: 작업팀 목록 API 연동 */}
+                      {/* TODO: 담당팀 목록 API 연동 */}
                       <SelectItem value="1">시설팀</SelectItem>
                       <SelectItem value="2">청소팀</SelectItem>
                       <SelectItem value="3">보안팀</SelectItem>
