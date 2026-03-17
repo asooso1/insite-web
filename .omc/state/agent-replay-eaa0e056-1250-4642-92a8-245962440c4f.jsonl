@@ -1,9 +1,0 @@
-{"t":0,"agent":"system","event":"skill_invoked","skill_name":"oh-my-claudecode:plan"}
-{"t":0,"agent":"a6a2fde","agent_type":"executor","event":"agent_start","parent_mode":"none"}
-{"t":0,"agent":"a6a2fde","agent_type":"executor","event":"agent_stop","success":true,"duration_ms":170804}
-{"t":0,"agent":"a37419d","agent_type":"unknown","event":"agent_stop","success":true}
-{"t":0,"agent":"ab84ecd","agent_type":"unknown","event":"agent_stop","success":true}
-{"t":0,"agent":"ac5d705","agent_type":"explore","event":"agent_start","parent_mode":"none"}
-{"t":0,"agent":"a33eace","agent_type":"explore","event":"agent_start","parent_mode":"none"}
-{"t":0,"agent":"ac5d705","agent_type":"explore","event":"agent_stop","success":true,"duration_ms":59459}
-{"t":0,"agent":"a33eace","agent_type":"explore","event":"agent_stop","success":true,"duration_ms":72849}
