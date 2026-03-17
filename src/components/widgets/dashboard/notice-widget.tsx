@@ -9,6 +9,9 @@ import { type WidgetProps } from "../widget-registry";
 import { useNoticeList } from "@/lib/hooks/use-dashboard";
 import type { SearchWidgetVO } from "@/lib/types/dashboard";
 
+import { EmptyState } from "@/components/data-display/empty-state";
+import { BellOff } from "lucide-react";
+
 // ============================================================================
 // Component
 // ============================================================================
@@ -60,9 +63,11 @@ export function NoticeWidget({ instanceId, config, onRefresh }: WidgetProps): Re
           ))}
         </div>
       ) : items.length === 0 ? (
-        <div className="flex h-full items-center justify-center">
-          <p className="text-sm text-muted-foreground">등록된 공지사항이 없습니다.</p>
-        </div>
+        <EmptyState
+          icon={BellOff}
+          title="데이터가 없습니다."
+          className="py-4 h-full"
+        />
       ) : (
         <ul className="divide-y">
           {items.map((item, index) => (

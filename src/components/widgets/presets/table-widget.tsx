@@ -75,7 +75,7 @@ export interface TableWidgetConfig {
 
 const SAMPLE_COLUMNS: TableColumn[] = [
   { key: "id", header: "번호", width: "60px" },
-  { key: "title", header: "작업명" },
+  { key: "title", header: "업무명" },
   {
     key: "status",
     header: "상태",
@@ -116,7 +116,7 @@ const SAMPLE_DATA = [
  *     title: "최근 작업",
  *     dataUrl: "/api/work-orders?limit=5",
  *     columns: [
- *       { key: "title", header: "작업명" },
+ *       { key: "title", header: "업무명" },
  *       { key: "status", header: "상태", isStatus: true },
  *     ],
  *   }}

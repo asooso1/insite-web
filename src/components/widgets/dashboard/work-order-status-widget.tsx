@@ -69,8 +69,8 @@ export function WorkOrderStatusWidget({ instanceId, config, onRefresh }: WidgetP
   return (
     <WidgetContainer
       id={instanceId}
-      title="작업 현황"
-      subtitle="전체 작업 KPI"
+      title="수시업무 현황"
+      subtitle="전체 수시업무 KPI"
       icon={ClipboardList}
       size="4x2"
       loading={isLoading}
@@ -81,29 +81,29 @@ export function WorkOrderStatusWidget({ instanceId, config, onRefresh }: WidgetP
         <KpiCard
           label="전체"
           value={data?.totalCount}
-          icon={<ClipboardList className="h-4 w-4 text-blue-600 dark:text-blue-400" />}
-          colorClass="bg-blue-100 dark:bg-blue-900/30"
+          icon={<ClipboardList className="h-4 w-4 text-primary" />}
+          colorClass="bg-primary/10"
           loading={isLoading}
         />
         <KpiCard
           label="대기"
           value={data?.pendingCount}
-          icon={<Clock className="h-4 w-4 text-yellow-600 dark:text-yellow-400" />}
-          colorClass="bg-yellow-100 dark:bg-yellow-900/30"
+          icon={<Clock className="h-4 w-4 text-system-yellow" />}
+          colorClass="bg-[var(--system-yellow-secondary)]"
           loading={isLoading}
         />
         <KpiCard
           label="진행 중"
           value={data?.inProgressCount}
-          icon={<Loader2 className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />}
-          colorClass="bg-indigo-100 dark:bg-indigo-900/30"
+          icon={<Loader2 className="h-4 w-4 text-system-blue" />}
+          colorClass="bg-[var(--system-blue-secondary)]"
           loading={isLoading}
         />
         <KpiCard
           label="완료"
           value={data?.completedCount}
-          icon={<CheckCircle2 className="h-4 w-4 text-green-600 dark:text-green-400" />}
-          colorClass="bg-green-100 dark:bg-green-900/30"
+          icon={<CheckCircle2 className="h-4 w-4 text-system-green" />}
+          colorClass="bg-[var(--system-green-secondary)]"
           loading={isLoading}
         />
       </div>
