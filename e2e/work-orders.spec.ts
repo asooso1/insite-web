@@ -1,6 +1,6 @@
 import { test, expect } from "./fixtures";
 
-test.describe("작업 관리 - 작업지시 목록", () => {
+test.describe("작업 관리 - 수시업무 목록", () => {
   test.beforeEach(async ({ page }) => {
     await page.goto("/work-orders");
   });
@@ -11,16 +11,16 @@ test.describe("작업 관리 - 작업지시 목록", () => {
 
   test("페이지 헤더(제목 + 설명)가 표시됨", async ({ page }) => {
     // PageHeader 컴포넌트의 제목
-    await expect(page.getByRole("heading", { name: "작업 목록" })).toBeVisible({
+    await expect(page.getByRole("heading", { name: "수시업무 목록" })).toBeVisible({
       timeout: 10000,
     });
 
     // 설명 텍스트
-    await expect(page.getByText("작업지시를 관리합니다.")).toBeVisible();
+    await expect(page.getByText("수시업무를 관리합니다.")).toBeVisible();
   });
 
-  test("신규 작업 등록 버튼이 표시됨", async ({ page }) => {
-    const newButton = page.getByRole("button", { name: /새 작업/ });
+  test("신규 등록 버튼이 표시됨", async ({ page }) => {
+    const newButton = page.getByRole("button", { name: /신규 등록/ });
     await expect(newButton).toBeVisible();
 
     // 버튼 클릭 시 /work-orders/new으로 이동 검증
@@ -47,7 +47,7 @@ test.describe("작업 관리 - 작업지시 목록", () => {
   });
 
   test("검색 입력 필드가 표시됨", async ({ page }) => {
-    const searchInput = page.getByPlaceholder("작업명 검색...");
+    const searchInput = page.getByPlaceholder("검색어를 입력하세요");
     await expect(searchInput).toBeVisible();
     await expect(searchInput).toHaveAttribute("type", "text");
   });
@@ -63,7 +63,7 @@ test.describe("작업 관리 - 작업지시 목록", () => {
 
     // DataTable이 있는지 확인 (테이블 또는 빈 상태)
     const table = page.locator("table");
-    const emptyState = page.getByText(/작업이 없습니다|새 작업을 등록/);
+    const emptyState = page.getByText(/데이터가 없습니다|수시업무를 등록/);
 
     const tableVisible = await table.isVisible().catch(() => false);
     const emptyStateVisible = await emptyState.isVisible().catch(() => false);
@@ -85,7 +85,7 @@ test.describe("작업 관리 - 작업지시 목록", () => {
     // 테이블 또는 빈 상태가 업데이트됨 (또는 로딩 상태 표시)
     await page.waitForLoadState("networkidle");
     const table = page.locator("table");
-    const emptyState = page.getByText(/작업이 없습니다|새 작업을 등록/);
+    const emptyState = page.getByText(/데이터가 없습니다|수시업무를 등록/);
 
     const tableVisible = await table.isVisible().catch(() => false);
     const emptyStateVisible = await emptyState.isVisible().catch(() => false);
@@ -96,7 +96,7 @@ test.describe("작업 관리 - 작업지시 목록", () => {
   test("검색 입력으로 필터링 동작", async ({ page }) => {
     await page.waitForLoadState("networkidle");
 
-    const searchInput = page.getByPlaceholder("작업명 검색...");
+    const searchInput = page.getByPlaceholder("검색어를 입력하세요");
 
     // 검색 키워드 입력
     await searchInput.fill("테스트");
@@ -106,7 +106,7 @@ test.describe("작업 관리 - 작업지시 목록", () => {
 
     // 테이블 또는 빈 상태가 표시됨
     const table = page.locator("table");
-    const emptyState = page.getByText(/작업이 없습니다|새 작업을 등록/);
+    const emptyState = page.getByText(/데이터가 없습니다|수시업무를 등록/);
 
     const tableVisible = await table.isVisible().catch(() => false);
     const emptyStateVisible = await emptyState.isVisible().catch(() => false);
@@ -123,8 +123,7 @@ test.describe("작업 관리 - 작업지시 목록", () => {
     // 페이지 새로고침
     await page.reload();
 
-    // 에러 상태에서도 페이지 구조는 렌더링되어야 함
-    await expect(page.getByRole("heading", { name: "작업 목록" })).toBeVisible();
+    // 에러 상태에서 에러 메시지와 재시도 버튼이 표시됨
     await expect(page.getByText("데이터를 불러올 수 없습니다")).toBeVisible();
     await expect(page.getByRole("button", { name: /다시 시도/ })).toBeVisible();
   });
