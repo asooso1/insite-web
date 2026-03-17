@@ -36,8 +36,6 @@ import {
 } from "@/lib/hooks/use-work-orders";
 import {
   WorkOrderState,
-  WorkOrderStateLabel,
-  WorkOrderStateStyle,
   WorkOrderType,
   WorkOrderTypeLabel,
   type WorkOrderListDTO,
@@ -92,7 +90,7 @@ const FILTER_DEFS: FilterDef[] = [
     options: [
       { value: "title", label: "업무명" },
       { value: "writerAccountName", label: "작성자" },
-      { value: "chargeAccountName", label: "처리자" },
+      { value: "chargeAccountName", label: "담당자" },
       { value: "confirmAccountName", label: "승인자" },
     ],
   },
@@ -149,18 +147,13 @@ function useColumns(): ColumnDef<WorkOrderListDTO>[] {
         header: "상태",
         cell: ({ row }) => {
           const state = row.original.state;
-          return (
-            <StatusBadge
-              status={WorkOrderStateStyle[state as WorkOrderState]}
-              label={WorkOrderStateLabel[state as WorkOrderState]}
-            />
-          );
+          return <StatusBadge status={state as WorkOrderState} />;
         },
         size: 100,
       },
       {
         accessorKey: "name",
-        header: "작업명",
+        header: "업무명",
         cell: ({ row }) => (
           <button
             onClick={() => router.push(`/work-orders/${row.original.id}`)}
@@ -181,7 +174,7 @@ function useColumns(): ColumnDef<WorkOrderListDTO>[] {
       },
       {
         accessorKey: "firstClassName",
-        header: "작업 구분",
+        header: "업무 구분",
         cell: ({ row }) => (
           <span>
             {row.original.firstClassName} &gt; {row.original.secondClassName}
@@ -197,7 +190,7 @@ function useColumns(): ColumnDef<WorkOrderListDTO>[] {
       },
       {
         accessorKey: "buildingUserGroupName",
-        header: "작업팀",
+        header: "담당팀",
         cell: ({ row }) => <span>{row.original.buildingUserGroupName}</span>,
         size: 120,
       },
@@ -369,13 +362,13 @@ export default function WorkOrderListPage() {
     <div className="flex flex-col gap-6 p-6">
       {/* 헤더 */}
       <PageHeader
-        title="작업 목록"
-        description="작업지시를 관리합니다."
+        title="수시업무 목록"
+        description="수시업무를 관리합니다."
         icon={ClipboardList}
         actions={
           <Button onClick={() => router.push("/work-orders/new")}>
             <Plus className="mr-2 h-4 w-4" />
-            새 작업
+            신규 등록
           </Button>
         }
       />
@@ -419,7 +412,7 @@ export default function WorkOrderListPage() {
             disabled={downloadExcel.isPending}
           >
             <Download className="mr-2 h-4 w-4" />
-            엑셀
+            엑셀 다운로드
           </Button>
         }
       />
@@ -438,10 +431,10 @@ export default function WorkOrderListPage() {
       {!isLoading && (!data?.content || data.content.length === 0) && (
         <EmptyState
           icon={Inbox}
-          title="작업이 없습니다"
-          description="새 작업을 등록해보세요."
+          title="데이터가 없습니다."
+          description="수시업무를 등록해보세요."
           action={{
-            label: "새 작업 등록",
+            label: "신규 등록",
             onClick: () => router.push("/work-orders/new"),
           }}
         />

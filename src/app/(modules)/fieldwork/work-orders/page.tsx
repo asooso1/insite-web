@@ -121,7 +121,7 @@ function useColumns(): ColumnDef<FieldWorkOrderDTO>[] {
       },
       {
         accessorKey: "mainAssigneeName",
-        header: "주담당자",
+        header: "담당자",
         cell: ({ row }) => (
           <span className="text-muted-foreground">
             {row.original.mainAssigneeName || "-"}
@@ -207,7 +207,7 @@ export default function FieldWorkOrdersPage() {
     return (
       <EmptyState
         title="오류 발생"
-        description="작업지시 목록을 불러올 수 없습니다"
+        description="수시업무 목록을 불러올 수 없습니다"
         icon={AlertCircle}
       />
     );
@@ -216,13 +216,13 @@ export default function FieldWorkOrdersPage() {
   return (
     <div className="space-y-6">
       <PageHeader
-        title="현장작업지시"
+        title="현장 수시업무"
         description="현장 작업을 관리하세요"
         icon={CheckCircle}
         actions={
           <Button onClick={() => router.push("/fieldwork/work-orders/new")}>
             <Plus className="mr-2 h-4 w-4" />
-            작업지시 추가
+            수시업무 추가
           </Button>
         }
       />
@@ -263,7 +263,7 @@ export default function FieldWorkOrdersPage() {
           <div className="sm:col-span-2">
             <label className="text-sm font-medium text-foreground">검색어</label>
             <Input
-              placeholder="작업명 검색"
+              placeholder="업무명 검색"
               value={keyword}
               onChange={(e) => {
                 setKeyword(e.target.value);
@@ -282,8 +282,8 @@ export default function FieldWorkOrdersPage() {
         </div>
       ) : !data?.content || data.content.length === 0 ? (
         <EmptyState
-          title="작업지시가 없습니다"
-          description="첫 번째 작업지시를 추가해보세요"
+          title="데이터가 없습니다."
+          description="첫 번째 수시업무를 추가해보세요"
           icon={Inbox}
         />
       ) : (
