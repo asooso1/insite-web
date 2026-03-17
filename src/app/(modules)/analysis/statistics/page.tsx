@@ -202,7 +202,7 @@ function useStatisticsCColumns(): ColumnDef<StatisticsCItemDTO>[] {
       },
       {
         accessorKey: "worker",
-        header: "작업자",
+        header: "담당자",
         size: 80,
       },
       {

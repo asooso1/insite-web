@@ -117,7 +117,7 @@ export default function MobileWorkOrderListPage(): React.JSX.Element {
 
   return (
     <MobileShell
-      headerTitle="작업 목록"
+      headerTitle="수시업무 목록"
       headerRightActions={
         <Link
           href="/work-orders/new"
@@ -135,7 +135,7 @@ export default function MobileWorkOrderListPage(): React.JSX.Element {
             <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
             <input
               type="search"
-              placeholder="작업명 검색..."
+              placeholder="업무명 검색..."
               value={searchInput}
               onChange={(e) => setSearchInput(e.target.value)}
               className="h-9 w-full rounded-md border bg-background pl-9 pr-3 text-sm"

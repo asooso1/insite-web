@@ -228,7 +228,7 @@ export default function FacilityDetailPage() {
               />
               <InfoItem
                 icon={User}
-                label="작업팀"
+                label="담당팀"
                 value={facility.buildingUserGroupName}
               />
             </CardContent>

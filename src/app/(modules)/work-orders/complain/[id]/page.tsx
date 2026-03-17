@@ -101,11 +101,11 @@ export default function ComplainDetailPage() {
         </CardContent>
       </Card>
 
-      {/* 연결된 작업지시 */}
+      {/* 연결된 수시업무 */}
       {data.workOrderVocDTOs && data.workOrderVocDTOs.length > 0 && (
         <Card>
           <CardHeader>
-            <CardTitle>연결된 작업지시</CardTitle>
+            <CardTitle>연결된 수시업무</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-2">

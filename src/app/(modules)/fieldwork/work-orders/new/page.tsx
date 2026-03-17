@@ -15,7 +15,7 @@ export default function NewFieldWorkOrderPage() {
   return (
     <div className="space-y-6">
       <PageHeader
-        title="작업지시 추가"
+        title="수시업무 추가"
         description="새로운 현장 작업을 지시하세요"
         icon={Plus}
       />

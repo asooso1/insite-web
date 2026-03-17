@@ -54,7 +54,7 @@ export default function FieldWorkOrderDetailPage({
     return (
       <EmptyState
         title="오류 발생"
-        description="작업지시 정보를 불러올 수 없습니다"
+        description="수시업무 정보를 불러올 수 없습니다"
         icon={AlertCircle}
       />
     );

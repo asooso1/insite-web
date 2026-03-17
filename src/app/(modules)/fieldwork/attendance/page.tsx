@@ -34,7 +34,7 @@ function useColumns(): ColumnDef<FieldAttendanceDTO>[] {
       },
       {
         accessorKey: "accountName",
-        header: "작업자",
+        header: "담당자",
         cell: ({ row }) => (
           <span className="font-medium text-foreground">
             {row.original.accountName}
@@ -50,7 +50,7 @@ function useColumns(): ColumnDef<FieldAttendanceDTO>[] {
       },
       {
         accessorKey: "workOrderTitle",
-        header: "작업명",
+        header: "업무명",
         cell: ({ row }) => (
           <span className="text-muted-foreground">
             {row.original.workOrderTitle}
@@ -130,7 +130,7 @@ export default function FieldAttendancePage() {
     <div className="space-y-6">
       <PageHeader
         title="출퇴근 이력"
-        description="작업자의 출퇴근 기록을 확인하세요"
+        description="담당자의 출퇴근 기록을 확인하세요"
         icon={Clock}
       />
 

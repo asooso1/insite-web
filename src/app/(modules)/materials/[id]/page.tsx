@@ -202,7 +202,7 @@ export default function MaterialDetailPage() {
               <InfoItem icon={Package} label="단위" value={material.unit} />
               <InfoItem
                 icon={Package}
-                label="작업지시 연동"
+                label="수시업무 연동"
                 value={material.connectWorkOrderName}
               />
               <InfoItem

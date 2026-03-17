@@ -124,7 +124,7 @@ export default function MobileFacilityDetailPage(): React.JSX.Element {
             <InfoRow icon={Calendar} label="설치일" value={facility.installDate} />
             <InfoRow icon={Calendar} label="운전시작일" value={facility.startRunDate} />
             <InfoRow icon={User} label="담당자" value={facility.chargerName} />
-            <InfoRow icon={User} label="작업팀" value={facility.buildingUserGroupName} />
+            <InfoRow icon={User} label="담당팀" value={facility.buildingUserGroupName} />
           </CardContent>
         </Card>
 

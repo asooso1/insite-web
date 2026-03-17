@@ -28,7 +28,7 @@ export default function EditFieldWorkOrderPage({
     return (
       <EmptyState
         title="오류 발생"
-        description="작업지시 정보를 불러올 수 없습니다"
+        description="수시업무 정보를 불러올 수 없습니다"
         icon={AlertCircle}
       />
     );
@@ -45,7 +45,7 @@ export default function EditFieldWorkOrderPage({
   return (
     <div className="space-y-6">
       <PageHeader
-        title="작업지시 수정"
+        title="수시업무 수정"
         description={`${workOrder.title} 정보를 수정하세요`}
         icon={Edit}
       />

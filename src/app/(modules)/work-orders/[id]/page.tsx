@@ -477,7 +477,7 @@ export default function WorkOrderDetailPage() {
               />
               <InfoItem
                 icon={User}
-                label="작업팀"
+                label="담당팀"
                 value={workOrderDTO.buildingUserGroupName}
               />
               <InfoItem
