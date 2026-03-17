@@ -2,7 +2,42 @@
 
 적용 대상: `**/*.tsx`, `src/components/**`
 
-> **Storybook 참조 필수**: 컴포넌트 사용 전 `npm run storybook`으로 Stories 확인 후 구현
+---
+
+## ⚠️ 강제 규칙: Storybook Stories 의무
+
+### 컴포넌트 사용 시
+> **기존 컴포넌트를 사용하기 전에 반드시 해당 Stories 파일을 읽어야 한다.**
+
+```
+# 순서
+1. src/components/{category}/{name}.stories.tsx 파일 Read
+2. Stories에서 올바른 props/패턴 확인
+3. 확인한 패턴 그대로 구현
+```
+
+Stories 파일을 읽지 않고 컴포넌트를 사용하는 것은 **금지**. 잘못된 props 사용, 패턴 불일치, 접근성 누락의 주요 원인이다.
+
+### 컴포넌트 생성 시
+> **새 재사용 컴포넌트를 만든 즉시 Stories 파일도 함께 생성해야 한다. Stories 없는 컴포넌트는 미완성이다.**
+
+```
+# 필수 Stories 구성
+- Default: 가장 기본적인 사용 예제
+- 주요 variant/상태: 2개 이상
+- 엣지케이스: 빈 상태, 비활성, 에러 등
+- 실제 사용 맥락 (InContext): 실제 페이지에서 어떻게 쓰이는지
+```
+
+### 위반 시나리오 (즉시 수정 대상)
+```typescript
+// ❌ Stories 확인 없이 추측으로 사용
+<StatusBadge variant="success" label="완료" />  // 잘못된 props
+
+// ✅ Stories 읽고 실제 API 확인 후 사용
+// status-badge.stories.tsx 읽기 → status prop 확인
+<StatusBadge status="COMPLETE" />
+```
 
 ---
 
@@ -20,16 +55,29 @@
 | `Switch` | UI/Switch | 토글 스위치 |
 | `Tabs` | UI/Tabs | 탭 네비게이션 |
 | `Dialog` | UI/Dialog | 모달 다이얼로그 |
+| `AlertDialog` | UI/AlertDialog | 확인 다이얼로그 (삭제 등 위험 액션) |
 | `Badge` | UI/Badge | 인라인 배지 (variant: default/secondary/destructive/outline) |
 | `Card` | UI/Card | 카드 컨테이너 |
 | `Skeleton` | UI/Skeleton | 로딩 스켈레톤 |
 | `Pagination` | UI/Pagination | 페이지네이션 |
+| `Label` | UI/Label | 폼 필드 레이블 |
+| `DropdownMenu` | UI/DropdownMenu | 드롭다운 메뉴 (컨텍스트 메뉴, 액션 메뉴) |
+| `Tooltip` | UI/Tooltip | 툴팁 |
+| `Separator` | UI/Separator | 구분선 (가로/세로) |
+| `Accordion` | UI/Accordion | 아코디언 |
+| `Breadcrumb` | UI/Breadcrumb | 경로 탐색 (3단계 이상) |
+| `Table` | UI/Table | 기본 HTML 테이블 래퍼 (단순 표 용도만) |
+| `Popover` | UI/Popover | 팝오버 (필터, 미니폼 등) |
+| `ScrollArea` | UI/ScrollArea | 커스텀 스크롤 영역 |
+| `Command` | UI/Command | 검색/명령 팔레트 |
+| `Toggle` | UI/Toggle | 토글 버튼 |
 
 ### 데이터 표시 (`src/components/data-display/`)
 
 | 컴포넌트 | Story 경로 | 주요 용도 |
 |---------|------------|---------|
-| `DataTable` | DataDisplay/DataTable | 목록 테이블 (TanStack Table 기반) |
+| `DataTable` | DataDisplay/DataTable | 목록 테이블 (TanStack Table 기반, 페이지네이션/정렬/선택 내장) |
+| `DataTableToolbar` | DataDisplay/DataTableToolbar | DataTable 상단 툴바 |
 | `StatusBadge` | DataDisplay/StatusBadge | 상태 배지 (도메인 상태 매핑) |
 | `EmptyState` | DataDisplay/EmptyState | 빈/에러/검색없음 상태 |
 | `KpiCard` | DataDisplay/KpiCard | KPI 수치 카드 |
@@ -44,6 +92,32 @@
 |---------|------------|---------|
 | `PageHeader` | Common/PageHeader | 페이지 헤더 (제목+설명+아이콘+통계+액션) |
 | `FilterBar` | Common/FilterBar | 목록 페이지 필터 (tabs/date-range/select/search) |
+
+### 폼 (`src/components/forms/`)
+
+| 컴포넌트 | Story 경로 | 주요 용도 |
+|---------|------------|---------|
+| `FormField` | Forms/FormField | 레이블+입력+에러 래퍼 (폼의 기본 단위) |
+| `DatePicker` | Forms/DatePicker | 날짜 선택 |
+| `FileUpload` | Forms/FileUpload | 파일 업로드 |
+| `CascadingSelect` | Forms/CascadingSelect | 계층형 선택 (빌딩→층→구역 등) |
+
+### 차트 (`src/components/charts/`)
+
+| 컴포넌트 | Story 경로 | 주요 용도 |
+|---------|------------|---------|
+| `AreaChart` | Charts/AreaChart | 영역 차트 (에너지 추이 등) |
+| `BarChart` | Charts/BarChart | 막대 차트 |
+| `LineChart` | Charts/LineChart | 선 차트 |
+| `PieChart` | Charts/PieChart | 파이/도넛 차트 |
+
+### 서드파티 (`src/components/third-party/`)
+
+| 컴포넌트 | Story 경로 | 주요 용도 |
+|---------|------------|---------|
+| `RichTextEditor` | ThirdParty/RichTextEditor | 리치 텍스트 편집기 |
+| `Calendar` | ThirdParty/Calendar | 달력/일정 |
+| `PrintButton` | ThirdParty/PrintButton | 인쇄 버튼 |
 
 ---
 
@@ -322,28 +396,82 @@ export function BackButton() {
 
 ## Storybook 활용 가이드
 
-새 컴포넌트를 사용하기 전:
-1. `npm run storybook` 실행
-2. 해당 컴포넌트 Story에서 Props/Controls 확인
-3. 필요한 Story 패턴을 참고해 구현
+### 컴포넌트 사용 전 (필수)
 
-새 재사용 컴포넌트를 만든 후:
-1. `src/components/{category}/{name}.stories.tsx` 파일 생성 필수
-2. 최소 3개 이상 Story (Default + 주요 variant + 엣지케이스)
-3. `tags: ["autodocs"]` 포함
+```
+# AI 에이전트 / 개발자 모두 동일하게 적용
+1. 위 카탈로그에서 컴포넌트 확인
+2. src/components/{category}/{name}.stories.tsx 파일 Read
+3. Stories에서 props API, variant, 올바른 사용 패턴 확인
+4. 확인된 패턴 그대로 구현
+```
+
+### 컴포넌트 생성 후 (필수)
+
+Stories 파일 구조:
+```typescript
+// src/components/{category}/{name}.stories.tsx
+import type { Meta, StoryObj } from "@storybook/react";
+import { ComponentName } from "./component-name";
+
+const meta = {
+  title: "Category/ComponentName",  // 카탈로그 경로와 일치
+  component: ComponentName,
+  parameters: { layout: "padded" },
+  tags: ["autodocs"],
+} satisfies Meta<typeof ComponentName>;
+
+export default meta;
+type Story = StoryObj<typeof meta>;
+
+export const Default: Story = { args: { /* 기본값 */ } };
+export const WithVariant: Story = { /* 주요 variant */ };
+export const EdgeCase: Story = { /* 비활성/에러/빈 상태 */ };
+export const InContext: Story = { render: () => (/* 실제 사용 맥락 */) };
+```
+
+**Stories 파일 위치 규칙:**
+| 컴포넌트 위치 | Stories 위치 |
+|-------------|------------|
+| `src/components/ui/foo.tsx` | `src/components/ui/foo.stories.tsx` |
+| `src/components/common/bar.tsx` | `src/components/common/bar.stories.tsx` |
+| `src/components/data-display/baz.tsx` | `src/components/data-display/baz.stories.tsx` |
+| `src/components/forms/qux.tsx` | `src/components/forms/qux.stories.tsx` |
+| `src/components/charts/chart.tsx` | `src/components/charts/chart.stories.tsx` |
+| `src/components/third-party/lib.tsx` | `src/components/third-party/lib.stories.tsx` |
+
+### Storybook 실행
+
+```bash
+npm run storybook   # http://localhost:6006
+```
 
 ---
 
 ## 체크리스트
 
-- [ ] 상태 배지: `StatusBadge` 컴포넌트 사용 (직접 색상 금지)
-- [ ] 체크박스: `Checkbox` 컴포넌트 사용 (raw input 금지)
-- [ ] 테이블: `DataTable` 컴포넌트 사용 (raw table 금지)
+### Stories 의무 (최우선)
+- [ ] 사용한 모든 컴포넌트의 `.stories.tsx` 파일을 먼저 읽었음
+- [ ] 새로 만든 컴포넌트에 `.stories.tsx` 파일 생성 완료
+- [ ] Stories에 Default + 주요 variant + InContext 포함
+
+### 컴포넌트 사용
+- [ ] 상태 배지: `StatusBadge` 컴포넌트 사용 (직접 색상 클래스 금지)
+- [ ] 체크박스: `Checkbox` 컴포넌트 사용 (raw `<input type="checkbox">` 금지)
+- [ ] 테이블: `DataTable` 컴포넌트 사용 (raw `<table>` 금지 — 단순 표는 `Table` 허용)
 - [ ] 필터: `FilterBar` 컴포넌트 사용 (FILTER_DEFS 선언형 패턴)
-- [ ] 로딩/빈/에러 상태 3가지 모두 처리됨
-- [ ] 애니메이션: `useMotionPreference` 확인
+- [ ] 확인 다이얼로그: `AlertDialog` 사용 (`window.confirm` 금지)
+- [ ] 드롭다운: `DropdownMenu` 사용
+- [ ] 폼 필드: `FormField` 래퍼 사용 (label + input + error 묶음)
+
+### 상태 처리
+- [ ] 로딩/빈/에러 3가지 상태 모두 처리됨
+- [ ] 로딩: `Skeleton` 또는 `Loader` 사용
+- [ ] 빈/에러: `EmptyState` 사용
+
+### 접근성 / 시각
+- [ ] 아이콘 전용 버튼: `aria-label` 포함
+- [ ] 다크모드 대비율: `opacity` 축소 없음 (4.5:1 이상)
 - [ ] 반응형: `lg:` 기준 통일
-- [ ] 아이콘 버튼: `aria-label` 포함
-- [ ] 다크모드 대비율: opacity 축소 없음
+- [ ] 애니메이션: `useMotionPreference` 확인
 - [ ] 상세 페이지: 뒤로가기 버튼 포함
-- [ ] 새 컴포넌트: Storybook Stories 파일 생성
