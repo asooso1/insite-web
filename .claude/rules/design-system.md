@@ -192,7 +192,7 @@ import { Wrench } from "lucide-react";
 
 // 목록 페이지
 <PageHeader
-  title="작업지시 목록"
+  title="수시업무 목록"
   description="빌딩 시설물 유지보수 작업을 관리합니다"
   icon={Wrench}
   stats={[
@@ -207,7 +207,7 @@ import { Wrench } from "lucide-react";
 />
 
 // 상세 페이지 (뒤로가기 버튼은 클라이언트 컴포넌트로 분리)
-<PageHeader title="작업지시 상세" />
+<PageHeader title="수시업무 상세" />
 ```
 
 ---
@@ -234,7 +234,7 @@ import { StatusBadge } from "@/components/data-display/status-badge";
 ```
 
 **지원 status 값:**
-- 작업지시: `WRITE` / `ISSUE` / `PROCESSING` / `REQ_COMPLETE` / `COMPLETE` / `CANCEL`
+- 수시업무: `WRITE` / `ISSUE` / `PROCESSING` / `REQ_COMPLETE` / `COMPLETE` / `CANCEL`
 - 시설: `BEFORE_CONSTRUCT` / `ONGOING_CONSTRUCT` / `END_CONSTRUCT` / `BEFORE_OPERATING` / `ONGOING_OPERATING` / `END_OPERATING` / `DISCARD` / `NOW_CHECK`
 - 제네릭: `pending` / `inProgress` / `completed` / `cancelled` / `low` / `medium` / `high` / `urgent`
 
