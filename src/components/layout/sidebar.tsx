@@ -97,6 +97,8 @@ const SECTION_PREFIXES: Record<string, string[]> = {
   fms: [
     "/work-orders", "/facilities", "/patrols", "/fieldwork", "/analysis",
     "/reports", "/boards", "/materials", "/licenses", "/mypage", "/users", "/clients",
+    "/controls", "/duty", "/invoices", "/rentals", "/nfc-rounds", "/tags",
+    "/personal-work-orders", "/privacy", "/support", "/service",
   ],
   bems: ["/bems"],
   becm: ["/becm"],
@@ -130,9 +132,61 @@ const FALLBACK_MENUS: MenuDTO[] = [
   { id: 25, depth: 1, sortNo: 25, parentId: 0, name: "게시판", use: true, url: "/boards", show: true, icon: "board", children: [] },
   { id: 26, depth: 1, sortNo: 26, parentId: 0, name: "자재 관리", use: true, url: "/materials", show: true, icon: "material", children: [] },
   { id: 27, depth: 1, sortNo: 27, parentId: 0, name: "자격증", use: true, url: "/licenses", show: true, icon: "license", children: [] },
-  { id: 28, depth: 1, sortNo: 28, parentId: 0, name: "사용자 관리", use: true, url: "/users", show: true, icon: "users", children: [] },
+  {
+    id: 28, depth: 1, sortNo: 28, parentId: 0, name: "사용자 관리", use: true, url: "/users", show: true, icon: "users",
+    children: [
+      { id: 281, depth: 2, sortNo: 1, parentId: 28, name: "사용자 목록", use: true, url: "/users", show: true, icon: "users", children: [] },
+      { id: 282, depth: 2, sortNo: 2, parentId: 28, name: "역할 관리", use: true, url: "/users/roles", show: true, icon: "users", children: [] },
+    ],
+  },
   { id: 29, depth: 1, sortNo: 29, parentId: 0, name: "고객 관리", use: true, url: "/clients", show: true, icon: "client", children: [] },
   { id: 30, depth: 1, sortNo: 30, parentId: 0, name: "마이페이지", use: true, url: "/mypage", show: true, icon: "mypage", children: [] },
+  {
+    id: 31, depth: 1, sortNo: 31, parentId: 0, name: "제어 관리", use: true, url: "/controls", show: true, icon: "settings",
+    children: [],
+  },
+  {
+    id: 32, depth: 1, sortNo: 32, parentId: 0, name: "당직 관리", use: true, url: "/duty", show: true, icon: "workorder",
+    children: [],
+  },
+  {
+    id: 33, depth: 1, sortNo: 33, parentId: 0, name: "서비스", use: true, url: "/service", show: true, icon: "service",
+    children: [
+      { id: 331, depth: 2, sortNo: 1, parentId: 33, name: "청소 관리", use: true, url: "/service/cleaning", show: true, icon: "service", children: [] },
+      { id: 332, depth: 2, sortNo: 2, parentId: 33, name: "근태 관리", use: true, url: "/service/attendance", show: true, icon: "service", children: [] },
+    ],
+  },
+  {
+    id: 34, depth: 1, sortNo: 34, parentId: 0, name: "청구서", use: true, url: "/invoices", show: true, icon: "board",
+    children: [],
+  },
+  {
+    id: 35, depth: 1, sortNo: 35, parentId: 0, name: "임차 관리", use: true, url: "/rentals", show: true, icon: "facility",
+    children: [],
+  },
+  {
+    id: 36, depth: 1, sortNo: 36, parentId: 0, name: "NFC 라운드", use: true, url: "/nfc-rounds", show: true, icon: "patrol",
+    children: [],
+  },
+  {
+    id: 37, depth: 1, sortNo: 37, parentId: 0, name: "태그 관리", use: true, url: "/tags", show: true, icon: "sensor",
+    children: [],
+  },
+  {
+    id: 38, depth: 1, sortNo: 38, parentId: 0, name: "고객지원", use: true, url: "/support", show: true, icon: "board",
+    children: [
+      { id: 381, depth: 2, sortNo: 1, parentId: 38, name: "FAQ", use: true, url: "/support/faq", show: true, icon: "board", children: [] },
+      { id: 382, depth: 2, sortNo: 2, parentId: 38, name: "QnA", use: true, url: "/support/qna", show: true, icon: "board", children: [] },
+    ],
+  },
+  {
+    id: 39, depth: 1, sortNo: 39, parentId: 0, name: "개인작업지시", use: true, url: "/personal-work-orders", show: true, icon: "workorder",
+    children: [],
+  },
+  {
+    id: 41, depth: 1, sortNo: 41, parentId: 0, name: "개인정보처리방침", use: true, url: "/privacy", show: true, icon: "license",
+    children: [],
+  },
   { id: 40, depth: 1, sortNo: 40, parentId: 0, name: "설정", use: true, url: "/settings", show: true, icon: "settings", children: [] },
 ];
 
