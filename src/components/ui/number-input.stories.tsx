@@ -13,6 +13,10 @@ const meta = {
     layout: "padded",
   },
   tags: ["autodocs"],
+  args: {
+    value: 0,
+    onChange: () => {},
+  },
 } satisfies Meta<typeof NumberInput>
 
 export default meta

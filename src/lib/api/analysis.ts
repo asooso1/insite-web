@@ -18,6 +18,7 @@ import type {
   FmsItemHistoryDTO,
   FmsLaborDTO,
   FmsTeamDTO,
+  RmsDTO,
 } from "@/lib/types/analysis";
 
 interface PageResponse<T> {
@@ -229,4 +230,23 @@ export async function getFmsTeam(
   if (params.buildingId) query.set("buildingId", String(params.buildingId));
 
   return apiClient.get<FmsTeamDTO>(`/api/analysis/fmsTeam?${query}`);
+}
+
+// ============================================================================
+// RMS 분석
+// ============================================================================
+
+/**
+ * RMS 분석 조회
+ */
+export async function getRms(
+  params: AnalysisYearMonthVO
+): Promise<RmsDTO> {
+  const query = new URLSearchParams({
+    searchYear: String(params.searchYear),
+    searchMonth: String(params.searchMonth),
+  });
+  if (params.buildingId) query.set("buildingId", String(params.buildingId));
+
+  return apiClient.get<RmsDTO>(`/api/analysis/rms?${query}`);
 }

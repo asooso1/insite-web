@@ -11,6 +11,9 @@ const meta = {
     layout: "padded",
   },
   tags: ["autodocs"],
+  args: {
+    type: "single" as const,
+  },
 } satisfies Meta<typeof ToggleGroup>
 
 export default meta

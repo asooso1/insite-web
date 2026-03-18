@@ -14,6 +14,7 @@ import {
   getFmsItemHistory,
   getFmsLabor,
   getFmsTeam,
+  getRms,
 } from "@/lib/api/analysis";
 import type {
   AnalysisYearMonthVO,
@@ -43,6 +44,7 @@ export const analysisKeys = {
     [...analysisKeys.all, "fmsItemHistory", params] as const,
   fmsLabor: (params: object) => [...analysisKeys.all, "fmsLabor", params] as const,
   fmsTeam: (params: object) => [...analysisKeys.all, "fmsTeam", params] as const,
+  rms: (params: object) => [...analysisKeys.all, "rms", params] as const,
 };
 
 // ============================================================================
@@ -171,5 +173,15 @@ export function useFmsTeam(params: AnalysisYearMonthVO) {
   return useQuery({
     queryKey: analysisKeys.fmsTeam(params),
     queryFn: () => getFmsTeam(params),
+  });
+}
+
+/**
+ * RMS 분석 조회 훅
+ */
+export function useRms(params: AnalysisYearMonthVO) {
+  return useQuery({
+    queryKey: analysisKeys.rms(params),
+    queryFn: () => getRms(params),
   });
 }

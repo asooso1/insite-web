@@ -121,6 +121,11 @@ export const DonutWithTotal: Story = {
 };
 
 export const MultipleCharts: Story = {
+  args: {
+    data: energyDistributionData,
+    showLegend: true,
+    height: 300,
+  },
   render: () => (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
       <div>
@@ -198,6 +203,11 @@ export const HighValueDonut: Story = {
 };
 
 export const MultiSeriesComparison: Story = {
+  args: {
+    data: workOrderStatusData,
+    showLegend: false,
+    height: 280,
+  },
   render: () => (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
       <div>

@@ -201,3 +201,67 @@ export interface FmsTeamDTO {
   categoryCompletionTimeDTOs: { label: string; minutes: number }[];
   workOrderProcessTimeDTOs: { label: string; minutes: number }[];
 }
+
+// ============================================================================
+// RMS 분석 (RMS Analysis)
+// ============================================================================
+
+export interface AlarmReqCompleteRatioDTO {
+  month: string;
+  ratio: number;
+}
+
+export interface AlarmOccurSiteDTO {
+  month: string;
+  ratio: number;
+}
+
+export interface AlarmTypeOccurRatioDTO {
+  alarmType: string;
+  ratio: number;
+}
+
+export interface MonthlyAlarmTypeOccurDTO {
+  month: string;
+  alarmTypes: { type: string; count: number }[];
+}
+
+export interface MonthlyAlarmPriorityOccurDTO {
+  month: string;
+  priorities: { priority: string; count: number }[];
+}
+
+export interface AlarmTypeDurationTimeDTO {
+  alarmType: string;
+  durationTime: number;
+}
+
+export interface PersistPeriodEndFacilityDTO {
+  facilityId: number;
+  facilityName: string;
+  endDate: string;
+  daysRemaining: number;
+}
+
+export interface MonthlyPersistingPeriodEndFacilityDTO {
+  month: string;
+  endFacilityCount: number;
+}
+
+export interface RmsDTO {
+  prevMonthAlarmReqCompleteRatioDTO: AlarmReqCompleteRatioDTO;
+  avgAlarmReqCompleteRatioDTO: AlarmReqCompleteRatioDTO;
+  thisMonthAlarmReqCompleteRatioDTO: AlarmReqCompleteRatioDTO;
+  prevAlarmOccurSiteDTO: AlarmOccurSiteDTO;
+  avgAlarmOccurSiteDTO: AlarmOccurSiteDTO;
+  thisAlarmOccurSiteDTO: AlarmOccurSiteDTO;
+  prevAlarmTypeOccurRatioDTOs: AlarmTypeOccurRatioDTO[];
+  avgAlarmTypeOccurRatioDTOs: AlarmTypeOccurRatioDTO[];
+  thisAlarmTypeOccurRatioDTOs: AlarmTypeOccurRatioDTO[];
+  yearAlarmTypeOccurRatioDTOs: AlarmTypeOccurRatioDTO[];
+  monthlyAlarmTypeOccurDTOs: MonthlyAlarmTypeOccurDTO[];
+  monthlyAlarmPriorityOccurDTOs: MonthlyAlarmPriorityOccurDTO[];
+  alarmTypeDurationTimeDTOs: AlarmTypeDurationTimeDTO[];
+  monthlyPersistingPeriodEndFacilityDTO: MonthlyPersistingPeriodEndFacilityDTO;
+  persistPeriodEndFacilityDTOs: PersistPeriodEndFacilityDTO[];
+}

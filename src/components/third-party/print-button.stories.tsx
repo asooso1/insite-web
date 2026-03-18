@@ -9,6 +9,9 @@ const meta = {
     layout: "padded",
   },
   tags: ["autodocs"],
+  args: {
+    contentRef: { current: null },
+  },
 } satisfies Meta<typeof PrintButton>;
 
 export default meta;

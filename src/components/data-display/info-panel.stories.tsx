@@ -10,6 +10,9 @@ const meta = {
     layout: "padded",
   },
   tags: ["autodocs"],
+  args: {
+    items: [],
+  },
 } satisfies Meta<typeof InfoPanel>;
 
 export default meta;

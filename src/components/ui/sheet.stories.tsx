@@ -54,7 +54,7 @@ export const Left: Story = {
         <SheetTrigger asChild>
           <Button variant="outline">왼쪽 패널</Button>
         </SheetTrigger>
-        <SheetContent side="left">
+        <SheetContent>
           <SheetHeader>
             <SheetTitle>왼쪽 사이드 패널</SheetTitle>
             <SheetDescription>왼쪽에서 슬라이드로 나타납니다.</SheetDescription>
@@ -76,7 +76,7 @@ export const Bottom: Story = {
         <SheetTrigger asChild>
           <Button variant="outline">아래쪽 패널</Button>
         </SheetTrigger>
-        <SheetContent side="bottom">
+        <SheetContent>
           <SheetHeader>
             <SheetTitle>하단 사이드 패널</SheetTitle>
             <SheetDescription>아래쪽에서 슬라이드로 나타납니다.</SheetDescription>

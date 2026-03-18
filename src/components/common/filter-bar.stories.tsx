@@ -67,6 +67,11 @@ const meta = {
     },
   },
   tags: ["autodocs"],
+  args: {
+    filters: [],
+    values: {},
+    onChange: () => {},
+  },
 } satisfies Meta<typeof FilterBar>;
 
 export default meta;

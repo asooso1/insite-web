@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import { redirect } from "next/navigation";
 import { getAuthUser } from "@/lib/auth/session";
 
@@ -8,7 +9,7 @@ import { getAuthUser } from "@/lib/auth/session";
 export default async function SettingsLayout({
   children,
 }: {
-  children: React.ReactNode;
+  children: ReactNode;
 }) {
   const user = await getAuthUser();
 

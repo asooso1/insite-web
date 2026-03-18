@@ -10,6 +10,9 @@ const meta = {
     layout: "padded",
   },
   tags: ["autodocs"],
+  args: {
+    title: "페이지 제목",
+  },
 } satisfies Meta<typeof PageHeader>;
 
 export default meta;
@@ -48,10 +51,6 @@ export const WithBackButton: Story = {
     <PageHeader
       title="작업 상세"
       description="작업 #001 - 에어컨 정비"
-      backButton={{
-        label: "목록으로",
-        onClick: () => alert("뒤로 가기"),
-      }}
     />
   ),
 };
@@ -75,10 +74,6 @@ export const Full: Story = {
     <PageHeader
       title="시설 상세"
       description="건물 A / 3층 에어컨"
-      backButton={{
-        label: "목록으로",
-        onClick: () => alert("뒤로 가기"),
-      }}
       actions={
         <div className="flex gap-2">
           <Button variant="outline">
@@ -152,10 +147,6 @@ export const Variants: Story = {
         <PageHeader
           title="완전한 헤더"
           description="모든 요소가 포함되어 있습니다"
-          backButton={{
-            label: "뒤로",
-            onClick: () => {},
-          }}
           actions={<Button size="sm">액션</Button>}
           stats={[{ label: "상태", value: "활성" }]}
         />

@@ -110,7 +110,7 @@ function CascadeFormWrapper({
   children,
   onSubmit,
 }: {
-  children: React.ReactNode;
+  children: (form: ReturnType<typeof useForm<CascadeFormValues>>) => React.ReactNode;
   onSubmit?: (data: CascadeFormValues) => void;
 }) {
   const form = useForm<CascadeFormValues>({
@@ -122,7 +122,7 @@ function CascadeFormWrapper({
       onSubmit={form.handleSubmit(onSubmit || (() => {}))}
       className="space-y-4 max-w-2xl"
     >
-      {children}
+      {children(form)}
       <Button type="submit" size="sm">
         제출
       </Button>

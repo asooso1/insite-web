@@ -9,6 +9,10 @@ const meta = {
     layout: "padded",
   },
   tags: ["autodocs"],
+  args: {
+    title: "지표 제목",
+    value: 0,
+  },
 } satisfies Meta<typeof KPICard>;
 
 export default meta;

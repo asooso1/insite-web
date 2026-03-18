@@ -20,6 +20,9 @@ const meta = {
       options: ["sm", "md", "lg"],
     },
   },
+  args: {
+    children: "예시 태그",
+  },
 } satisfies Meta<typeof Chip>;
 
 export default meta;

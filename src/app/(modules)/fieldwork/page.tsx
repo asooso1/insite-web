@@ -1,5 +1,7 @@
 "use client";
 
+import type { ReactNode } from "react";
+
 import { MapPin, Briefcase, Clock, CheckCircle, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { PageHeader } from "@/components/common/page-header";
@@ -10,7 +12,7 @@ import { useRouter } from "next/navigation";
 // ============================================================================
 
 interface StatCardProps {
-  icon: React.ReactNode;
+  icon: ReactNode;
   label: string;
   value: number;
   color: "blue" | "green" | "orange" | "purple";
@@ -60,7 +62,7 @@ function StatCard({ icon, label, value, color }: StatCardProps) {
 // ============================================================================
 
 interface LinkCardProps {
-  icon: React.ReactNode;
+  icon: ReactNode;
   title: string;
   description: string;
   href: string;

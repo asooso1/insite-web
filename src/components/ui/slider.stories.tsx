@@ -115,7 +115,7 @@ export const Temperature: Story = {
         <div>
           <div className="flex justify-between mb-2">
             <label className="text-sm font-medium">온도 조절</label>
-            <span className={`text-sm font-semibold ${getTempColor(temp[0])}`}>
+            <span className={`text-sm font-semibold ${getTempColor(temp[0] ?? 0)}`}>
               {temp[0]}°C
             </span>
           </div>

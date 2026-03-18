@@ -49,7 +49,7 @@ function DateFormWrapper({
   children,
   onSubmit,
 }: {
-  children: React.ReactNode;
+  children: (form: ReturnType<typeof useForm<DateFormValues>>) => React.ReactNode;
   onSubmit?: (data: DateFormValues) => void;
 }) {
   const form = useForm<DateFormValues>({
@@ -61,7 +61,7 @@ function DateFormWrapper({
       onSubmit={form.handleSubmit(onSubmit || (() => {}))}
       className="space-y-4 max-w-md"
     >
-      {children}
+      {children(form)}
       <Button type="submit" size="sm">
         제출
       </Button>
@@ -132,7 +132,7 @@ export const Required: Story = {
         {(form) => (
           <DatePicker
             control={form.control}
-            name="requiredDate"
+            name="startDate"
             label="선택 필수 날짜"
             placeholder="날짜를 선택하세요"
             required

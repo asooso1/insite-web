@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react"
 import { Progress } from "./progress"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Button } from "./button"
 
 const meta = {
@@ -72,7 +72,7 @@ export const Variants: Story = {
 
       <div>
         <p className="text-sm font-medium mb-2">오류 (빨강)</p>
-        <Progress value="-1" variant="error" />
+        <Progress value={-1} variant="error" />
       </div>
     </div>
   ),
@@ -84,7 +84,7 @@ export const Animated: Story = {
     const [progress, setProgress] = useState(0)
 
     // eslint-disable-next-line react-hooks/rules-of-hooks
-    React.useEffect(() => {
+    useEffect(() => {
       const timer = setInterval(() => {
         setProgress((prev) => {
           if (prev >= 100) {

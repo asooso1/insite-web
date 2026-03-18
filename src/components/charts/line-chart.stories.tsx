@@ -195,6 +195,14 @@ export const WithoutLegend: Story = {
 };
 
 export const WithAnnotation: Story = {
+  args: {
+    data: multiLineData,
+    xAxisKey: "month",
+    dataKeys: { 전력: "전력(kWh)", 가스: "가스(m³)" },
+    height: 350,
+    showLegend: true,
+    showDots: true,
+  },
   render: () => {
     const data = multiLineData;
     return (

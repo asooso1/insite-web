@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { useState } from "react";
-import { Calendar, MiniCalendar } from "./calendar";
+import { Calendar, MiniCalendar, type CalendarEvent } from "./calendar";
 
 const meta = {
   title: "Components/ThirdParty/Calendar",
@@ -158,7 +158,7 @@ export const DateRange: Story = {
 
 export const Editable: Story = {
   render: () => {
-    const [events, setEvents] = useState(sampleEvents);
+    const [events, setEvents] = useState<CalendarEvent[]>(sampleEvents);
     return (
       <Calendar
         events={events}
@@ -168,7 +168,7 @@ export const Editable: Story = {
           setEvents((prev) =>
             prev.map((e) =>
               e.id === event.id
-                ? { ...e, start: newStart, end: newEnd || undefined }
+                ? { ...e, start: newStart.toISOString(), end: newEnd ? newEnd.toISOString() : undefined }
                 : e
             )
           );
@@ -267,7 +267,7 @@ export const Empty: Story = {
 
 export const CompleteScenario: Story = {
   render: () => {
-    const [events, setEvents] = useState(sampleEvents);
+    const [events, setEvents] = useState<CalendarEvent[]>(sampleEvents);
     const [view, setView] = useState<
       "dayGridMonth" | "timeGridWeek" | "timeGridDay" | "listWeek" | "listMonth"
     >("dayGridMonth");

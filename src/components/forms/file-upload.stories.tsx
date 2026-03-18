@@ -50,7 +50,7 @@ function FileFormWrapper({
   children,
   onSubmit,
 }: {
-  children: React.ReactNode;
+  children: (form: ReturnType<typeof useForm<FileFormValues>>) => React.ReactNode;
   onSubmit?: (data: FileFormValues) => void;
 }) {
   const form = useForm<FileFormValues>({
@@ -62,7 +62,7 @@ function FileFormWrapper({
       onSubmit={form.handleSubmit(onSubmit || (() => {}))}
       className="space-y-4 max-w-2xl"
     >
-      {children}
+      {children(form)}
       <Button type="submit" size="sm">
         제출
       </Button>
@@ -86,7 +86,6 @@ export const Default: Story = {
             control={form.control}
             name="singleFile"
             label="파일 업로드"
-            placeholder="파일을 드래그하거나 클릭하여 선택"
             helperText="최대 5MB 파일을 선택할 수 있습니다"
             maxSize={5 * 1024 * 1024}
             showPreview
@@ -109,7 +108,6 @@ export const MultipleFiles: Story = {
             control={form.control}
             name="multipleFiles"
             label="여러 파일 업로드"
-            placeholder="파일들을 드래그하거나 선택"
             multiple
             maxFiles={5}
             maxSize={10 * 1024 * 1024}
@@ -134,7 +132,6 @@ export const ImageOnly: Story = {
             control={form.control}
             name="imageOnly"
             label="이미지 업로드"
-            placeholder="이미지를 드래그하거나 클릭"
             accept="image/*"
             multiple
             maxFiles={3}
@@ -164,7 +161,6 @@ export const WithPreview: Story = {
             control={form.control}
             name="withPreview"
             label="썸네일 포함 업로드"
-            placeholder="썸네일로 표시될 이미지 선택"
             accept="image/*"
             maxSize={2 * 1024 * 1024}
             showPreview={true}
@@ -188,7 +184,6 @@ export const Disabled: Story = {
             control={form.control}
             name="singleFile"
             label="업로드 불가 (읽기 전용)"
-            placeholder="업로드할 수 없습니다"
             disabled
             maxSize={5 * 1024 * 1024}
             showPreview
@@ -204,14 +199,10 @@ export const Disabled: Story = {
  */
 export const WithError: Story = {
   render: () => {
-    const errorSchema = z.object({
-      errorFile: z.array(z.object({ id: z.string(), name: z.string() })).min(1, "파일을 선택해주세요"),
-    });
-
     return (
       <FileFormWrapper>
         {(form) => {
-          form.setError("errorFile", {
+          form.setError("singleFile", {
             type: "manual",
             message: "지원하지 않는 파일 형식입니다",
           });
@@ -219,9 +210,8 @@ export const WithError: Story = {
           return (
             <FileUpload
               control={form.control}
-              name="errorFile"
+              name="singleFile"
               label="필수 파일 업로드"
-              placeholder="파일을 선택하세요"
               required
               accept=".pdf,.doc,.docx"
               maxSize={5 * 1024 * 1024}
@@ -253,7 +243,6 @@ export const InForm: Story = {
                 control={form.control}
                 name="singleFile"
                 label="대표 문서"
-                placeholder="주요 문서를 선택하세요"
                 accept=".pdf,.doc,.docx,.xlsx"
                 maxSize={10 * 1024 * 1024}
                 showPreview
@@ -267,7 +256,6 @@ export const InForm: Story = {
                 control={form.control}
                 name="imageOnly"
                 label="시설 사진"
-                placeholder="최대 3개의 시설 사진을 선택"
                 accept="image/*"
                 multiple
                 maxFiles={3}
@@ -283,7 +271,6 @@ export const InForm: Story = {
                 control={form.control}
                 name="multipleFiles"
                 label="참고 자료"
-                placeholder="추가 문서나 파일들을 선택"
                 multiple
                 maxFiles={5}
                 maxSize={5 * 1024 * 1024}
@@ -322,7 +309,6 @@ export const WithServerUpload: Story = {
             control={form.control}
             name="documentFiles"
             label="서버 업로드"
-            placeholder="파일을 선택하면 자동으로 업로드됩니다"
             multiple
             maxFiles={3}
             maxSize={5 * 1024 * 1024}

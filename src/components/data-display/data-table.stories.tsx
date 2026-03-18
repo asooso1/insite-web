@@ -83,6 +83,8 @@ const columns: ColumnDef<Facility>[] = [
   },
 ];
 
+const columnsUnknown = columns as unknown as ColumnDef<unknown>[];
+
 // ============================================================================
 // Meta
 // ============================================================================
@@ -111,15 +113,15 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    columns,
-    data: SAMPLE_DATA,
+    columns: columnsUnknown,
+    data: SAMPLE_DATA as unknown[],
     loading: false,
   },
 };
 
 export const Loading: Story = {
   args: {
-    columns,
+    columns: columnsUnknown,
     data: [],
     loading: true,
   },
@@ -127,7 +129,7 @@ export const Loading: Story = {
 
 export const Empty: Story = {
   args: {
-    columns,
+    columns: columnsUnknown,
     data: [],
     loading: false,
   },
@@ -135,8 +137,8 @@ export const Empty: Story = {
 
 export const WithPagination: Story = {
   args: {
-    columns,
-    data: SAMPLE_DATA,
+    columns: columnsUnknown,
+    data: SAMPLE_DATA as unknown[],
     loading: false,
     pagination: true,
     pageSize: 3,
@@ -145,8 +147,8 @@ export const WithPagination: Story = {
 
 export const Striped: Story = {
   args: {
-    columns,
-    data: SAMPLE_DATA,
+    columns: columnsUnknown,
+    data: SAMPLE_DATA as unknown[],
     loading: false,
     variant: "striped",
   },

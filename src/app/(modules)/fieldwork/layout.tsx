@@ -1,7 +1,8 @@
+import type { ReactNode } from "react";
 export default function FieldworkLayout({
   children,
 }: {
-  children: React.ReactNode;
+  children: ReactNode;
 }) {
   return <>{children}</>;
 }

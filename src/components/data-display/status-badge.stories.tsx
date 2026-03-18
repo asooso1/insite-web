@@ -11,7 +11,7 @@ const meta = {
   argTypes: {
     status: {
       control: "select",
-      options: ["success", "inProgress", "pending", "cancelled", "warning"],
+      options: ["completed", "inProgress", "pending", "cancelled", "medium"],
     },
   },
 } satisfies Meta<typeof StatusBadge>;
@@ -21,7 +21,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Success: Story = {
   args: {
-    status: "success",
+    status: "completed",
   },
 };
 
@@ -45,18 +45,18 @@ export const Cancelled: Story = {
 
 export const Warning: Story = {
   args: {
-    status: "warning",
+    status: "medium",
   },
 };
 
 export const AllStatuses: Story = {
   render: () => (
     <div className="flex flex-wrap gap-3">
-      <StatusBadge status="success" />
+      <StatusBadge status="completed" />
       <StatusBadge status="inProgress" />
       <StatusBadge status="pending" />
       <StatusBadge status="cancelled" />
-      <StatusBadge status="warning" />
+      <StatusBadge status="medium" />
     </div>
   ),
 };
@@ -69,7 +69,7 @@ export const InContext: Story = {
           <p className="font-medium">작업 #001</p>
           <p className="text-sm text-gray-600">에어컨 정비</p>
         </div>
-        <StatusBadge status="success" />
+        <StatusBadge status="completed" />
       </div>
 
       <div className="flex items-center justify-between border rounded-lg p-4">
@@ -93,7 +93,7 @@ export const InContext: Story = {
           <p className="font-medium">작업 #004</p>
           <p className="text-sm text-gray-600">필터 교체</p>
         </div>
-        <StatusBadge status="warning" />
+        <StatusBadge status="medium" />
       </div>
 
       <div className="flex items-center justify-between border rounded-lg p-4">
@@ -112,7 +112,7 @@ export const Variants: Story = {
     <div className="space-y-6">
       <div>
         <h3 className="text-sm font-semibold mb-3">성공/완료</h3>
-        <StatusBadge status="success" />
+        <StatusBadge status="completed" />
       </div>
 
       <div className="border-t pt-6">
@@ -127,7 +127,7 @@ export const Variants: Story = {
 
       <div className="border-t pt-6">
         <h3 className="text-sm font-semibold mb-3">경고</h3>
-        <StatusBadge status="warning" />
+        <StatusBadge status="medium" />
       </div>
 
       <div className="border-t pt-6">

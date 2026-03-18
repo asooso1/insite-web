@@ -52,7 +52,7 @@ function FormWrapper({
   children,
   onSubmit,
 }: {
-  children: React.ReactNode;
+  children: (form: ReturnType<typeof useForm<FormValues>>) => React.ReactNode;
   onSubmit?: (data: FormValues) => void;
 }) {
   const form = useForm<FormValues>({
@@ -64,7 +64,7 @@ function FormWrapper({
       onSubmit={form.handleSubmit(onSubmit || (() => {}))}
       className="space-y-4 max-w-md"
     >
-      {children}
+      {children(form)}
       <Button type="submit" size="sm">
         제출
       </Button>
@@ -99,64 +99,52 @@ export const Default: Story = {
  * 필수 필드 (asterisk 표시)
  */
 export const Required: Story = {
-  render: () => {
-    const schema = z.object({
-      requiredField: z.string().min(1, "필수 입력 항목입니다"),
-    });
-
-    return (
-      <FormWrapper>
-        {(form) => (
-          <FormField<z.infer<typeof schema>>
-            type="text"
-            control={form.control}
-            name="requiredField"
-            label="필수 입력"
-            placeholder="입력하세요"
-            required
-          />
-        )}
-      </FormWrapper>
-    );
-  },
+  render: () => (
+    <FormWrapper>
+      {(form) => (
+        <FormField<FormValues>
+          type="text"
+          control={form.control}
+          name="textInput"
+          label="필수 입력"
+          placeholder="입력하세요"
+          required
+        />
+      )}
+    </FormWrapper>
+  ),
 };
 
 /**
  * 오류 상태 (유효성 검사 실패)
  */
 export const WithError: Story = {
-  render: () => {
-    const schema = z.object({
-      emailInput: z.string().email("올바른 이메일을 입력해주세요"),
-    });
+  render: () => (
+    <FormWrapper
+      onSubmit={() => {
+        /* 유효성 검사 실패 시뮬레이션 */
+      }}
+    >
+      {(form) => {
+        // 에러 시뮬레이션
+        form.setError("emailInput", {
+          type: "manual",
+          message: "이미 등록된 이메일입니다",
+        });
 
-    return (
-      <FormWrapper
-        onSubmit={() => {
-          /* 유효성 검사 실패 시뮬레이션 */
-        }}
-      >
-        {(form) => {
-          // 에러 시뮬레이션
-          form.setError("emailInput", {
-            type: "manual",
-            message: "이미 등록된 이메일입니다",
-          });
-
-          return (
-            <FormField<z.infer<typeof schema>>
-              type="email"
-              control={form.control}
-              name="emailInput"
-              label="이메일"
-              placeholder="example@email.com"
-              required
-            />
-          );
-        }}
-      </FormWrapper>
-    );
-  },
+        return (
+          <FormField<FormValues>
+            type="email"
+            control={form.control}
+            name="emailInput"
+            label="이메일"
+            placeholder="example@email.com"
+            required
+          />
+        );
+      }}
+    </FormWrapper>
+  ),
 };
 
 /**
