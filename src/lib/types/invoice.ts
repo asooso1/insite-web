@@ -42,12 +42,30 @@ export interface ServiceChargeVO {
 // ============================================================================
 
 /**
+ * 서비스 요금 청구서 상태 (ServiceCostType)
+ */
+export const ServiceCostType = {
+  CHARGE: "CHARGE",
+  PAYED: "PAYED",
+  CANCEL: "CANCEL",
+} as const;
+
+export type ServiceCostType = (typeof ServiceCostType)[keyof typeof ServiceCostType];
+
+export const ServiceCostTypeLabel: Record<ServiceCostType, string> = {
+  CHARGE: "청구",
+  PAYED: "결제",
+  CANCEL: "취소",
+};
+
+/**
  * 서비스 요금 청구서 검색 조건
  */
 export interface SearchServiceChargeVO {
   keyword?: string;
-  startDate?: string;
-  endDate?: string;
+  chargeDateFrom?: string;
+  chargeDateTo?: string;
+  state?: ServiceCostType | "";
   page?: number;
   size?: number;
 }

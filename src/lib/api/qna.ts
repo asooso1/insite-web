@@ -27,7 +27,7 @@ export async function getQuestionList(
   const searchParams = new URLSearchParams();
 
   if (params.keyword) searchParams.set("keyword", params.keyword);
-  if (params.state) searchParams.set("state", params.state);
+  if (params.state) searchParams.set("qnaState", params.state);
   if (params.page !== undefined) searchParams.set("page", String(params.page));
   if (params.size !== undefined) searchParams.set("size", String(params.size));
 

@@ -17,19 +17,32 @@ import { PageHeader } from "@/components/common/page-header";
 import { FilterBar, type FilterDef } from "@/components/common/filter-bar";
 
 import { useServiceChargeList } from "@/lib/hooks/use-invoices";
-import type { ServiceChargeDTO, SearchServiceChargeVO } from "@/lib/types/invoice";
+import {
+  ServiceCostType,
+  ServiceCostTypeLabel,
+  type ServiceChargeDTO,
+  type SearchServiceChargeVO,
+} from "@/lib/types/invoice";
 import type { ColumnDef, Row } from "@tanstack/react-table";
 
 // ============================================================================
 // 상수
 // ============================================================================
 
+const STATE_OPTIONS = [
+  { value: "", label: "전체" },
+  { value: "CHARGE", label: ServiceCostTypeLabel.CHARGE },
+  { value: "PAYED", label: ServiceCostTypeLabel.PAYED },
+  { value: "CANCEL", label: ServiceCostTypeLabel.CANCEL },
+];
+
 const FILTER_DEFS: FilterDef[] = [
-  { type: "date-range", fromKey: "startDate", toKey: "endDate" },
+  { type: "tabs", key: "state", options: STATE_OPTIONS },
+  { type: "date-range", fromKey: "chargeDateFrom", toKey: "chargeDateTo" },
   { type: "search", key: "keyword", placeholder: "검색어를 입력하세요" },
 ];
 
-const INITIAL_FILTERS = { startDate: "", endDate: "", keyword: "" };
+const INITIAL_FILTERS = { state: "", chargeDateFrom: "", chargeDateTo: "", keyword: "" };
 
 // ============================================================================
 // 컬럼 정의
@@ -143,7 +156,14 @@ export default function InvoiceListPage() {
   const [filters, setFilters] = useState(INITIAL_FILTERS);
 
   const searchParams: SearchServiceChargeVO = useMemo(
-    () => ({ ...filters, page, size }),
+    () => ({
+      keyword: filters.keyword || undefined,
+      chargeDateFrom: filters.chargeDateFrom || undefined,
+      chargeDateTo: filters.chargeDateTo || undefined,
+      state: (filters.state as ServiceCostType) || undefined,
+      page,
+      size,
+    }),
     [filters, page, size]
   );
 

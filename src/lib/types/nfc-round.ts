@@ -138,8 +138,9 @@ export interface NfcRoundVO {
  */
 export interface SearchNfcRoundVO {
   keyword?: string;
-  startDate?: string;
-  endDate?: string;
+  fromDate?: string;
+  toDate?: string;
+  state?: string;
   page?: number;
   size?: number;
 }

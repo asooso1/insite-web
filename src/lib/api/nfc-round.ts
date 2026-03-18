@@ -45,8 +45,8 @@ export async function getNfcRoundIssues(
 ): Promise<NfcRoundIssueListResponse> {
   const searchParams = new URLSearchParams();
   if (params.keyword) searchParams.set("keyword", params.keyword);
-  if (params.startDate) searchParams.set("startDate", params.startDate);
-  if (params.endDate) searchParams.set("endDate", params.endDate);
+  if (params.fromDate) searchParams.set("fromDate", params.fromDate);
+  if (params.toDate) searchParams.set("toDate", params.toDate);
   if (params.page !== undefined) searchParams.set("page", String(params.page));
   if (params.size !== undefined) searchParams.set("size", String(params.size));
   const qs = searchParams.toString();

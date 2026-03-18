@@ -24,8 +24,9 @@ export async function getServiceChargeList(
 ): Promise<ServiceChargeListResponse> {
   const searchParams = new URLSearchParams();
   if (params.keyword) searchParams.set("keyword", params.keyword);
-  if (params.startDate) searchParams.set("startDate", params.startDate);
-  if (params.endDate) searchParams.set("endDate", params.endDate);
+  if (params.chargeDateFrom) searchParams.set("chargeDateFrom", params.chargeDateFrom);
+  if (params.chargeDateTo) searchParams.set("chargeDateTo", params.chargeDateTo);
+  if (params.state) searchParams.set("state", params.state);
   if (params.page !== undefined) searchParams.set("page", String(params.page));
   if (params.size !== undefined) searchParams.set("size", String(params.size));
   const qs = searchParams.toString();

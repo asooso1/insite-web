@@ -34,8 +34,8 @@ type TabValue = (typeof TABS)[number]["value"];
 
 const INITIAL_FILTERS = {
   keyword: "",
-  startDate: "",
-  endDate: "",
+  fromDate: "",
+  toDate: "",
 };
 
 const FORM_FILTER_DEFS: FilterDef[] = [
@@ -44,7 +44,7 @@ const FORM_FILTER_DEFS: FilterDef[] = [
 
 const ISSUE_FILTER_DEFS: FilterDef[] = [
   { type: "search", key: "keyword", placeholder: "검색어 입력" },
-  { type: "date-range", fromKey: "startDate", toKey: "endDate" },
+  { type: "date-range", fromKey: "fromDate", toKey: "toDate" },
 ];
 
 function useFormColumns(): ColumnDef<NfcRoundFormDTO>[] {
@@ -194,8 +194,8 @@ export default function NfcRoundListPage() {
   const params: SearchNfcRoundVO = useMemo(
     () => ({
       keyword: filters.keyword || undefined,
-      startDate: filters.startDate || undefined,
-      endDate: filters.endDate || undefined,
+      fromDate: filters.fromDate || undefined,
+      toDate: filters.toDate || undefined,
       page,
       size,
     }),
