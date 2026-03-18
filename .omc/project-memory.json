@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "lastScanned": 1773652587740,
+  "lastScanned": 1773806711724,
   "projectRoot": "/Volumes/jinseok-SSD-1tb/00_insite/insite-web",
   "techStack": {
     "languages": [
@@ -41,6 +41,11 @@
         "name": "@playwright/test",
         "version": "1.58.1",
         "category": "testing"
+      },
+      {
+        "name": "vite",
+        "version": "8.0.0",
+        "category": "build"
       },
       {
         "name": "vitest",
@@ -99,7 +104,7 @@
       "path": "docs",
       "purpose": "Documentation",
       "fileCount": 6,
-      "lastAccessed": 1773652587719,
+      "lastAccessed": 1773806711600,
       "keyFiles": [
         "CLAUDE.md",
         "backend-changes.md",
@@ -112,7 +117,7 @@
       "path": "e2e",
       "purpose": null,
       "fileCount": 18,
-      "lastAccessed": 1773652587719,
+      "lastAccessed": 1773806711601,
       "keyFiles": [
         "CLAUDE.md",
         "README.md",
@@ -125,7 +130,7 @@
       "path": "playwright-report",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1773652587723,
+      "lastAccessed": 1773806711714,
       "keyFiles": [
         "index.html"
       ]
@@ -134,7 +139,7 @@
       "path": "public",
       "purpose": "Public files",
       "fileCount": 8,
-      "lastAccessed": 1773652587724,
+      "lastAccessed": 1773806711715,
       "keyFiles": [
         "CLAUDE.md",
         "file.svg",
@@ -147,7 +152,7 @@
       "path": "src",
       "purpose": "Source code",
       "fileCount": 2,
-      "lastAccessed": 1773652587724,
+      "lastAccessed": 1773806711716,
       "keyFiles": [
         "CLAUDE.md",
         "middleware.ts"
@@ -156,22 +161,28 @@
     "storybook-static": {
       "path": "storybook-static",
       "purpose": null,
-      "fileCount": 0,
-      "lastAccessed": 1773652587725,
-      "keyFiles": []
+      "fileCount": 17,
+      "lastAccessed": 1773806711716,
+      "keyFiles": [
+        "CLAUDE.md",
+        "favicon.svg",
+        "file.svg",
+        "globe.svg",
+        "iframe.html"
+      ]
     },
     "test-results": {
       "path": "test-results",
       "purpose": null,
       "fileCount": 0,
-      "lastAccessed": 1773652587725,
+      "lastAccessed": 1773806711717,
       "keyFiles": []
     },
     "tests": {
       "path": "tests",
       "purpose": "Test files",
       "fileCount": 2,
-      "lastAccessed": 1773652587727,
+      "lastAccessed": 1773806711717,
       "keyFiles": [
         "setup.ts",
         "utils.tsx"
@@ -181,7 +192,7 @@
       "path": "src/app",
       "purpose": "Application code",
       "fileCount": 6,
-      "lastAccessed": 1773652587729,
+      "lastAccessed": 1773806711718,
       "keyFiles": [
         "error.tsx",
         "favicon.ico",
@@ -192,14 +203,14 @@
       "path": "src/components",
       "purpose": "UI components",
       "fileCount": 0,
-      "lastAccessed": 1773652587730,
+      "lastAccessed": 1773806711719,
       "keyFiles": []
     },
     "src/lib": {
       "path": "src/lib",
       "purpose": "Library code",
       "fileCount": 2,
-      "lastAccessed": 1773652587731,
+      "lastAccessed": 1773806711719,
       "keyFiles": [
         "animations.ts",
         "utils.ts"
@@ -209,313 +220,324 @@
       "path": "src/mocks",
       "purpose": "Mock data",
       "fileCount": 4,
-      "lastAccessed": 1773652587731,
+      "lastAccessed": 1773806711719,
       "keyFiles": [
         "browser.ts",
         "handlers.ts",
         "index.ts"
       ]
+    },
+    "storybook-static/assets": {
+      "path": "storybook-static/assets",
+      "purpose": "Static assets",
+      "fileCount": 188,
+      "lastAccessed": 1773806711723,
+      "keyFiles": [
+        "AreaChart-CZ1p62BF.js",
+        "CartesianGrid-nBDQLgpk.js",
+        "Color-YHDXOIA2-CpK92-cs.js"
+      ]
     }
   },
   "hotPaths": [
     {
-      "path": "src/components/data-display/stat-widget.stories.tsx",
-      "accessCount": 13,
-      "lastAccessed": 1773654637643,
-      "type": "file"
-    },
-    {
-      "path": ".claude/rules/design-system.md",
-      "accessCount": 10,
-      "lastAccessed": 1773714758675,
-      "type": "file"
-    },
-    {
-      "path": "package.json",
-      "accessCount": 9,
-      "lastAccessed": 1773711807378,
-      "type": "file"
-    },
-    {
-      "path": ".storybook/main.ts",
-      "accessCount": 9,
-      "lastAccessed": 1773711852497,
-      "type": "file"
-    },
-    {
-      "path": "src/components/ui/button.stories.tsx",
-      "accessCount": 7,
-      "lastAccessed": 1773713265753,
-      "type": "file"
-    },
-    {
-      "path": "src/components/ui/dialog.stories.tsx",
-      "accessCount": 6,
-      "lastAccessed": 1773712268890,
-      "type": "file"
-    },
-    {
-      "path": "src/components/ui/input.stories.tsx",
-      "accessCount": 6,
-      "lastAccessed": 1773713209434,
-      "type": "file"
-    },
-    {
-      "path": "src/components/ui/switch.stories.tsx",
-      "accessCount": 5,
-      "lastAccessed": 1773654672405,
-      "type": "file"
-    },
-    {
-      "path": "src/components/ui/pagination.stories.tsx",
+      "path": "src/lib/types/control.ts",
       "accessCount": 4,
-      "lastAccessed": 1773654640074,
+      "lastAccessed": 1773819537344,
       "type": "file"
     },
     {
-      "path": "src/components/data-display/loader.stories.tsx",
+      "path": "src/lib/types/invoice.ts",
+      "accessCount": 4,
+      "lastAccessed": 1773819716362,
+      "type": "file"
+    },
+    {
+      "path": "src/lib/types/nfc-round.ts",
+      "accessCount": 4,
+      "lastAccessed": 1773819718134,
+      "type": "file"
+    },
+    {
+      "path": "src/app/(modules)/users/roles/page.tsx",
       "accessCount": 3,
-      "lastAccessed": 1773654613592,
+      "lastAccessed": 1773819551877,
       "type": "file"
     },
     {
-      "path": "src/components/ui/tabs.stories.tsx",
+      "path": "src/lib/api/invoice.ts",
       "accessCount": 3,
-      "lastAccessed": 1773654671653,
+      "lastAccessed": 1773819912912,
       "type": "file"
     },
     {
-      "path": "src/components/common/filter-bar.stories.tsx",
+      "path": "src/lib/api/nfc-round.ts",
+      "accessCount": 3,
+      "lastAccessed": 1773819938672,
+      "type": "file"
+    },
+    {
+      "path": "src/lib/api/qna.ts",
+      "accessCount": 3,
+      "lastAccessed": 1773819970531,
+      "type": "file"
+    },
+    {
+      "path": "src/lib/types/work-order.ts",
       "accessCount": 2,
-      "lastAccessed": 1773654180792,
+      "lastAccessed": 1773810079916,
       "type": "file"
     },
     {
-      "path": "src/components/ui/select.stories.tsx",
+      "path": "src/lib/api/work-order.ts",
       "accessCount": 2,
-      "lastAccessed": 1773654672052,
+      "lastAccessed": 1773810080208,
       "type": "file"
     },
     {
-      "path": ".claude/rules/component-patterns.md",
+      "path": "src/app/(modules)/work-orders/page.tsx",
       "accessCount": 2,
-      "lastAccessed": 1773711287193,
+      "lastAccessed": 1773819532803,
       "type": "file"
     },
     {
-      "path": "src/components/ui/select.tsx",
+      "path": "src/lib/types/duty.ts",
       "accessCount": 2,
-      "lastAccessed": 1773713198841,
+      "lastAccessed": 1773819537955,
       "type": "file"
     },
     {
-      "path": "src/components/ui/dialog.tsx",
+      "path": "src/lib/types/rental.ts",
       "accessCount": 2,
-      "lastAccessed": 1773713213597,
+      "lastAccessed": 1773819541320,
       "type": "file"
     },
     {
-      "path": "src/components/ui/toggle.tsx",
+      "path": "src/lib/types/faq.ts",
       "accessCount": 2,
-      "lastAccessed": 1773713233134,
+      "lastAccessed": 1773819547069,
       "type": "file"
     },
     {
-      "path": "src/components/forms/form-field.tsx",
+      "path": "src/lib/types/qna.ts",
       "accessCount": 2,
-      "lastAccessed": 1773713653159,
+      "lastAccessed": 1773819547598,
       "type": "file"
     },
     {
-      "path": "next.config.ts",
-      "accessCount": 1,
-      "lastAccessed": 1773652719190,
+      "path": "src/lib/types/role.ts",
+      "accessCount": 2,
+      "lastAccessed": 1773819552108,
       "type": "file"
     },
     {
-      "path": ".storybook/preview.ts",
+      "path": "src/lib/types/facility.ts",
       "accessCount": 1,
-      "lastAccessed": 1773653966087,
+      "lastAccessed": 1773809981386,
       "type": "file"
     },
     {
-      "path": "src/stories/design-system/Colors.stories.tsx",
+      "path": "src/lib/hooks/use-facilities.ts",
       "accessCount": 1,
-      "lastAccessed": 1773653988910,
+      "lastAccessed": 1773809981490,
       "type": "file"
     },
     {
-      "path": "src/components/common/filter-bar.tsx",
+      "path": "src/app/(modules)/facilities/page.tsx",
       "accessCount": 1,
-      "lastAccessed": 1773654030498,
+      "lastAccessed": 1773809984229,
       "type": "file"
     },
     {
-      "path": "src/components/data-display/status-badge.tsx",
+      "path": "src/lib/types/user.ts",
       "accessCount": 1,
-      "lastAccessed": 1773654030955,
+      "lastAccessed": 1773809984384,
       "type": "file"
     },
     {
-      "path": "src/components/data-display/data-table.tsx",
+      "path": "src/lib/api/role.ts",
       "accessCount": 1,
-      "lastAccessed": 1773654212211,
+      "lastAccessed": 1773809993126,
       "type": "file"
     },
     {
-      "path": "src/components/data-display/data-table.stories.tsx",
+      "path": "src/lib/hooks/use-roles.ts",
       "accessCount": 1,
-      "lastAccessed": 1773654269625,
+      "lastAccessed": 1773809999444,
       "type": "file"
     },
     {
-      "path": "src/components/ui/tabs.tsx",
+      "path": "src/lib/types/patrol.ts",
       "accessCount": 1,
-      "lastAccessed": 1773654507194,
+      "lastAccessed": 1773810001167,
       "type": "file"
     },
     {
-      "path": "src/components/ui/switch.tsx",
+      "path": "src/lib/api/patrol.ts",
       "accessCount": 1,
-      "lastAccessed": 1773654509814,
+      "lastAccessed": 1773810001325,
       "type": "file"
     },
     {
-      "path": "src/components/ui/textarea.tsx",
+      "path": "src/lib/hooks/use-patrols.ts",
       "accessCount": 1,
-      "lastAccessed": 1773654514078,
+      "lastAccessed": 1773810001521,
       "type": "file"
     },
     {
-      "path": "src/components/ui/pagination.tsx",
+      "path": "src/app/(modules)/patrols/page.tsx",
       "accessCount": 1,
-      "lastAccessed": 1773654514173,
+      "lastAccessed": 1773810001685,
       "type": "file"
     },
     {
-      "path": "src/components/data-display/stat-widget.tsx",
+      "path": "src/lib/types/license.ts",
       "accessCount": 1,
-      "lastAccessed": 1773654515059,
+      "lastAccessed": 1773810015193,
       "type": "file"
     },
     {
-      "path": "src/components/data-display/loader.tsx",
+      "path": "src/lib/api/license.ts",
       "accessCount": 1,
-      "lastAccessed": 1773654515305,
+      "lastAccessed": 1773810015412,
       "type": "file"
     },
     {
-      "path": "src/components/ui/badge.stories.tsx",
+      "path": "src/lib/hooks/use-licenses.ts",
       "accessCount": 1,
-      "lastAccessed": 1773654522417,
+      "lastAccessed": 1773810015666,
       "type": "file"
     },
     {
-      "path": "src/components/data-display/chip.tsx",
+      "path": "src/app/(modules)/licenses/page.tsx",
       "accessCount": 1,
-      "lastAccessed": 1773654527346,
+      "lastAccessed": 1773810017744,
       "type": "file"
     },
     {
-      "path": "src/components/ui/textarea.stories.tsx",
+      "path": "src/app/(modules)/licenses/new/page.tsx",
       "accessCount": 1,
-      "lastAccessed": 1773654536730,
+      "lastAccessed": 1773810018162,
       "type": "file"
     },
     {
-      "path": "src/components/data-display/chip.stories.tsx",
+      "path": "src/app/(modules)/facilities/new/page.tsx",
       "accessCount": 1,
-      "lastAccessed": 1773654559869,
+      "lastAccessed": 1773810024827,
       "type": "file"
     },
     {
-      "path": "src/components/ui/dropdown-menu.tsx",
+      "path": "src/app/(modules)/work-orders/_components/work-order-form.tsx",
       "accessCount": 1,
-      "lastAccessed": 1773711796107,
+      "lastAccessed": 1773810025033,
       "type": "file"
     },
     {
-      "path": "src/components/ui/separator.tsx",
+      "path": "src/app/(modules)/facilities/_components/facility-form.tsx",
       "accessCount": 1,
-      "lastAccessed": 1773711798539,
+      "lastAccessed": 1773810028953,
       "type": "file"
     },
     {
-      "path": "src/components/ui/label.tsx",
+      "path": "src/lib/hooks/use-nfc-rounds.ts",
       "accessCount": 1,
-      "lastAccessed": 1773711798636,
+      "lastAccessed": 1773810032060,
       "type": "file"
     },
     {
-      "path": "src/components/ui/form.tsx",
+      "path": "src/app/(modules)/users/roles/[id]/page.tsx",
       "accessCount": 1,
-      "lastAccessed": 1773711799420,
+      "lastAccessed": 1773810032616,
       "type": "file"
     },
     {
-      "path": "src/components/ui/tooltip.tsx",
+      "path": "src/lib/types/board.ts",
       "accessCount": 1,
-      "lastAccessed": 1773711799811,
+      "lastAccessed": 1773810035250,
       "type": "file"
     },
     {
-      "path": "src/components/ui/alert-dialog.tsx",
+      "path": "src/lib/api/board.ts",
       "accessCount": 1,
-      "lastAccessed": 1773711799853,
+      "lastAccessed": 1773810035340,
       "type": "file"
     },
     {
-      "path": "src/components/forms/file-upload.tsx",
+      "path": "src/app/(modules)/boards/page.tsx",
       "accessCount": 1,
-      "lastAccessed": 1773711807268,
+      "lastAccessed": 1773810037369,
       "type": "file"
     },
     {
-      "path": "src/components/forms/cascading-select.tsx",
+      "path": "src/lib/hooks/use-boards.ts",
       "accessCount": 1,
-      "lastAccessed": 1773711807273,
+      "lastAccessed": 1773810040492,
       "type": "file"
     },
     {
-      "path": "src/components/data-display/data-table-toolbar.tsx",
+      "path": "src/app/(modules)/layout.tsx",
       "accessCount": 1,
-      "lastAccessed": 1773711808335,
+      "lastAccessed": 1773810043308,
       "type": "file"
     },
     {
-      "path": "src/components/ui/accordion.tsx",
+      "path": "src/lib/api/control.ts",
       "accessCount": 1,
-      "lastAccessed": 1773711813931,
+      "lastAccessed": 1773810044453,
       "type": "file"
     },
     {
-      "path": "src/components/ui/scroll-area.tsx",
+      "path": "src/lib/api/rental.ts",
       "accessCount": 1,
-      "lastAccessed": 1773711816567,
+      "lastAccessed": 1773810046716,
       "type": "file"
     },
     {
-      "path": "src/components/ui/breadcrumb.tsx",
+      "path": "src/lib/hooks/use-controls.ts",
       "accessCount": 1,
-      "lastAccessed": 1773711816818,
+      "lastAccessed": 1773810052433,
       "type": "file"
     },
     {
-      "path": "src/components/ui/popover.tsx",
+      "path": "src/app/\\(modules\\)/nfc-rounds/page.tsx",
       "accessCount": 1,
-      "lastAccessed": 1773711817652,
+      "lastAccessed": 1773810052495,
       "type": "file"
     },
     {
-      "path": "src/components/charts/area-chart.tsx",
+      "path": "src/lib/hooks/use-invoices.ts",
       "accessCount": 1,
-      "lastAccessed": 1773711820608,
+      "lastAccessed": 1773810052608,
       "type": "file"
     },
     {
-      "path": "src/components/charts/bar-chart.tsx",
+      "path": "src/lib/types/privacy.ts",
       "accessCount": 1,
-      "lastAccessed": 1773711824062,
+      "lastAccessed": 1773810053397,
+      "type": "file"
+    },
+    {
+      "path": "src/lib/hooks/use-rentals.ts",
+      "accessCount": 1,
+      "lastAccessed": 1773810057898,
+      "type": "file"
+    },
+    {
+      "path": "src/lib/api/faq.ts",
+      "accessCount": 1,
+      "lastAccessed": 1773810058612,
+      "type": "file"
+    },
+    {
+      "path": "src/lib/api/privacy.ts",
+      "accessCount": 1,
+      "lastAccessed": 1773810062596,
+      "type": "file"
+    },
+    {
+      "path": "src/lib/hooks/use-faqs.ts",
+      "accessCount": 1,
+      "lastAccessed": 1773810070190,
       "type": "file"
     }
   ],
