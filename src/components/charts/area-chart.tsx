@@ -15,6 +15,8 @@ import {
   ChartTooltipContent,
   ChartLegendContent,
   type ChartConfig,
+  type TooltipPayloadItem,
+  type LegendPayloadItem,
 } from "@/components/ui/chart";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
@@ -144,18 +146,31 @@ export function AreaChartPreset({
             ))}
           </defs>
         )}
-        {showGrid && <CartesianGrid strokeDasharray="3 3" />}
-        {showXAxis && <XAxis dataKey={xAxisKey} />}
-        {showYAxis && <YAxis />}
+        {showGrid && <CartesianGrid strokeDasharray="3 3" xAxisId="x1" yAxisId="y1" />}
+        {showXAxis && <XAxis xAxisId="x1" dataKey={xAxisKey} />}
+        {showYAxis && <YAxis yAxisId="y1" />}
         {showTooltip && (
-          <Tooltip content={<ChartTooltipContent />} />
+          <Tooltip content={({ active, payload, label }) => (
+            <ChartTooltipContent
+              active={active}
+              payload={payload as unknown as TooltipPayloadItem[]}
+              label={label as string | number | undefined}
+            />
+          )} />
         )}
         {showLegend && (
-          <Legend content={<ChartLegendContent />} />
+          <Legend content={({ payload, verticalAlign }) => (
+            <ChartLegendContent
+              payload={payload as unknown as LegendPayloadItem[]}
+              verticalAlign={verticalAlign}
+            />
+          )} />
         )}
         {keys.map((key, index) => (
           <Area
             key={key}
+            xAxisId="x1"
+            yAxisId="y1"
             type={curveType}
             dataKey={key}
             stackId={stacked ? "stack" : undefined}
