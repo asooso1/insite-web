@@ -41,8 +41,8 @@ export async function getWorkOrderList(
   searchParams.set("state", params.state ?? "");
   if (params.states) params.states.forEach((s) => searchParams.append("states", s));
 
-  // 유형
-  searchParams.set("type", params.type ?? "");
+  // 유형 (빈 문자열 시 백엔드 WorkOrderType.valueOf("") → Exception → "all" 기본값 사용)
+  searchParams.set("type", params.type || "all");
   if (params.types) params.types.forEach((t) => searchParams.append("types", t));
 
   // 분류

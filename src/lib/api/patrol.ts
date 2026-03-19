@@ -30,7 +30,8 @@ export async function getPatrolList(
   if (params.companyId) searchParams.set("companyId", String(params.companyId));
   if (params.buildingId) searchParams.set("buildingId", String(params.buildingId));
   if (params.teamId) searchParams.set("teamId", String(params.teamId));
-  if (params.planType) searchParams.set("planType", params.planType);
+  // planType 미전송 시 null → PatrolPlanType.valueOf(null) → NPE → "all" 기본값 사용
+  searchParams.set("planType", params.planType || "all");
   searchParams.set("searchKeyword", params.searchKeyword ?? "");
   if (params.page !== undefined) searchParams.set("page", String(params.page));
   if (params.size !== undefined) searchParams.set("size", String(params.size));
@@ -100,7 +101,8 @@ export async function getPatrolTeamList(
   const searchParams = new URLSearchParams();
   if (params.companyId) searchParams.set("companyId", String(params.companyId));
   if (params.buildingId) searchParams.set("buildingId", String(params.buildingId));
-  searchParams.set("teamState", params.teamState ?? "");
+  // 빈 문자열 시 PatrolTeamState.valueOf("") → Exception → "all" 기본값 사용
+  searchParams.set("teamState", params.teamState || "all");
   if (params.page !== undefined) searchParams.set("page", String(params.page));
   if (params.size !== undefined) searchParams.set("size", String(params.size));
   const qs = searchParams.toString();

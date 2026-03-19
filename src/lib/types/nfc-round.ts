@@ -145,6 +145,7 @@ export interface SearchNfcRoundVO {
   fromDate?: string;
   toDate?: string;
   state?: string;
+  tbmState?: string;
   page?: number;
   size?: number;
 }

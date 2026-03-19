@@ -29,7 +29,8 @@ export async function getNfcRoundForms(
 ): Promise<NfcRoundFormListResponse> {
   const searchParams = new URLSearchParams();
   if (params.title) searchParams.set("title", params.title);
-  searchParams.set("state", params.state ?? "");
+  // 빈 문자열 시 TbmState.valueOf("") → Exception → "ALL" 기본값 사용
+  searchParams.set("tbmState", params.tbmState || "ALL");
   if (params.page !== undefined) searchParams.set("page", String(params.page));
   if (params.size !== undefined) searchParams.set("size", String(params.size));
   const qs = searchParams.toString();
@@ -46,7 +47,8 @@ export async function getNfcRoundIssues(
 ): Promise<NfcRoundIssueListResponse> {
   const searchParams = new URLSearchParams();
   if (params.title) searchParams.set("title", params.title);
-  searchParams.set("state", params.state ?? "");
+  // 빈 문자열 시 NfcRoundState.valueOf("") → Exception → "ALL" 기본값 사용
+  searchParams.set("state", params.state || "ALL");
   if (params.fromDate) searchParams.set("fromDate", params.fromDate);
   if (params.toDate) searchParams.set("toDate", params.toDate);
   if (params.page !== undefined) searchParams.set("page", String(params.page));
