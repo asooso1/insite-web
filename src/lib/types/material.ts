@@ -177,6 +177,7 @@ export interface SearchMaterialVO {
   buildingFloorId?: number;
   buildingFloorZoneId?: number;
   userGroupId?: number;
+  state?: string;
   searchCode?: string;
   searchKeyword?: string;
   name?: string;

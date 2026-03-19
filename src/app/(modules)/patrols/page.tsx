@@ -44,6 +44,7 @@ type TabValue = (typeof TABS)[number]["value"];
 
 const INITIAL_PLAN_FILTERS = {
   planType: "",
+  keyword: "",
 };
 
 const INITIAL_TEAM_FILTERS = {
@@ -64,6 +65,7 @@ const TEAM_STATE_OPTIONS: FilterOption[] = [
 
 const PLAN_FILTER_DEFS: FilterDef[] = [
   { type: "tabs", key: "planType", options: PLAN_TYPE_OPTIONS },
+  { type: "search", key: "keyword", placeholder: "계획명 검색" },
 ];
 
 const TEAM_FILTER_DEFS: FilterDef[] = [
@@ -287,6 +289,7 @@ export default function PatrolListPage() {
       page,
       size,
       planType: (planFilters.planType as SearchPatrolPlanVO["planType"]) || undefined,
+      searchKeyword: planFilters.keyword || undefined,
     }),
     [page, size, planFilters]
   );

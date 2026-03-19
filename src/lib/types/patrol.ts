@@ -164,6 +164,7 @@ export interface SearchPatrolPlanVO {
   buildingId?: number;
   teamId?: number;
   planType?: PatrolPlanType;
+  searchKeyword?: string;
   page?: number;
   size?: number;
 }

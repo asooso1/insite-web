@@ -37,6 +37,7 @@ export async function getNoticeList(
   if (params.writeDateTo) searchParams.set("writeDateTo", params.writeDateTo);
   if (params.noticeType) searchParams.set("noticeType", params.noticeType);
   if (params.publishState) searchParams.set("publishState", params.publishState);
+  if (params.searchCode) searchParams.set("searchCode", params.searchCode);
   if (params.searchKeyword) searchParams.set("searchKeyword", params.searchKeyword);
   if (params.isAllCompany !== undefined) searchParams.set("isAllCompany", String(params.isAllCompany));
   if (params.page !== undefined) searchParams.set("page", String(params.page));
@@ -161,6 +162,7 @@ export async function getReferenceDataList(
   if (params.buildingId) searchParams.set("buildingId", String(params.buildingId));
   if (params.writeDateFrom) searchParams.set("writeDateFrom", params.writeDateFrom);
   if (params.writeDateTo) searchParams.set("writeDateTo", params.writeDateTo);
+  if (params.searchCode) searchParams.set("searchCode", params.searchCode);
   if (params.searchKeyword) searchParams.set("searchKeyword", params.searchKeyword);
   if (params.page !== undefined) searchParams.set("page", String(params.page));
   if (params.size !== undefined) searchParams.set("size", String(params.size));

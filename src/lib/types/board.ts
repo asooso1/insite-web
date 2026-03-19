@@ -250,6 +250,7 @@ export interface SearchNoticeVO {
   noticeType?: NoticeType;
   publishState?: string;
   isAllCompany?: boolean;
+  searchCode?: string;
   searchKeyword?: string;
   page?: number;
   size?: number;
@@ -264,6 +265,7 @@ export interface SearchReferenceDataVO {
   writeDateFrom?: string;
   writeDateTo?: string;
   accountId?: number;
+  searchCode?: string;
   searchKeyword?: string;
   page?: number;
   size?: number;

@@ -30,6 +30,7 @@ export async function getMaterialList(
   if (params.buildingFloorId) searchParams.set("buildingFloorId", String(params.buildingFloorId));
   if (params.buildingFloorZoneId) searchParams.set("buildingFloorZoneId", String(params.buildingFloorZoneId));
   if (params.userGroupId) searchParams.set("userGroupId", String(params.userGroupId));
+  if (params.state) searchParams.set("state", params.state);
   if (params.searchCode) searchParams.set("searchCode", params.searchCode);
   if (params.searchKeyword) searchParams.set("searchKeyword", params.searchKeyword);
   if (params.name) searchParams.set("name", params.name);

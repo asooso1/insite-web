@@ -242,9 +242,11 @@ export default function MaterialListPage() {
     () => ({
       page,
       size,
+      state: filters.state || undefined,
+      searchCode: filters.searchCode || undefined,
       searchKeyword: filters.keyword || undefined,
     }),
-    [page, size, filters.keyword]
+    [page, size, filters]
   );
 
   const { data, isLoading, isError, refetch } = useMaterialList(searchParams);
@@ -265,12 +267,6 @@ export default function MaterialListPage() {
   const handlePageChange = useCallback((newPage: number) => {
     setPage(newPage);
   }, []);
-
-  // 상태 필터링 (클라이언트 사이드 - 백엔드가 state 파라미터 미지원 시)
-  const filteredData = useMemo(() => {
-    if (!filters.state || !data?.content) return data?.content ?? [];
-    return data.content.filter((item) => item.state === filters.state);
-  }, [data, filters.state]);
 
   if (isError) {
     return (
@@ -309,13 +305,13 @@ export default function MaterialListPage() {
       {/* 테이블 */}
       <DataTable
         columns={columns}
-        data={filteredData}
+        data={data?.content ?? []}
         loading={isLoading}
         pagination={false}
       />
 
       {/* 데이터 없음 */}
-      {!isLoading && filteredData.length === 0 && (
+      {!isLoading && (data?.content ?? []).length === 0 && (
         <EmptyState
           icon={Package}
           title="데이터가 없습니다."

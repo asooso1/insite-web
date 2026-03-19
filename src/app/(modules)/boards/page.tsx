@@ -52,14 +52,21 @@ const BOARD_TABS: { value: BoardTab; label: string; icon: React.ComponentType<{ 
   { value: "data", label: "자료실", icon: FileText },
 ];
 
+const SEARCH_CODE_OPTIONS = [
+  { value: "title", label: "제목" },
+  { value: "writerName", label: "작성자" },
+];
+
 const INITIAL_FILTERS = {
   writeDateFrom: "",
   writeDateTo: "",
+  searchCode: "title",
   keyword: "",
 };
 
 const FILTER_DEFS: FilterDef[] = [
   { type: "date-range", fromKey: "writeDateFrom", toKey: "writeDateTo" },
+  { type: "select", key: "searchCode", options: SEARCH_CODE_OPTIONS },
   { type: "search", key: "keyword", placeholder: "검색어 입력..." },
 ];
 
@@ -345,6 +352,7 @@ export default function BoardListPage() {
       size,
       writeDateFrom: filters.writeDateFrom || undefined,
       writeDateTo: filters.writeDateTo || undefined,
+      searchCode: filters.searchCode || undefined,
       searchKeyword: filters.keyword || undefined,
     }),
     [page, size, filters]
@@ -364,6 +372,7 @@ export default function BoardListPage() {
       size,
       writeDateFrom: filters.writeDateFrom || undefined,
       writeDateTo: filters.writeDateTo || undefined,
+      searchCode: filters.searchCode || undefined,
       searchKeyword: filters.keyword || undefined,
     }),
     [page, size, filters]
