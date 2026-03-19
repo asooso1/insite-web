@@ -129,7 +129,7 @@ export function BarChartPreset({
         margin={{ top: 10, right: 10, left: 10, bottom: 10 }}
       >
         {showGrid && (
-          <CartesianGrid strokeDasharray="3 3" xAxisId="x1" yAxisId="y1" vertical={!horizontal} horizontal={horizontal || true} />
+          <CartesianGrid strokeDasharray="3 3" vertical={!horizontal} horizontal={horizontal || true} />
         )}
         {horizontal ? (
           <>

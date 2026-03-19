@@ -3,6 +3,7 @@
 import * as React from "react";
 import dynamic from "next/dynamic";
 import { Header } from "./header";
+import { Footer } from "./footer";
 import { MobileDrawer } from "./mobile-drawer";
 
 // SSR 비활성화: Radix UI useId 카운터 서버/클라이언트 불일치 방지
@@ -74,6 +75,7 @@ export function AppShell({ children }: AppShellProps): React.JSX.Element {
       >
         <div className="mx-auto max-w-[1920px] p-4 md:p-6">
           {isInitialized ? children : null}
+          <Footer />
         </div>
       </main>
     </div>

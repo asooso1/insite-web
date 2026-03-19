@@ -157,12 +157,12 @@ function isAdminPath(pathname: string): boolean {
 }
 
 /**
- * Next.js Middleware
+ * Next.js Proxy (구 Middleware)
  * - JWT 검증
  * - 공개/보호 경로 처리
  * - 관리자 권한 체크
  */
-export async function middleware(request: NextRequest): Promise<NextResponse> {
+export async function proxy(request: NextRequest): Promise<NextResponse> {
   const { pathname } = request.nextUrl;
 
   // 정적 파일 및 Next.js 내부 경로 스킵

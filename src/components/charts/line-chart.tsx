@@ -126,7 +126,7 @@ export function LineChartPreset({
         data={data}
         margin={{ top: 10, right: 10, left: 10, bottom: 10 }}
       >
-        {showGrid && <CartesianGrid strokeDasharray="3 3" xAxisId="x1" yAxisId="y1" />}
+        {showGrid && <CartesianGrid strokeDasharray="3 3" />}
         {showXAxis && <XAxis xAxisId="x1" dataKey={xAxisKey} />}
         {showYAxis && <YAxis yAxisId="y1" />}
         {showTooltip && (

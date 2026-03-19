@@ -146,7 +146,7 @@ export function AreaChartPreset({
             ))}
           </defs>
         )}
-        {showGrid && <CartesianGrid strokeDasharray="3 3" xAxisId="x1" yAxisId="y1" />}
+        {showGrid && <CartesianGrid strokeDasharray="3 3" />}
         {showXAxis && <XAxis xAxisId="x1" dataKey={xAxisKey} />}
         {showYAxis && <YAxis yAxisId="y1" />}
         {showTooltip && (
