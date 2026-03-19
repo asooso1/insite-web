@@ -11,22 +11,26 @@ import type { PageResponse } from "./facility";
 // ============================================================================
 
 /**
- * NFC 라운드 상태
+ * NFC 라운드 상태 (csp-was NfcRoundState enum 기준)
  */
 export const NfcRoundState = {
-  PENDING: "PENDING",
-  IN_PROGRESS: "IN_PROGRESS",
-  COMPLETED: "COMPLETED",
-  CANCELLED: "CANCELLED",
+  WRITE: "WRITE",
+  ISSUE: "ISSUE",
+  PROCESSING: "PROCESSING",
+  TEMP_COMPLETE: "TEMP_COMPLETE",
+  REQ_COMPLETE: "REQ_COMPLETE",
+  COMPLETE: "COMPLETE",
 } as const;
 
 export type NfcRoundState = (typeof NfcRoundState)[keyof typeof NfcRoundState];
 
 export const NfcRoundStateLabel: Record<NfcRoundState, string> = {
-  PENDING: "대기",
-  IN_PROGRESS: "진행중",
-  COMPLETED: "완료",
-  CANCELLED: "취소",
+  WRITE: "작성",
+  ISSUE: "발행",
+  PROCESSING: "처리중",
+  TEMP_COMPLETE: "임시완료요청",
+  REQ_COMPLETE: "완료요청",
+  COMPLETE: "완료",
 };
 
 /**
@@ -137,7 +141,7 @@ export interface NfcRoundVO {
  * NFC 라운드 검색 조건
  */
 export interface SearchNfcRoundVO {
-  keyword?: string;
+  title?: string;
   fromDate?: string;
   toDate?: string;
   state?: string;

@@ -12,18 +12,17 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { DataTable } from "@/components/data-display/data-table";
+import { StatusBadge } from "@/components/data-display/status-badge";
 import { EmptyState } from "@/components/data-display/empty-state";
 import { FilterBar, type FilterDef, type FilterOption } from "@/components/common/filter-bar";
 
 import { usePatrolList, usePatrolTeamList } from "@/lib/hooks/use-patrols";
 import {
   PatrolPlanStateLabel,
-  PatrolPlanStateStyle,
   PatrolPlanType,
   PatrolPlanTypeLabel,
   PatrolTeamState,
   PatrolTeamStateLabel,
-  PatrolTeamStateStyle,
   type PatrolPlanDTO,
   type PatrolTeamDTO,
   type SearchPatrolPlanVO,
@@ -89,16 +88,12 @@ function usePlanColumns(): ColumnDef<PatrolPlanDTO>[] {
       {
         accessorKey: "state",
         header: "상태",
-        cell: ({ row }) => {
-          const state = row.original.state;
-          const label = PatrolPlanStateLabel[state] ?? state;
-          const style = PatrolPlanStateStyle[state] ?? "";
-          return (
-            <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${style}`}>
-              {label}
-            </span>
-          );
-        },
+        cell: ({ row }) => (
+          <StatusBadge
+            status={row.original.state}
+            label={PatrolPlanStateLabel[row.original.state] ?? row.original.state}
+          />
+        ),
         size: 110,
       },
       {
@@ -193,16 +188,12 @@ function useTeamColumns(): ColumnDef<PatrolTeamDTO>[] {
       {
         accessorKey: "state",
         header: "상태",
-        cell: ({ row }) => {
-          const state = row.original.state;
-          const label = PatrolTeamStateLabel[state] ?? state;
-          const style = PatrolTeamStateStyle[state] ?? "";
-          return (
-            <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${style}`}>
-              {label}
-            </span>
-          );
-        },
+        cell: ({ row }) => (
+          <StatusBadge
+            status={row.original.state}
+            label={PatrolTeamStateLabel[row.original.state] ?? row.original.state}
+          />
+        ),
         size: 80,
       },
       {
