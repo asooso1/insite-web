@@ -79,7 +79,7 @@ function useColumns(): ColumnDef<ServiceChargeDTO>[] {
         header: "금액",
         cell: ({ row }) => (
           <span className="text-right font-medium">
-            {row.original.amount.toLocaleString()}원
+            {(row.original.amount ?? 0).toLocaleString()}원
           </span>
         ),
         meta: { className: "text-right" },

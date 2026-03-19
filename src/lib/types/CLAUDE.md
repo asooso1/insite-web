@@ -29,6 +29,7 @@
 
 | ID | Time | T | Title | Read |
 |----|------|---|-------|------|
+| #2422 | 4:41 PM | ✅ | Updated dashboard types to match backend Widget37DTO structure | ~348 |
 | #2360 | 2:01 PM | ⚖️ | Architect approved NFC rounds parameter and state enum corrections | ~462 |
 | #2338 | 10:30 AM | 🟣 | Added state parameter to SearchMaterialVO for server-side filtering | ~273 |
 | #2337 | " | ✅ | Added searchKeyword parameter to patrol plan search interface | ~322 |

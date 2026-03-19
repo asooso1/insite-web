@@ -120,7 +120,7 @@ export default function InvoiceDetailPage() {
 
             <div>
               <p className="text-sm text-muted-foreground">금액</p>
-              <p className="font-medium">{invoice.amount.toLocaleString()}원</p>
+              <p className="font-medium">{(invoice.amount ?? 0).toLocaleString()}원</p>
             </div>
 
             <div>

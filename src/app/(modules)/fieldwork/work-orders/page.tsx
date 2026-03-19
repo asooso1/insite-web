@@ -43,7 +43,7 @@ import type { ColumnDef } from "@tanstack/react-table";
 // ============================================================================
 
 const STATUS_OPTIONS = [
-  { value: "", label: "전체" },
+  { value: "all", label: "전체" },
   { value: FieldWorkOrderStatus.PENDING, label: "대기중" },
   { value: FieldWorkOrderStatus.ASSIGNED, label: "배정됨" },
   { value: FieldWorkOrderStatus.IN_PROGRESS, label: "진행중" },
@@ -52,7 +52,7 @@ const STATUS_OPTIONS = [
 ];
 
 const PRIORITY_OPTIONS = [
-  { value: "", label: "전체" },
+  { value: "all", label: "전체" },
   { value: FieldWorkOrderPriority.URGENT, label: "긴급" },
   { value: FieldWorkOrderPriority.HIGH, label: "높음" },
   { value: FieldWorkOrderPriority.MEDIUM, label: "보통" },
@@ -181,21 +181,36 @@ function useColumns(): ColumnDef<FieldWorkOrderDTO>[] {
 // 메인 페이지
 // ============================================================================
 
+function getDefaultDateRange() {
+  const now = new Date();
+  const start = new Date(now);
+  start.setMonth(start.getMonth() - 6);
+  const end = new Date(now);
+  end.setMonth(end.getMonth() + 1);
+  return {
+    startDate: start.toISOString().split("T")[0],
+    endDate: end.toISOString().split("T")[0],
+  };
+}
+
 export default function FieldWorkOrdersPage() {
   const router = useRouter();
   const { user } = useAuthStore();
   const [page, setPage] = useState(0);
   const [size, setSize] = useState(10);
-  const [status, setStatus] = useState<string>("");
-  const [priority, setPriority] = useState<string>("");
+  const [status, setStatus] = useState<string>("all");
+  const [priority, setPriority] = useState<string>("all");
   const [keyword, setKeyword] = useState("");
+  const { startDate, endDate } = getDefaultDateRange();
 
   const buildingId = Number(user?.currentBuildingId ?? 0);
 
   const { data, isLoading, isError } = useFieldWorkOrderList({
-    buildingId: buildingId > 0 ? buildingId : undefined,
-    status: (status as any) || undefined,
-    priority: (priority as any) || undefined,
+    projectId: buildingId > 0 ? buildingId : undefined,
+    startDate,
+    endDate,
+    status: (status !== "all" ? status as any : undefined),
+    priority: (priority !== "all" ? priority as any : undefined),
     keyword: keyword || undefined,
     page,
     size,

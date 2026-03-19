@@ -43,6 +43,8 @@ export function useFieldProjectList(
   return useQuery({
     queryKey: fieldProjectKeys.list(params),
     queryFn: () => getFieldProjectList(params),
+    enabled: !!params.buildingId,
+    staleTime: 30 * 1000,
   });
 }
 

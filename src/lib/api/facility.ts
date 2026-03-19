@@ -55,9 +55,11 @@ export async function getFacilityList(
   if (params.hasHistory !== undefined)
     searchParams.set("hasHistory", String(params.hasHistory));
 
-  // 검색어
-  if (params.searchCode) searchParams.set("searchCode", params.searchCode);
-  if (params.keyword) searchParams.set("searchKeyword", params.keyword);
+  // 검색어 (searchCode는 keyword가 있을 때만 전송 - 백엔드 NPE 방지)
+  if (params.keyword) {
+    searchParams.set("searchKeyword", params.keyword);
+    if (params.searchCode) searchParams.set("searchCode", params.searchCode);
+  }
   if (params.locationCode) searchParams.set("locationCode", params.locationCode);
   if (params.locationKeyword) searchParams.set("locationKeyword", params.locationKeyword);
   if (params.categoryName) searchParams.set("categoryName", params.categoryName);

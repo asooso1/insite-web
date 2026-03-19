@@ -12,6 +12,7 @@ import {
   updateAssignedDuty,
   deleteAssignedDuty,
 } from "@/lib/api/duty";
+import { useAuthStore } from "@/lib/stores/auth-store";
 import type {
   SearchDutyVO,
   DutyTypeVO,
@@ -43,9 +44,13 @@ const dutyKeys = {
 export function useDutyList(
   params: SearchDutyVO & { page?: number; size?: number } = {}
 ) {
+  const buildingId = useAuthStore((s) => s.user?.currentBuildingId);
+  const hasBuildingId = !!buildingId && Number(buildingId) > 0;
+
   return useQuery({
     queryKey: dutyKeys.list(params),
     queryFn: () => getDuties(params),
+    enabled: hasBuildingId,
     staleTime: 30 * 1000,
   });
 }
@@ -94,10 +99,13 @@ export function useAccountDuties(
   month: number,
   params: { page?: number; size?: number } = {}
 ) {
+  const buildingId = useAuthStore((s) => s.user?.currentBuildingId);
+  const hasBuildingId = !!buildingId && Number(buildingId) > 0;
+
   return useQuery({
     queryKey: dutyKeys.assignment(year, month),
     queryFn: () => getAccountDuties(year, month, params),
-    enabled: year > 0 && month > 0,
+    enabled: hasBuildingId && year > 0 && month > 0,
     staleTime: 30 * 1000,
   });
 }

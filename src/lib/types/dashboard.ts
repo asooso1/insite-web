@@ -100,25 +100,36 @@ export interface NoticeWidgetItem {
 }
 
 // ============================================================================
-// DTO: 업무 현황 상세 아이템 (widget37)
+// DTO: 업무 현황 상세 (widget37)
 // ============================================================================
 
-/** 업무 현황 상세 위젯 아이템 */
+/** widget37 개별 업무 아이템 (백엔드 Widget37DTO.Widget37 매핑) */
 export interface WorkStatusDetailItem {
   /** 작업 ID */
   id?: number;
-  /** 제목 */
-  title?: string;
-  /** 담당자 이름 */
-  assigneeName?: string;
-  /** 상태 */
-  state?: string;
-  /** 마감일 */
-  dueDate?: string;
-  /** 빌딩 이름 */
-  buildingName?: string;
-  /** 우선순위 */
-  priority?: string;
+  /** 업무명 */
+  name?: string;
+  /** 대분류 */
+  firstClassName?: string;
+  /** 소분류 */
+  secondClassName?: string;
+  /** 담당 그룹 */
+  buildingUserGroupName?: string;
+}
+
+/** widget37 전체 응답 (백엔드 Widget37DTO 매핑) */
+export interface Widget37DTO {
+  writeCnt?: number;
+  issueCnt?: number;
+  viewCnt?: number;
+  startCnt?: number;
+  doneCnt?: number;
+  addResultCnt?: number;
+  reqCompleteCnt?: number;
+  approveCnt?: number;
+  rejectCnt?: number;
+  cancelCnt?: number;
+  workOrderDTOs?: WorkStatusDetailItem[];
 }
 
 // ============================================================================

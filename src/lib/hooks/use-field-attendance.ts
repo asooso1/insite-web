@@ -23,6 +23,7 @@ export const fieldAttendanceKeys = {
 
 /**
  * 현장 출퇴근 목록 조회 훅 (페이지네이션)
+ * startDate, endDate 모두 지정된 경우에만 쿼리 활성화
  */
 export function useFieldAttendanceList(
   params: SearchFieldAttendanceVO & { page: number; size: number }
@@ -30,5 +31,6 @@ export function useFieldAttendanceList(
   return useQuery({
     queryKey: fieldAttendanceKeys.list(params),
     queryFn: () => getFieldAttendanceList(params),
+    enabled: !!params.startDate && !!params.endDate,
   });
 }

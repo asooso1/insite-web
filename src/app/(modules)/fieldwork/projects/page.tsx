@@ -40,7 +40,7 @@ import type { ColumnDef } from "@tanstack/react-table";
 // ============================================================================
 
 const STATUS_OPTIONS = [
-  { value: "", label: "전체" },
+  { value: "all", label: "전체" },
   { value: FieldProjectStatus.PLANNING, label: "계획중" },
   { value: FieldProjectStatus.ACTIVE, label: "진행중" },
   { value: FieldProjectStatus.INACTIVE, label: "일시중지" },
@@ -163,20 +163,37 @@ export default function FieldProjectsPage() {
   const { user } = useAuthStore();
   const [page, setPage] = useState(0);
   const [size, setSize] = useState(10);
-  const [status, setStatus] = useState<string>("");
+  const [status, setStatus] = useState<string>("all");
   const [keyword, setKeyword] = useState("");
 
   const buildingId = Number(user?.currentBuildingId ?? 0);
 
   const { data, isLoading, isError } = useFieldProjectList({
     buildingId: buildingId > 0 ? buildingId : undefined,
-    status: (status as any) || undefined,
+    status: (status !== "all" ? status as any : undefined),
     keyword: keyword || undefined,
     page,
     size,
   });
 
   const columns = useColumns();
+
+  if (buildingId === 0) {
+    return (
+      <div className="space-y-6">
+        <PageHeader
+          title="현장프로젝트"
+          description="현장 프로젝트를 관리하세요"
+          icon={Briefcase}
+        />
+        <EmptyState
+          title="빌딩을 선택해주세요"
+          description="현장프로젝트를 조회하려면 상단에서 빌딩을 선택하세요"
+          icon={Briefcase}
+        />
+      </div>
+    );
+  }
 
   if (isError) {
     return (

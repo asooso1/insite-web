@@ -17,6 +17,7 @@ export const ReportState = {
   DRAFT: "DRAFT",
   REPORT: "REPORT",
   APPROVE: "APPROVE",
+  DISCARD: "DISCARD",
 } as const;
 
 export type ReportState = (typeof ReportState)[keyof typeof ReportState];
@@ -25,12 +26,14 @@ export const ReportStateLabel: Record<ReportState, string> = {
   DRAFT: "임시저장",
   REPORT: "보고",
   APPROVE: "승인",
+  DISCARD: "폐기",
 };
 
 export const ReportStateStyle: Record<ReportState, string> = {
   DRAFT: "bg-gray-100 text-gray-600",
   REPORT: "bg-blue-100 text-blue-700",
   APPROVE: "bg-green-100 text-green-700",
+  DISCARD: "bg-gray-100 text-gray-400",
 };
 
 // ============================================================================

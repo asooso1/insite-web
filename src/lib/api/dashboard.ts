@@ -10,7 +10,7 @@ import type {
   SearchWidgetVO,
   WorkOrderStatusWidget,
   NoticeWidgetItem,
-  WorkStatusDetailItem,
+  Widget37DTO,
   ScheduleItem,
 } from '../types/dashboard';
 
@@ -69,7 +69,7 @@ export const dashboardApi = {
    * GET /widget/widget37/{state}
    */
   workStatusDetail: (state: string, params: SearchWidgetVO) =>
-    apiClient.get<WorkStatusDetailItem[]>(`/widget/widget37/${state}${toSearchParams(params)}`),
+    apiClient.get<Widget37DTO>(`/widget/widget37/${state}${toSearchParams(params)}`),
 
   /**
    * 작업 일정표 월간 조회 (widget42)

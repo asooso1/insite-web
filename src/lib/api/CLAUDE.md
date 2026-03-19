@@ -37,6 +37,7 @@
 
 | ID | Time | T | Title | Read |
 |----|------|---|-------|------|
+| #2423 | 4:41 PM | ✅ | Updated dashboard API client return type for widget37 | ~220 |
 | #2397 | 3:15 PM | 🔴 | Fixed work order type parameter to send "all" instead of empty string | ~297 |
 | #2382 | 2:36 PM | 🔴 | Fixed work order Excel download to always send type parameter | ~294 |
 | #2381 | " | 🔴 | Fixed work order type parameter to prevent backend NPE | ~314 |

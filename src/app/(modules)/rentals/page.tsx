@@ -96,7 +96,7 @@ function useColumns(): ColumnDef<RentalDTO>[] {
         header: "임차료",
         cell: ({ row }) => (
           <span className="text-right font-medium">
-            {row.original.rentAmount.toLocaleString()}원
+            {(row.original.rentAmount ?? 0).toLocaleString()}원
           </span>
         ),
         meta: { className: "text-right" },

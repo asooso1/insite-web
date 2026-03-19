@@ -48,6 +48,7 @@ import {
 import {
   FuelTypeLabel,
   type ConfigGroupDTO,
+  type ConfigNodeDTO,
   type ConfigDTO,
   type FacilityCategoryTreeDTO,
   type FacilityMasterDTO,
@@ -110,6 +111,7 @@ function ConfigSection() {
 
 function ConfigGroupCard({ group }: { group: ConfigGroupDTO }) {
   const [expanded, setExpanded] = useState(false);
+  const groupCode = group.items[0]?.config?.configGroupCode ?? "";
 
   return (
     <Card>
@@ -124,47 +126,53 @@ function ConfigGroupCard({ group }: { group: ConfigGroupDTO }) {
             ) : (
               <ChevronRight className="h-4 w-4" />
             )}
-            {group.name}
-            <span className="text-xs text-muted-foreground font-normal">
-              ({group.code})
-            </span>
+            {group.value}
+            {groupCode && (
+              <span className="text-xs text-muted-foreground font-normal">
+                ({groupCode})
+              </span>
+            )}
           </div>
           <span className="text-xs text-muted-foreground font-normal">
-            {group.configs?.length ?? 0}개 항목
+            {group.items?.length ?? 0}개 항목
           </span>
         </CardTitle>
       </CardHeader>
-      {expanded && group.configs && (
+      {expanded && group.items && (
         <CardContent>
           <div className="divide-y">
-            {group.configs.map((config: ConfigDTO) => (
-              <div key={config.id} className="flex items-center justify-between py-3">
-                <div className="flex-1">
-                  <div className="flex items-center gap-2">
-                    <span className="text-sm font-medium">{config.name}</span>
-                    <span className="text-xs text-muted-foreground">
-                      [{config.code}]
-                    </span>
-                    {config.enabled ? (
-                      <Check className="h-3.5 w-3.5 text-green-600" />
-                    ) : (
-                      <X className="h-3.5 w-3.5 text-muted-foreground" />
+            {group.items.map((node: ConfigNodeDTO) => {
+              const config = node.config;
+              if (!config) return null;
+              return (
+                <div key={config.id} className="flex items-center justify-between py-3">
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2">
+                      <span className="text-sm font-medium">{config.name}</span>
+                      <span className="text-xs text-muted-foreground">
+                        [{config.code}]
+                      </span>
+                      {config.enabled ? (
+                        <Check className="h-3.5 w-3.5 text-green-600" />
+                      ) : (
+                        <X className="h-3.5 w-3.5 text-muted-foreground" />
+                      )}
+                    </div>
+                    {config.description && (
+                      <p className="text-xs text-muted-foreground mt-0.5">
+                        {config.description}
+                      </p>
                     )}
                   </div>
-                  {config.description && (
-                    <p className="text-xs text-muted-foreground mt-0.5">
-                      {config.description}
+                  <div className="text-right">
+                    <span className="text-sm">{config.settingValue || "-"}</span>
+                    <p className="text-xs text-muted-foreground">
+                      {config.inputTypeName} · {config.scopeName}
                     </p>
-                  )}
+                  </div>
                 </div>
-                <div className="text-right">
-                  <span className="text-sm">{config.settingValue || "-"}</span>
-                  <p className="text-xs text-muted-foreground">
-                    {config.inputTypeName} · {config.scopeName}
-                  </p>
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </CardContent>
       )}

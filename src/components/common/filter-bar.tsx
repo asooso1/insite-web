@@ -82,6 +82,9 @@ function SearchFilter({
   );
 }
 
+/** Select에서 "전체" 옵션을 나타내는 센티넬 값 (Radix UI는 빈 문자열 value 금지) */
+const SELECT_ALL_VALUE = "__ALL__";
+
 function SelectFilter({
   def,
   value,
@@ -91,20 +94,29 @@ function SelectFilter({
   value: string;
   onChange: (value: string) => void;
 }) {
+  const selectValue = value === "" ? SELECT_ALL_VALUE : value;
+
+  const handleChange = (v: string) => {
+    onChange(v === SELECT_ALL_VALUE ? "" : v);
+  };
+
   return (
-    <Select value={value} onValueChange={onChange}>
+    <Select value={selectValue} onValueChange={handleChange}>
       <SelectTrigger className="w-32">
         <SelectValue placeholder={def.placeholder ?? "선택"} />
       </SelectTrigger>
       <SelectContent>
         {def.allLabel !== undefined && (
-          <SelectItem value="">{def.allLabel}</SelectItem>
+          <SelectItem value={SELECT_ALL_VALUE}>{def.allLabel}</SelectItem>
         )}
-        {def.options.map((opt) => (
-          <SelectItem key={opt.value} value={opt.value}>
-            {opt.label}
-          </SelectItem>
-        ))}
+        {def.options.map((opt) => {
+          const itemValue = opt.value === "" ? SELECT_ALL_VALUE : opt.value;
+          return (
+            <SelectItem key={itemValue} value={itemValue}>
+              {opt.label}
+            </SelectItem>
+          );
+        })}
       </SelectContent>
     </Select>
   );

@@ -34,7 +34,8 @@ export async function getConfigGroupList(
 ): Promise<ConfigGroupDTO[]> {
   const searchParams = new URLSearchParams();
   if (params?.searchCode) searchParams.set("searchCode", params.searchCode);
-  if (params?.searchKeyword) searchParams.set("searchKeyword", params.searchKeyword);
+  // searchKeyword는 항상 전송 (백엔드 NPE 방지: null이면 findByNameContaining(null) 오류)
+  searchParams.set("searchKeyword", params?.searchKeyword ?? "");
 
   return apiClient.get<ConfigGroupDTO[]>(
     `/api/setting/configGroupList?${searchParams.toString()}`

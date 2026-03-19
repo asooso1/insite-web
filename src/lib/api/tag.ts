@@ -24,13 +24,14 @@ export async function getTagList(
   params: SearchQrNfcVO
 ): Promise<TagListResponse> {
   const searchParams = new URLSearchParams();
-  if (params.keyword) searchParams.set("keyword", params.keyword);
+  searchParams.set("searchKeyword", params.keyword ?? "");
+  searchParams.set("locationCode", "");
+  searchParams.set("locationKeyword", "");
   if (params.tagType) searchParams.set("tagType", params.tagType);
   if (params.page !== undefined) searchParams.set("page", String(params.page));
   if (params.size !== undefined) searchParams.set("size", String(params.size));
-  const qs = searchParams.toString();
   return apiClient.get<TagListResponse>(
-    `/api/tag/tagList${qs ? "?" + qs : ""}`
+    `/api/tag/tagList?${searchParams.toString()}`
   );
 }
 

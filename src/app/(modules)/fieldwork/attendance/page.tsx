@@ -165,7 +165,13 @@ export default function FieldAttendancePage() {
       </div>
 
       {/* 테이블 */}
-      {isLoading ? (
+      {!startDate || !endDate ? (
+        <EmptyState
+          title="날짜를 선택해주세요"
+          description="시작일과 종료일을 모두 선택하면 출퇴근 이력을 조회합니다"
+          icon={Clock}
+        />
+      ) : isLoading ? (
         <div className="flex items-center justify-center py-12">
           <span className="text-muted-foreground">불러오는 중...</span>
         </div>

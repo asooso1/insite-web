@@ -25,8 +25,11 @@ export async function getControlList(
 ): Promise<ControlListResponse> {
   const searchParams = new URLSearchParams();
 
-  if (params.keyword) searchParams.set("keyword", params.keyword);
-  if (params.state) searchParams.set("state", params.state);
+  searchParams.set("searchKeyword", params.keyword ?? "");
+  searchParams.set("state", params.state || "all");
+  searchParams.set("dateType", "all");
+  searchParams.set("facilityName", "");
+  searchParams.set("controlPointName", "");
   if (params.page !== undefined) searchParams.set("page", String(params.page));
   if (params.size !== undefined) searchParams.set("size", String(params.size));
 

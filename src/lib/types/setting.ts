@@ -93,14 +93,27 @@ export interface ConfigDTO {
 }
 
 /**
- * 기본 코드 그룹 DTO (목록용)
+ * 기본 코드 노드 DTO (트리 구조 - 백엔드 ConfigTreeDTO)
+ */
+export interface ConfigNodeDTO {
+  id: string;
+  value: string;
+  opened: boolean;
+  depth: number;
+  items: ConfigNodeDTO[];
+  config: ConfigDTO | null;
+}
+
+/**
+ * 기본 코드 그룹 DTO (백엔드 ConfigTreeDTO 트리 구조)
  */
 export interface ConfigGroupDTO {
-  id: number;
-  code: string;
-  name: string;
-  description: string;
-  configs: ConfigDTO[];
+  id: string;       // "groupId_N" 형식
+  value: string;    // 그룹 이름
+  opened: boolean;
+  depth: number;
+  items: ConfigNodeDTO[];
+  config: null;
 }
 
 /**

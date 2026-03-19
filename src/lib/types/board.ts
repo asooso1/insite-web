@@ -46,29 +46,29 @@ export const NoticeTargetGroupLabel: Record<NoticeTargetGroup, string> = {
 };
 
 /**
- * 게시 상태
+ * 게시 상태 (백엔드 실제 값: BEFORE_PUBLISH, NOW_PUBLISH, AFTER_PUBLISH)
  */
 export const PublishState = {
-  PUBLISHED: "PUBLISHED",
-  SCHEDULED: "SCHEDULED",
-  EXPIRED: "EXPIRED",
+  BEFORE_PUBLISH: "BEFORE_PUBLISH",
+  NOW_PUBLISH: "NOW_PUBLISH",
+  AFTER_PUBLISH: "AFTER_PUBLISH",
 } as const;
 
 export type PublishState = (typeof PublishState)[keyof typeof PublishState];
 
 export const PublishStateLabel: Record<string, string> = {
-  PUBLISHED: "게시중",
-  SCHEDULED: "예정",
-  EXPIRED: "만료",
+  BEFORE_PUBLISH: "게시 예정",
+  NOW_PUBLISH: "게시중",
+  AFTER_PUBLISH: "만료",
 };
 
 export const PublishStateStyle: Record<
   string,
   "pending" | "inProgress" | "completed" | "cancelled"
 > = {
-  PUBLISHED: "completed",
-  SCHEDULED: "pending",
-  EXPIRED: "cancelled",
+  BEFORE_PUBLISH: "pending",
+  NOW_PUBLISH: "inProgress",
+  AFTER_PUBLISH: "cancelled",
 };
 
 // ============================================================================

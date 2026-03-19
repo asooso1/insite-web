@@ -145,7 +145,7 @@ export default function RentalDetailPage() {
 
             <div>
               <p className="text-sm text-muted-foreground">임차료</p>
-              <p className="font-medium">{rental.rentAmount.toLocaleString()}원</p>
+              <p className="font-medium">{(rental.rentAmount ?? 0).toLocaleString()}원</p>
             </div>
 
             <div>

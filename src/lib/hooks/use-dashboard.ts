@@ -6,7 +6,7 @@
 
 import { useQuery } from '@tanstack/react-query';
 import { dashboardApi } from '@/lib/api/dashboard';
-import type { WidgetVO, SearchWidgetVO } from '@/lib/types/dashboard';
+import type { WidgetVO, SearchWidgetVO, Widget37DTO } from '@/lib/types/dashboard';
 
 // ============================================================================
 // Query Keys Factory

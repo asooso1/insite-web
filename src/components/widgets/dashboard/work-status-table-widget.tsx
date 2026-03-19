@@ -3,27 +3,10 @@
 import { type ReactNode } from "react";
 import { ListChecks } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Badge } from "@/components/ui/badge";
 import { WidgetContainer } from "../widget-container";
 import { type WidgetProps } from "../widget-registry";
 import { useWorkStatusDetail } from "@/lib/hooks/use-dashboard";
-import type { SearchWidgetVO } from "@/lib/types/dashboard";
-
-// ============================================================================
-// Helpers
-// ============================================================================
-
-/** 상태값에 따른 배지 변형 반환 */
-function getStateBadgeVariant(
-  state: string | undefined
-): "default" | "secondary" | "destructive" | "outline" {
-  if (!state) return "outline";
-  const s = state.toUpperCase();
-  if (s === "DONE" || s === "COMPLETE" || s === "완료") return "default";
-  if (s === "IN_PROGRESS" || s === "진행중") return "secondary";
-  if (s === "OVERDUE" || s === "지연") return "destructive";
-  return "outline";
-}
+import type { SearchWidgetVO, WorkStatusDetailItem } from "@/lib/types/dashboard";
 
 // ============================================================================
 // Component
@@ -52,7 +35,7 @@ export function WorkStatusTableWidget({ instanceId, config, onRefresh }: WidgetP
     onRefresh?.();
   };
 
-  const items = data ?? [];
+  const items: WorkStatusDetailItem[] = data?.workOrderDTOs ?? [];
 
   return (
     <WidgetContainer
@@ -85,31 +68,22 @@ export function WorkStatusTableWidget({ instanceId, config, onRefresh }: WidgetP
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b text-xs text-muted-foreground">
-                <th className="pb-1.5 text-left font-medium">제목</th>
-                <th className="pb-1.5 text-left font-medium">담당자</th>
-                <th className="pb-1.5 text-left font-medium">상태</th>
-                <th className="pb-1.5 text-left font-medium">마감일</th>
+                <th className="pb-1.5 text-left font-medium">업무명</th>
+                <th className="pb-1.5 text-left font-medium">대분류</th>
+                <th className="pb-1.5 text-left font-medium">담당 그룹</th>
               </tr>
             </thead>
             <tbody className="divide-y">
               {items.map((item, index) => (
                 <tr key={item.id ?? index} className="text-xs">
                   <td className="py-1.5 pr-2">
-                    <span className="line-clamp-1 max-w-[160px]">{item.title ?? "-"}</span>
+                    <span className="line-clamp-1 max-w-[160px]">{item.name ?? "-"}</span>
                   </td>
                   <td className="py-1.5 pr-2 text-muted-foreground">
-                    {item.assigneeName ?? "-"}
-                  </td>
-                  <td className="py-1.5 pr-2">
-                    <Badge
-                      variant={getStateBadgeVariant(item.state)}
-                      className="px-1.5 py-0 text-[10px]"
-                    >
-                      {item.state ?? "-"}
-                    </Badge>
+                    {item.firstClassName ?? "-"}
                   </td>
                   <td className="py-1.5 text-muted-foreground">
-                    {item.dueDate ? formatDate(item.dueDate) : "-"}
+                    {item.buildingUserGroupName ?? "-"}
                   </td>
                 </tr>
               ))}
@@ -121,13 +95,3 @@ export function WorkStatusTableWidget({ instanceId, config, onRefresh }: WidgetP
   );
 }
 
-// ============================================================================
-// Helpers
-// ============================================================================
-
-/** 날짜 문자열을 YYYY-MM-DD 형식으로 변환 */
-function formatDate(dateStr: string): string {
-  const date = new Date(dateStr);
-  if (isNaN(date.getTime())) return dateStr;
-  return date.toISOString().slice(0, 10);
-}

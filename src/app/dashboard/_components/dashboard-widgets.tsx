@@ -44,10 +44,10 @@ export function DashboardWidgets({ user }: DashboardWidgetsProps): ReactNode {
         config={{ ...widgetConfig, noticeType: "NOTICE" }}
       />
 
-      {/* 업무 현황 상세 */}
+      {/* 업무 현황 상세 - ISSUE(발행) 상태 업무 목록 */}
       <WorkStatusTableWidget
         instanceId="work-status-table"
-        config={widgetConfig}
+        config={{ ...widgetConfig, state: "ISSUE" }}
       />
 
       {/* 작업 일정표 */}

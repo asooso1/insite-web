@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useCallback, useMemo } from "react";
-import { Plus, AlertCircle, Inbox } from "lucide-react";
+import { Plus, AlertCircle, Inbox, Building } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -14,6 +14,7 @@ import {
   useDutyList,
   useAccountDuties,
 } from "@/lib/hooks/use-duty";
+import { useAuthStore } from "@/lib/stores/auth-store";
 import type { ColumnDef } from "@tanstack/react-table";
 import type { DutyTypeDTO, DutyAssignmentDTO } from "@/lib/types/duty";
 import { DutyTypeForm } from "./_components/duty-type-form";
@@ -93,6 +94,10 @@ const dutyAssignmentColumns: ColumnDef<DutyAssignmentDTO>[] = [
 // ============================================================================
 
 export default function DutyPage() {
+  const { user } = useAuthStore();
+  const buildingId = Number(user?.currentBuildingId ?? 0);
+  const hasBuildingId = buildingId > 0;
+
   const [activeTab, setActiveTab] = useState("types");
   const [showForm, setShowForm] = useState(false);
   const [page, setPage] = useState(0);
@@ -137,6 +142,16 @@ export default function DutyPage() {
     setShowForm(false);
     refetchDutyTypes();
   }, [refetchDutyTypes]);
+
+  if (!hasBuildingId) {
+    return (
+      <EmptyState
+        icon={Building}
+        title="빌딩을 선택해주세요"
+        description="당직 관리는 빌딩을 선택한 후 이용할 수 있습니다."
+      />
+    );
+  }
 
   if (dutyTypeError && activeTab === "types") {
     return (
