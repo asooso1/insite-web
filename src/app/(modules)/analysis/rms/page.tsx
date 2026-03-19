@@ -46,15 +46,15 @@ const FILTER_DEFS: FilterDef[] = [
 
 const columns: ColumnDef<AlarmTypeOccurRatioDTO>[] = [
   {
-    accessorKey: "alarmType",
+    accessorKey: "legendName",
     header: "알람 유형",
     size: 200,
   },
   {
-    accessorKey: "ratio",
+    accessorKey: "alarmTypeOccurRatio",
     header: "비율 (%)",
     size: 120,
-    cell: ({ row }) => `${row.original.ratio.toFixed(2)}%`,
+    cell: ({ row }) => `${(row.original.alarmTypeOccurRatio ?? 0).toFixed(2)}%`,
   },
 ];
 
@@ -173,24 +173,30 @@ export default function RmsPage() {
                 <DataTable
                   columns={[
                     {
+                      accessorKey: "buildingName",
+                      header: "빌딩",
+                      size: 150,
+                    },
+                    {
                       accessorKey: "facilityName",
                       header: "설비명",
                       size: 200,
                     },
                     {
-                      accessorKey: "endDate",
-                      header: "종료 예정일",
+                      accessorKey: "chargerName",
+                      header: "담당자",
                       size: 150,
-                      cell: ({ row }) =>
-                        new Date(row.original.endDate).toLocaleDateString(
-                          "ko-KR"
-                        ),
                     },
                     {
-                      accessorKey: "daysRemaining",
-                      header: "남은 일수",
+                      accessorKey: "persistPeriod",
+                      header: "내구연한(년)",
                       size: 120,
-                      cell: ({ row }) => `${row.original.daysRemaining}일`,
+                    },
+                    {
+                      accessorKey: "persistPeriodEnd",
+                      header: "만료일",
+                      size: 130,
+                      cell: ({ row }) => row.original.persistPeriodEnd || "-",
                     },
                   ]}
                   data={data.persistPeriodEndFacilityDTOs}

@@ -10,10 +10,9 @@
 
 export interface UsageStatusSummaryDTO {
   buildingCount: number;
-  buildingAccountWorkerAverage: number;
   totalCount: number;
+  buildingAccountWorkerAverage: number;
   approveCountAverage: number;
-  workOrderCountAverage: number;
   personalWorkOrderAverage: number;
   complainCountAverage: number;
   billCountAverage: number;
@@ -26,7 +25,6 @@ export interface UsageStatusSummaryDTO {
 export interface UsageStatusDTO {
   prevMonth: UsageStatusSummaryDTO;
   thisMonth: UsageStatusSummaryDTO;
-  listData: UsageStatusItemDTO[];
 }
 
 export interface UsageStatusItemDTO {
@@ -38,9 +36,7 @@ export interface UsageStatusItemDTO {
   participant: number;
   total: number;
   workOrderCount: number;
-  avgWorkOrderCount: number;
   personalWorkOrderCount: number;
-  avgPersonalWorkOrderCount: number;
   vocCount: number;
   billCount: number;
   reportCount: number;
@@ -217,8 +213,15 @@ export interface AlarmOccurSiteDTO {
 }
 
 export interface AlarmTypeOccurRatioDTO {
-  alarmType: string;
-  ratio: number;
+  categoryId: number;
+  legendCode: string;
+  legendName: string;
+  sortNo: number;
+  alarmTypeOccurCountLong: number;
+  totalAlarmOccurCountLong: number;
+  alarmTypeOccurCount: number;
+  totalAlarmOccurCount: number;
+  alarmTypeOccurRatio: number;
 }
 
 export interface MonthlyAlarmTypeOccurDTO {
@@ -237,10 +240,16 @@ export interface AlarmTypeDurationTimeDTO {
 }
 
 export interface PersistPeriodEndFacilityDTO {
-  facilityId: number;
+  id: number;
+  companyName: string;
+  baseAreaName: string;
+  buildingName: string;
+  buildingFloorAndZoneName: string;
   facilityName: string;
-  endDate: string;
-  daysRemaining: number;
+  facilityNo: string;
+  chargerName: string;
+  persistPeriod: number;
+  persistPeriodEnd: string;
 }
 
 export interface MonthlyPersistingPeriodEndFacilityDTO {

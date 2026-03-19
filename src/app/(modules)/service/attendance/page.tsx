@@ -8,11 +8,7 @@ import { DataTable, type ColumnDef } from "@/components/data-display/data-table"
 import { EmptyState } from "@/components/data-display/empty-state";
 import { Button } from "@/components/ui/button";
 import { useAttendanceDayAdmin, useDownloadAttendanceExcel } from "@/lib/hooks/use-service-attendance";
-import {
-  AttendanceStatus,
-  AttendanceStatusLabel,
-  type AttendanceDTO,
-} from "@/lib/types/service-attendance";
+import type { AttendanceDTO } from "@/lib/types/service-attendance";
 import { handleApiError } from "@/lib/api/error-handler";
 import { toast } from "sonner";
 
@@ -22,42 +18,35 @@ import { toast } from "sonner";
 
 const columns: ColumnDef<AttendanceDTO>[] = [
   {
-    accessorKey: "accountName",
+    accessorKey: "accountDTO.name",
     header: "이름",
     size: 120,
+    cell: ({ row }) => row.original.accountDTO?.name ?? "-",
   },
   {
-    accessorKey: "date",
+    accessorKey: "buildingAccountAttendanceDTO.attendanceDate",
     header: "날짜",
     size: 120,
+    cell: ({ row }) => row.original.buildingAccountAttendanceDTO?.attendanceDate ?? "-",
   },
   {
-    accessorKey: "checkInTime",
+    accessorKey: "buildingAccountAttendanceDTO.loginTime",
     header: "출근 시간",
     size: 120,
-    cell: ({ row }) => row.original.checkInTime ?? "-",
+    cell: ({ row }) => row.original.buildingAccountAttendanceDTO?.loginTime || "-",
   },
   {
-    accessorKey: "checkOutTime",
+    accessorKey: "buildingAccountAttendanceDTO.logoutTime",
     header: "퇴근 시간",
     size: 120,
-    cell: ({ row }) => row.original.checkOutTime ?? "-",
+    cell: ({ row }) => row.original.buildingAccountAttendanceDTO?.logoutTime || "-",
   },
   {
-    accessorKey: "workHours",
-    header: "근무 시간",
+    accessorKey: "accessDayCnt",
+    header: "출근 일수",
     size: 100,
-    cell: ({ row }) =>
-      row.original.workHours !== null ? `${row.original.workHours}시간` : "-",
+    cell: ({ row }) => row.original.accessDayCnt ?? 0,
     meta: { className: "text-right" },
-  },
-  {
-    accessorKey: "status",
-    header: "상태",
-    size: 100,
-    cell: ({ row }) =>
-      AttendanceStatusLabel[row.original.status] ?? row.original.status,
-    meta: { className: "text-center" },
   },
 ];
 
@@ -70,14 +59,14 @@ function getTodayString(): string {
 }
 
 const INITIAL_FILTERS = {
-  date: getTodayString(),
+  attendanceDate: getTodayString(),
 };
 
 const FILTER_DEFS: FilterDef[] = [
   {
     type: "date-range",
-    fromKey: "date",
-    toKey: "date",
+    fromKey: "attendanceDate",
+    toKey: "attendanceDate",
     fromPlaceholder: "날짜 선택",
     toPlaceholder: "날짜 선택",
   },
@@ -91,7 +80,7 @@ export default function ServiceAttendancePage() {
   const [filters, setFilters] = useState(INITIAL_FILTERS);
 
   const { data, isLoading, isError, refetch } = useAttendanceDayAdmin({
-    date: filters.date,
+    attendanceDate: filters.attendanceDate,
     page: 0,
     size: 50,
   });
@@ -107,13 +96,13 @@ export default function ServiceAttendancePage() {
 
   const handleDownload = () => {
     downloadExcel(
-      { date: filters.date },
+      { attendanceDate: filters.attendanceDate },
       {
         onSuccess: (blob) => {
           const url = window.URL.createObjectURL(blob);
           const a = document.createElement("a");
           a.href = url;
-          a.download = `근태현황_${filters.date}.xlsx`;
+          a.download = `근태현황_${filters.attendanceDate}.xlsx`;
           document.body.appendChild(a);
           a.click();
           window.URL.revokeObjectURL(url);

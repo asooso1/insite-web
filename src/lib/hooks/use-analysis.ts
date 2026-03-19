@@ -5,6 +5,7 @@
 import { useQuery } from "@tanstack/react-query";
 import {
   getUsageStatus,
+  getUsageStatusList,
   getStatisticsA,
   getStatisticsB,
   getStatisticsC,
@@ -28,6 +29,7 @@ import type {
 export const analysisKeys = {
   all: ["analysis"] as const,
   usage: (params: object) => [...analysisKeys.all, "usage", params] as const,
+  usageList: (params: object) => [...analysisKeys.all, "usageList", params] as const,
   statisticsA: (params: object) =>
     [...analysisKeys.all, "statsA", params] as const,
   statisticsB: (params: object) =>
@@ -63,6 +65,22 @@ export function useUsageStatus(params: {
   return useQuery({
     queryKey: analysisKeys.usage(params),
     queryFn: () => getUsageStatus(params),
+  });
+}
+
+/**
+ * 사업소별 사용 현황 목록 조회 훅
+ */
+export function useUsageStatusList(params: {
+  searchYear: number;
+  searchMonth: number;
+  chargeDepartment?: string;
+  excludeFromAnalysis?: boolean;
+}) {
+  return useQuery({
+    queryKey: analysisKeys.usageList(params),
+    queryFn: () => getUsageStatusList(params),
+    staleTime: 30 * 1000,
   });
 }
 

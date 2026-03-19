@@ -7,6 +7,7 @@
 import { apiClient } from "./client";
 import type {
   UsageStatusDTO,
+  UsageStatusItemDTO,
   StatisticsADTO,
   StatisticsBDTO,
   StatisticsCItemDTO,
@@ -51,6 +52,28 @@ export async function getUsageStatus(params: {
     query.set("excludeFromAnalysis", String(params.excludeFromAnalysis));
 
   return apiClient.get<UsageStatusDTO>(`/api/analysis/workOrderUsage?${query}`);
+}
+
+/**
+ * 사업소별 사용 현황 목록 조회
+ */
+export async function getUsageStatusList(params: {
+  searchYear: number;
+  searchMonth: number;
+  chargeDepartment?: string;
+  excludeFromAnalysis?: boolean;
+}): Promise<UsageStatusItemDTO[]> {
+  const query = new URLSearchParams();
+  query.set("searchYear", String(params.searchYear));
+  query.set("searchMonth", String(params.searchMonth));
+  if (params.chargeDepartment)
+    query.set("chargeDepartment", params.chargeDepartment);
+  if (params.excludeFromAnalysis !== undefined)
+    query.set("excludeFromAnalysis", String(params.excludeFromAnalysis));
+
+  return apiClient.get<UsageStatusItemDTO[]>(
+    `/api/analysis/workOrderUsage/list?${query}`
+  );
 }
 
 // ============================================================================

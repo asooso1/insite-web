@@ -37,16 +37,26 @@ export const AttendanceStatusLabel: Record<AttendanceStatus, string> = {
 // ============================================================================
 
 /**
- * 근태 DTO
+ * 근태 DTO (백엔드 BuildingAccountAttendanceListDTO 매핑)
  */
 export interface AttendanceDTO {
-  accountId: number;
-  accountName: string;
-  date: string;
-  checkInTime: string | null;
-  checkOutTime: string | null;
-  status: AttendanceStatus;
-  workHours: number | null;
+  accountDTO?: {
+    id?: number;
+    name?: string;
+    department?: string;
+    position?: string;
+    companyName?: string;
+  };
+  buildingAccountAttendanceDTO?: {
+    attendanceDate?: string;
+    loginTime?: string;
+    logoutTime?: string;
+    loginMethod?: string;
+    loginMethodName?: string;
+    logoutMethod?: string;
+    logoutMethodName?: string;
+  };
+  accessDayCnt?: number;
 }
 
 /**
@@ -71,7 +81,7 @@ export interface AttendanceListResponse {
  * 근태 검색 조건
  */
 export interface SearchAttendanceVO {
-  date?: string;
+  attendanceDate?: string;
   buildingId?: number;
   page?: number;
   size?: number;

@@ -12,7 +12,7 @@ import {
 import { PageHeader } from "@/components/common/page-header";
 import { DataTable } from "@/components/data-display/data-table";
 import { EmptyState } from "@/components/data-display/empty-state";
-import { useUsageStatus } from "@/lib/hooks/use-analysis";
+import { useUsageStatus, useUsageStatusList } from "@/lib/hooks/use-analysis";
 import type {
   UsageStatusItemDTO,
   UsageStatusSummaryDTO,
@@ -127,7 +127,10 @@ export default function UsagePage() {
     [year, month]
   );
 
-  const { data, isLoading, isError } = useUsageStatus(params);
+  const { data, isLoading: isSummaryLoading, isError } = useUsageStatus(params);
+  const { data: listData, isLoading: isListLoading } = useUsageStatusList(params);
+
+  const isLoading = isSummaryLoading || isListLoading;
 
   const columns = useColumns();
 
@@ -148,11 +151,13 @@ export default function UsagePage() {
       },
       {
         label: "평균 작업 수",
-        value: curr.workOrderCountAverage.toFixed(1),
+        value: curr.approveCountAverage.toFixed(1),
       },
       {
         label: "참여율",
-        value: ((curr.approveCountAverage / curr.totalCount) * 100).toFixed(1),
+        value: curr.totalCount > 0
+          ? ((curr.buildingAccountWorkerAverage) * 100).toFixed(1)
+          : "0.0",
         unit: "%",
       },
     ];
@@ -222,10 +227,10 @@ export default function UsagePage() {
         <div className="text-center py-8 text-muted-foreground">
           불러오는 중...
         </div>
-      ) : data && data.listData.length > 0 ? (
+      ) : listData && listData.length > 0 ? (
         <DataTable
           columns={columns}
-          data={data.listData}
+          data={listData}
         />
       ) : (
         <EmptyState

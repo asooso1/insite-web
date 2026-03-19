@@ -22,7 +22,7 @@ export async function getAttendanceDay(
 ): Promise<AttendanceListResponse> {
   const searchParams = new URLSearchParams();
 
-  if (params.date) searchParams.set("date", params.date);
+  if (params.attendanceDate) searchParams.set("attendanceDate", params.attendanceDate);
   if (params.page !== undefined) searchParams.set("page", String(params.page));
   if (params.size !== undefined) searchParams.set("size", String(params.size));
 
@@ -39,7 +39,7 @@ export async function getAttendanceDayAdmin(
 ): Promise<AttendanceListResponse> {
   const searchParams = new URLSearchParams();
 
-  if (params.date) searchParams.set("date", params.date);
+  if (params.attendanceDate) searchParams.set("attendanceDate", params.attendanceDate);
   if (params.page !== undefined) searchParams.set("page", String(params.page));
   if (params.size !== undefined) searchParams.set("size", String(params.size));
 
@@ -60,7 +60,7 @@ export async function downloadAttendanceExcel(
 ): Promise<Blob> {
   const searchParams = new URLSearchParams();
 
-  if (params.date) searchParams.set("date", params.date);
+  if (params.attendanceDate) searchParams.set("attendanceDate", params.attendanceDate);
 
   return apiClient.getBlob(
     `/api/service/attendanceDayAdminExcelDownload?${searchParams.toString()}`
