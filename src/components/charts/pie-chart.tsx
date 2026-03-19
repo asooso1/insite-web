@@ -14,6 +14,8 @@ import {
   ChartTooltipContent,
   ChartLegendContent,
   type ChartConfig,
+  type TooltipPayloadItem,
+  type LegendPayloadItem,
 } from "@/components/ui/chart";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
@@ -139,10 +141,23 @@ export function PieChartPreset({
     <ChartContainer config={chartConfig} className={cn("w-full", className)}>
       <PieChart margin={{ top: 10, right: 10, left: 10, bottom: 10 }}>
         {showTooltip && (
-          <Tooltip content={<ChartTooltipContent nameKey="name" />} />
+          <Tooltip content={({ active, payload, label }) => (
+            <ChartTooltipContent
+              active={active}
+              payload={payload as unknown as TooltipPayloadItem[]}
+              label={label as string | number | undefined}
+              nameKey="name"
+            />
+          )} />
         )}
         {showLegend && (
-          <Legend content={<ChartLegendContent nameKey="name" />} />
+          <Legend content={({ payload, verticalAlign }) => (
+            <ChartLegendContent
+              payload={payload as unknown as LegendPayloadItem[]}
+              verticalAlign={verticalAlign}
+              nameKey="name"
+            />
+          )} />
         )}
         <Pie
           data={data}

@@ -16,6 +16,8 @@ import {
   ChartTooltipContent,
   ChartLegendContent,
   type ChartConfig,
+  type TooltipPayloadItem,
+  type LegendPayloadItem,
 } from "@/components/ui/chart";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
@@ -127,28 +129,41 @@ export function BarChartPreset({
         margin={{ top: 10, right: 10, left: 10, bottom: 10 }}
       >
         {showGrid && (
-          <CartesianGrid strokeDasharray="3 3" vertical={!horizontal} horizontal={horizontal || true} />
+          <CartesianGrid strokeDasharray="3 3" xAxisId="x1" yAxisId="y1" vertical={!horizontal} horizontal={horizontal || true} />
         )}
         {horizontal ? (
           <>
-            {showXAxis && <XAxis type="number" />}
-            {showYAxis && <YAxis dataKey={xAxisKey} type="category" width={80} />}
+            {showXAxis && <XAxis xAxisId="x1" type="number" />}
+            {showYAxis && <YAxis yAxisId="y1" dataKey={xAxisKey} type="category" width={80} />}
           </>
         ) : (
           <>
-            {showXAxis && <XAxis dataKey={xAxisKey} />}
-            {showYAxis && <YAxis />}
+            {showXAxis && <XAxis xAxisId="x1" dataKey={xAxisKey} />}
+            {showYAxis && <YAxis yAxisId="y1" />}
           </>
         )}
         {showTooltip && (
-          <Tooltip content={<ChartTooltipContent />} />
+          <Tooltip content={({ active, payload, label }) => (
+            <ChartTooltipContent
+              active={active}
+              payload={payload as unknown as TooltipPayloadItem[]}
+              label={label as string | number | undefined}
+            />
+          )} />
         )}
         {showLegend && (
-          <Legend content={<ChartLegendContent />} />
+          <Legend content={({ payload, verticalAlign }) => (
+            <ChartLegendContent
+              payload={payload as unknown as LegendPayloadItem[]}
+              verticalAlign={verticalAlign}
+            />
+          )} />
         )}
         {keys.map((key, index) => (
           <Bar
             key={key}
+            xAxisId="x1"
+            yAxisId="y1"
             dataKey={key}
             fill={colors[index]}
             radius={barRadius}
