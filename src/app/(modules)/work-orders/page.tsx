@@ -47,14 +47,23 @@ import type { ColumnDef, Row } from "@tanstack/react-table";
 // 필터 정의
 // ============================================================================
 
-const INITIAL_FILTERS = {
-  state: "",
-  termType: "write_date",
-  termDateFrom: "",
-  termDateTo: "",
-  searchCode: "title",
-  keyword: "",
-};
+function getInitialFilters() {
+  const today = new Date();
+  const oneMonthAgo = new Date(today);
+  oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1);
+
+  const fmt = (d: Date) => d.toISOString().slice(0, 10);
+
+  return {
+    state: "",
+    type: "",
+    termType: "write_date" as const,
+    termDateFrom: fmt(oneMonthAgo),
+    termDateTo: fmt(today),
+    searchCode: "title" as const,
+    keyword: "",
+  };
+}
 
 const FILTER_DEFS: FilterDef[] = [
   {
@@ -68,6 +77,16 @@ const FILTER_DEFS: FilterDef[] = [
       { value: WorkOrderState.REQ_COMPLETE, label: "완료요청" },
       { value: WorkOrderState.COMPLETE, label: "완료" },
       { value: WorkOrderState.CANCEL, label: "취소" },
+    ],
+  },
+  {
+    type: "select",
+    key: "type",
+    options: [
+      { value: "", label: "전체 유형" },
+      { value: WorkOrderType.GENERAL, label: "일반" },
+      { value: WorkOrderType.TBM, label: "정기" },
+      { value: WorkOrderType.ALARM, label: "긴급" },
     ],
   },
   {
@@ -275,7 +294,7 @@ export default function WorkOrderListPage() {
 
   const [page, setPage] = useState(0);
   const [size] = useState(20);
-  const [filters, setFilters] = useState(INITIAL_FILTERS);
+  const [filters, setFilters] = useState(getInitialFilters);
 
   const handleFilterChange = useCallback((key: string, value: string) => {
     setFilters((prev) => ({ ...prev, [key]: value }));
@@ -283,7 +302,7 @@ export default function WorkOrderListPage() {
   }, []);
 
   const handleFilterReset = useCallback(() => {
-    setFilters(INITIAL_FILTERS);
+    setFilters(getInitialFilters());
     setPage(0);
   }, []);
 
@@ -293,6 +312,7 @@ export default function WorkOrderListPage() {
       page,
       size,
       state: (filters.state as WorkOrderState) || undefined,
+      type: (filters.type as WorkOrderType) || undefined,
       termType: filters.termType as SearchWorkOrderVO["termType"],
       termDateFrom: filters.termDateFrom || undefined,
       termDateTo: filters.termDateTo || undefined,
