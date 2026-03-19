@@ -43,6 +43,7 @@ import type { ColumnDef, Row } from "@tanstack/react-table";
 
 const INITIAL_FILTERS = {
   state: "",
+  searchCode: "facilityName",
   keyword: "",
 };
 
@@ -55,9 +56,15 @@ const STATE_TABS_OPTIONS: FilterOption[] = [
   { value: FacilityState.DISCARD, label: "폐기" },
 ];
 
+const SEARCH_CODE_OPTIONS: FilterOption[] = [
+  { value: "facilityName", label: "시설명" },
+  { value: "facilityNo", label: "장비번호" },
+];
+
 const FILTER_DEFS: FilterDef[] = [
   { type: "tabs", key: "state", options: STATE_TABS_OPTIONS },
-  { type: "search", key: "keyword", placeholder: "시설명 검색..." },
+  { type: "select", key: "searchCode", options: SEARCH_CODE_OPTIONS },
+  { type: "search", key: "keyword", placeholder: "검색어를 입력하세요" },
 ];
 
 // ============================================================================
@@ -223,6 +230,7 @@ export default function FacilityListPage() {
       page,
       size,
       state: (filters.state as FacilityState) || undefined,
+      searchCode: filters.searchCode || undefined,
       keyword: filters.keyword || undefined,
     }),
     [page, size, filters]

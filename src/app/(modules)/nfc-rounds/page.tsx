@@ -32,19 +32,38 @@ const TABS = [
 
 type TabValue = (typeof TABS)[number]["value"];
 
-const INITIAL_FILTERS = {
-  keyword: "",
-  fromDate: "",
-  toDate: "",
-};
+const STATE_OPTIONS = [
+  { value: "ALL", label: "전체" },
+  { value: "PENDING", label: "대기" },
+  { value: "IN_PROGRESS", label: "진행중" },
+  { value: "COMPLETED", label: "완료" },
+  { value: "CANCELLED", label: "취소" },
+];
+
+function getInitialFilters() {
+  const today = new Date();
+  const oneMonthAgo = new Date(today);
+  oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1);
+  const fmt = (d: Date) => d.toISOString().slice(0, 10);
+  return {
+    state: "ALL",
+    keyword: "",
+    fromDate: fmt(oneMonthAgo),
+    toDate: fmt(today),
+  };
+}
+
+const INITIAL_FILTERS = getInitialFilters();
 
 const FORM_FILTER_DEFS: FilterDef[] = [
+  { type: "select", key: "state", options: STATE_OPTIONS },
   { type: "search", key: "keyword", placeholder: "라운드명 또는 시설명 검색" },
 ];
 
 const ISSUE_FILTER_DEFS: FilterDef[] = [
-  { type: "search", key: "keyword", placeholder: "검색어 입력" },
+  { type: "select", key: "state", options: STATE_OPTIONS },
   { type: "date-range", fromKey: "fromDate", toKey: "toDate" },
+  { type: "search", key: "keyword", placeholder: "검색어 입력" },
 ];
 
 function useFormColumns(): ColumnDef<NfcRoundFormDTO>[] {
@@ -193,6 +212,7 @@ export default function NfcRoundListPage() {
 
   const params: SearchNfcRoundVO = useMemo(
     () => ({
+      state: filters.state !== "ALL" ? filters.state : undefined,
       keyword: filters.keyword || undefined,
       fromDate: filters.fromDate || undefined,
       toDate: filters.toDate || undefined,
@@ -225,14 +245,14 @@ export default function NfcRoundListPage() {
   }, []);
 
   const handleFilterReset = useCallback(() => {
-    setFilters(INITIAL_FILTERS);
+    setFilters(getInitialFilters());
     setPage(0);
   }, []);
 
   const handleTabChange = useCallback((tab: TabValue) => {
     setActiveTab(tab);
     setPage(0);
-    setFilters(INITIAL_FILTERS);
+    setFilters(getInitialFilters());
   }, []);
 
   const handlePageChange = useCallback((newPage: number) => {

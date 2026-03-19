@@ -56,7 +56,8 @@ export async function getFacilityList(
     searchParams.set("hasHistory", String(params.hasHistory));
 
   // 검색어
-  if (params.keyword) searchParams.set("keyword", params.keyword);
+  if (params.searchCode) searchParams.set("searchCode", params.searchCode);
+  if (params.keyword) searchParams.set("searchKeyword", params.keyword);
   if (params.locationCode) searchParams.set("locationCode", params.locationCode);
   if (params.locationKeyword) searchParams.set("locationKeyword", params.locationKeyword);
   if (params.categoryName) searchParams.set("categoryName", params.categoryName);

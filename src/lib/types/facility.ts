@@ -267,6 +267,7 @@ export interface SearchFacilityVO {
 
   // 검색어
   keyword?: string;
+  searchCode?: string;
   locationCode?: string;
   locationKeyword?: string;
   categoryName?: string;

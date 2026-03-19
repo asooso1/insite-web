@@ -116,7 +116,10 @@ export interface SearchReportVO {
   dateTo?: string;
   workYear?: string;
   workMonth?: string;
-  state?: ReportState;
+  state?: ReportState | "ALL";
+  dateType?: string;
+  searchCode?: string;
+  searchKeyword?: string;
   page?: number;
   size?: number;
 }

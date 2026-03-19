@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { DataTable } from "@/components/data-display/data-table";
 import { EmptyState } from "@/components/data-display/empty-state";
+import { FilterBar, type FilterDef } from "@/components/common/filter-bar";
 
 import {
   useMonthlyReportList,
@@ -45,6 +46,50 @@ const TABS = [
 ] as const;
 
 type TabValue = (typeof TABS)[number]["value"];
+
+// ============================================================================
+// 필터 정의
+// ============================================================================
+
+function getInitialFilters() {
+  const today = new Date();
+  const oneMonthAgo = new Date(today);
+  oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1);
+  const fmt = (d: Date) => d.toISOString().slice(0, 10);
+  return {
+    state: "ALL" as const,
+    dateFrom: fmt(oneMonthAgo),
+    dateTo: fmt(today),
+    dateType: "lastModifiedDate",
+    searchCode: "writerAccountName",
+    searchKeyword: "",
+  };
+}
+
+const STATE_OPTIONS = [
+  { value: "ALL", label: "전체" },
+  { value: "DRAFT", label: "임시저장" },
+  { value: "REPORT", label: "보고" },
+  { value: "APPROVE", label: "승인" },
+];
+
+const DATE_TYPE_OPTIONS = [
+  { value: "lastModifiedDate", label: "최종수정일" },
+  { value: "writeDate", label: "작성일" },
+  { value: "reportDate", label: "보고일" },
+];
+
+const SEARCH_CODE_OPTIONS = [
+  { value: "writerAccountName", label: "작성자" },
+];
+
+const FILTER_DEFS: FilterDef[] = [
+  { type: "select", key: "state", options: STATE_OPTIONS },
+  { type: "select", key: "dateType", options: DATE_TYPE_OPTIONS },
+  { type: "date-range", fromKey: "dateFrom", toKey: "dateTo" },
+  { type: "select", key: "searchCode", options: SEARCH_CODE_OPTIONS },
+  { type: "search", key: "searchKeyword", placeholder: "검색어를 입력하세요" },
+];
 
 // ============================================================================
 // 상태 배지 헬퍼
@@ -346,8 +391,18 @@ export default function ReportListPage() {
   const [activeTab, setActiveTab] = useState<TabValue>("monthly");
   const [page, setPage] = useState(0);
   const [size] = useState(20);
+  const [filters, setFilters] = useState(getInitialFilters);
 
-  const searchParams: SearchReportVO = useMemo(() => ({ page, size }), [page, size]);
+  const searchParams: SearchReportVO = useMemo(() => ({
+    page,
+    size,
+    state: filters.state !== "ALL" ? (filters.state as any) : undefined,
+    dateFrom: filters.dateFrom || undefined,
+    dateTo: filters.dateTo || undefined,
+    dateType: filters.dateType || undefined,
+    searchCode: filters.searchCode || undefined,
+    searchKeyword: filters.searchKeyword || undefined,
+  }), [page, size, filters]);
 
   const { data: monthlyData, isLoading: monthlyLoading } = useMonthlyReportList(searchParams);
   const { data: weeklyData, isLoading: weeklyLoading } = useWeeklyReportList(searchParams);
@@ -357,9 +412,20 @@ export default function ReportListPage() {
   const weeklyColumns = useWeeklyColumns();
   const workLogColumns = useWorkLogColumns();
 
+  const handleFilterChange = useCallback((key: string, value: string) => {
+    setFilters(prev => ({ ...prev, [key]: value }));
+    setPage(0);
+  }, []);
+
+  const handleFilterReset = useCallback(() => {
+    setFilters(getInitialFilters());
+    setPage(0);
+  }, []);
+
   const handleTabChange = useCallback((tab: TabValue) => {
     setActiveTab(tab);
     setPage(0);
+    setFilters(getInitialFilters());
   }, []);
 
   const handlePageChange = useCallback((newPage: number) => {
@@ -428,6 +494,16 @@ export default function ReportListPage() {
           </button>
         ))}
       </div>
+
+      {/* 필터 - tbm 탭 제외 */}
+      {activeTab !== "tbm" && (
+        <FilterBar
+          filters={FILTER_DEFS}
+          values={filters}
+          onChange={handleFilterChange}
+          onReset={handleFilterReset}
+        />
+      )}
 
       {/* 테이블 콘텐츠 */}
       {activeTab === "monthly" && (

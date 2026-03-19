@@ -30,7 +30,10 @@ function buildSearchParams(params: SearchReportVO): string {
   if (params.dateTo) searchParams.set("dateTo", params.dateTo);
   if (params.workYear) searchParams.set("workYear", params.workYear);
   if (params.workMonth) searchParams.set("workMonth", params.workMonth);
-  if (params.state) searchParams.set("state", params.state);
+  if (params.state && params.state !== "ALL") searchParams.set("state", params.state);
+  if (params.dateType) searchParams.set("dateType", params.dateType);
+  if (params.searchCode) searchParams.set("searchCode", params.searchCode);
+  if (params.searchKeyword) searchParams.set("searchKeyword", params.searchKeyword);
   if (params.page !== undefined) searchParams.set("page", String(params.page));
   if (params.size !== undefined) searchParams.set("size", String(params.size));
   return searchParams.toString();
