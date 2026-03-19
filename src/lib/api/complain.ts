@@ -30,8 +30,11 @@ export async function getComplainList(
   if (params.buildingFloorZoneId)
     searchParams.set("buildingFloorZoneId", String(params.buildingFloorZoneId));
   searchParams.set("state", params.state || "all");
-  if (params.searchCode) searchParams.set("searchCode", params.searchCode);
-  if (params.searchKeyword) searchParams.set("searchKeyword", params.searchKeyword);
+  // searchCode는 searchKeyword가 있을 때만 전송 (백엔드 NPE 방지)
+  if (params.searchKeyword) {
+    if (params.searchCode) searchParams.set("searchCode", params.searchCode);
+    searchParams.set("searchKeyword", params.searchKeyword);
+  }
   if (params.writeDateFrom) searchParams.set("writeDateFrom", params.writeDateFrom);
   if (params.writeDateTo) searchParams.set("writeDateTo", params.writeDateTo);
   if (params.page !== undefined) searchParams.set("page", String(params.page));

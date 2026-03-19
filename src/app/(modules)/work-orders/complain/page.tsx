@@ -114,19 +114,19 @@ function useColumns(): ColumnDef<VocDTO>[] {
       {
         accessorKey: "buildingDTO.name",
         header: "빌딩",
-        cell: ({ row }) => <span>{row.original.buildingDTO.name}</span>,
+        cell: ({ row }) => <span>{row.original.buildingDTO?.name ?? '-'}</span>,
         size: 120,
       },
       {
         accessorKey: "buildingFloorDTO.name",
         header: "층",
-        cell: ({ row }) => <span>{row.original.buildingFloorDTO.name}</span>,
+        cell: ({ row }) => <span>{row.original.buildingFloorDTO?.name ?? '-'}</span>,
         size: 80,
       },
       {
         accessorKey: "buildingFloorZoneDTO.name",
         header: "구역",
-        cell: ({ row }) => <span>{row.original.buildingFloorZoneDTO.name}</span>,
+        cell: ({ row }) => <span>{row.original.buildingFloorZoneDTO?.name ?? '-'}</span>,
         size: 100,
       },
       {

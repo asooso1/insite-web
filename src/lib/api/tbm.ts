@@ -25,12 +25,17 @@ export async function getTbmList(
   const searchParams = new URLSearchParams();
 
   if (params.buildingId) searchParams.set("buildingId", String(params.buildingId));
-  if (params.tbmType) searchParams.set("tbmType", params.tbmType);
-  if (params.tbmState) searchParams.set("tbmState", params.tbmState);
+  // tbmType/tbmState/tbmUnit은 null이면 백엔드 NPE 발생 → "all" 기본값 전송
+  searchParams.set("tbmType", params.tbmType || "all");
+  searchParams.set("tbmState", params.tbmState || "all");
+  searchParams.set("tbmUnit", "all"); // 프론트엔드에서 사용하지 않으나 백엔드 NPE 방지
   if (params.buildingUserGroupId)
     searchParams.set("buildingUserGroupId", String(params.buildingUserGroupId));
-  if (params.searchCode) searchParams.set("searchCode", params.searchCode);
-  if (params.searchKeyword) searchParams.set("searchKeyword", params.searchKeyword);
+  // searchCode는 searchKeyword가 있을 때만 전송 (백엔드 NPE 방지)
+  if (params.searchKeyword) {
+    if (params.searchCode) searchParams.set("searchCode", params.searchCode);
+    searchParams.set("searchKeyword", params.searchKeyword);
+  }
 
   if (params.page !== undefined) searchParams.set("page", String(params.page));
   if (params.size !== undefined) searchParams.set("size", String(params.size));

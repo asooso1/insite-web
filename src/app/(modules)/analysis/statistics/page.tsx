@@ -270,11 +270,12 @@ function StatisticsCTab({
 // ============================================================================
 
 export default function StatisticsPage() {
+  // 백엔드가 yyyy-MM 형식 기대 (getThisYearMonthDayFr: searchDateFr + "-01 00:00:00")
   const [startDate, setStartDate] = useState(
-    new Date(new Date().setDate(1)).toISOString().split("T")[0]
+    new Date().toISOString().slice(0, 7) // "yyyy-MM"
   );
   const [endDate, setEndDate] = useState(
-    new Date().toISOString().split("T")[0]
+    new Date().toISOString().slice(0, 7) // "yyyy-MM"
   );
 
   const statsA = useStatisticsA({
@@ -299,7 +300,7 @@ export default function StatisticsPage() {
         <div className="flex-1">
           <label className="text-sm font-medium">시작일</label>
           <Input
-            type="date"
+            type="month"
             value={startDate}
             onChange={(e) => setStartDate(e.target.value)}
             className="mt-2"
@@ -308,7 +309,7 @@ export default function StatisticsPage() {
         <div className="flex-1">
           <label className="text-sm font-medium">종료일</label>
           <Input
-            type="date"
+            type="month"
             value={endDate}
             onChange={(e) => setEndDate(e.target.value)}
             className="mt-2"

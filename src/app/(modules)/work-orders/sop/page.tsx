@@ -105,7 +105,7 @@ function useColumns(): ColumnDef<SopDTO>[] {
         accessorKey: "buildingDTO.name",
         header: "빌딩",
         cell: ({ row }) => (
-          <span>{row.original.buildingDTO.name}</span>
+          <span>{row.original.buildingDTO?.name ?? '-'}</span>
         ),
         size: 150,
       },
@@ -113,7 +113,7 @@ function useColumns(): ColumnDef<SopDTO>[] {
         accessorKey: "sopKeyWord",
         header: "키워드",
         cell: ({ row }) => {
-          const keywords = row.original.sopKeyWord
+          const keywords = (row.original.sopKeyWord ?? "")
             .split("#")
             .filter((k) => k.trim());
           return (
@@ -157,7 +157,7 @@ function useColumns(): ColumnDef<SopDTO>[] {
         header: "작성일",
         cell: ({ row }) => (
           <span className="text-sm">
-            {row.original.writeDate.split(" ")[0]}
+            {row.original.writeDate?.split(" ")[0] ?? '-'}
           </span>
         ),
         size: 120,
