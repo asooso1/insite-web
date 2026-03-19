@@ -184,7 +184,7 @@ test.describe("보고서 페이지", () => {
       const href = await firstLink
         .locator("..")
         .evaluate((el) =>
-          el.textContent?.trim() || el.innerText?.trim() || ""
+          el.textContent?.trim() || (el as HTMLElement).innerText?.trim() || ""
         );
 
       await firstLink.click();
