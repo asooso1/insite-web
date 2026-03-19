@@ -42,7 +42,7 @@ export async function getWorkOrderList(
   if (params.states) params.states.forEach((s) => searchParams.append("states", s));
 
   // 유형
-  if (params.type) searchParams.set("type", params.type);
+  searchParams.set("type", params.type ?? "");
   if (params.types) params.types.forEach((t) => searchParams.append("types", t));
 
   // 분류
@@ -100,7 +100,10 @@ export async function getWorkOrderStatePerCount(
   if (params.wideAreaId) searchParams.set("wideAreaId", String(params.wideAreaId));
   if (params.buildingFloorId)
     searchParams.set("buildingFloorId", String(params.buildingFloorId));
-  if (params.type) searchParams.set("type", params.type);
+  // 상태 (null이면 csp-was NPE 발생 → 항상 전송)
+  searchParams.set("state", params.state ?? "");
+  if (params.states) params.states.forEach((s) => searchParams.append("states", s));
+  searchParams.set("type", params.type ?? "");
   if (params.types) params.types.forEach((t) => searchParams.append("types", t));
   if (params.firstClassId)
     searchParams.set("firstClassId", String(params.firstClassId));
@@ -339,7 +342,7 @@ export async function downloadWorkOrderListExcel(
   // 상태 (null이면 csp-was NPE 발생 → 항상 전송)
   searchParams.set("state", params.state ?? "");
   if (params.states) params.states.forEach((s) => searchParams.append("states", s));
-  if (params.type) searchParams.set("type", params.type);
+  searchParams.set("type", params.type ?? "");
   if (params.types) params.types.forEach((t) => searchParams.append("types", t));
   if (params.firstClassId)
     searchParams.set("firstClassId", String(params.firstClassId));

@@ -31,7 +31,7 @@ export async function getPatrolList(
   if (params.buildingId) searchParams.set("buildingId", String(params.buildingId));
   if (params.teamId) searchParams.set("teamId", String(params.teamId));
   if (params.planType) searchParams.set("planType", params.planType);
-  if (params.searchKeyword) searchParams.set("searchKeyword", params.searchKeyword);
+  searchParams.set("searchKeyword", params.searchKeyword ?? "");
   if (params.page !== undefined) searchParams.set("page", String(params.page));
   if (params.size !== undefined) searchParams.set("size", String(params.size));
   const qs = searchParams.toString();
@@ -100,7 +100,7 @@ export async function getPatrolTeamList(
   const searchParams = new URLSearchParams();
   if (params.companyId) searchParams.set("companyId", String(params.companyId));
   if (params.buildingId) searchParams.set("buildingId", String(params.buildingId));
-  if (params.teamState) searchParams.set("teamState", params.teamState);
+  searchParams.set("teamState", params.teamState ?? "");
   if (params.page !== undefined) searchParams.set("page", String(params.page));
   if (params.size !== undefined) searchParams.set("size", String(params.size));
   const qs = searchParams.toString();

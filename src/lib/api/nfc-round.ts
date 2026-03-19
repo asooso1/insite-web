@@ -29,7 +29,7 @@ export async function getNfcRoundForms(
 ): Promise<NfcRoundFormListResponse> {
   const searchParams = new URLSearchParams();
   if (params.title) searchParams.set("title", params.title);
-  if (params.state) searchParams.set("state", params.state);
+  searchParams.set("state", params.state ?? "");
   if (params.page !== undefined) searchParams.set("page", String(params.page));
   if (params.size !== undefined) searchParams.set("size", String(params.size));
   const qs = searchParams.toString();
@@ -46,7 +46,7 @@ export async function getNfcRoundIssues(
 ): Promise<NfcRoundIssueListResponse> {
   const searchParams = new URLSearchParams();
   if (params.title) searchParams.set("title", params.title);
-  if (params.state) searchParams.set("state", params.state);
+  searchParams.set("state", params.state ?? "");
   if (params.fromDate) searchParams.set("fromDate", params.fromDate);
   if (params.toDate) searchParams.set("toDate", params.toDate);
   if (params.page !== undefined) searchParams.set("page", String(params.page));
