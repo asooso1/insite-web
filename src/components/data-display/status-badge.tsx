@@ -39,6 +39,18 @@ const statusBadgeVariants = cva(
         END_OPERATING: "bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400",
         DISCARD: "bg-gray-100 text-gray-400 dark:bg-gray-800 dark:text-gray-500",
         NOW_CHECK: "bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400",
+        // 순찰 계획 상태 (PatrolPlanState)
+        ONGOING: "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400",
+        PRE_GOING: "bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400",
+        COMPLETE_UNDO: "bg-gray-100 text-gray-500 dark:bg-gray-800 dark:text-gray-400",
+        COMPLETE_DO: "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400",
+        // 순찰 팀 상태 (PatrolTeamState)
+        ACTIVE: "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400",
+        INACTIVE: "bg-gray-100 text-gray-500 dark:bg-gray-800 dark:text-gray-400",
+        // NFC 라운드 이슈 상태 (NfcRoundIssueState)
+        PASS: "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400",
+        FAIL: "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400",
+        PENDING: "bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300",
       },
     },
     defaultVariants: {
@@ -79,6 +91,18 @@ const dotColors: Record<string, string> = {
   END_OPERATING: "bg-slate-400",
   DISCARD: "bg-gray-400",
   NOW_CHECK: "bg-amber-500",
+  // 순찰 계획 상태
+  ONGOING: "bg-blue-500",
+  PRE_GOING: "bg-yellow-500",
+  COMPLETE_UNDO: "bg-gray-400",
+  COMPLETE_DO: "bg-green-500",
+  // 순찰 팀 상태
+  ACTIVE: "bg-green-500",
+  INACTIVE: "bg-gray-400",
+  // NFC 이슈 상태
+  PASS: "bg-green-500",
+  FAIL: "bg-red-500",
+  PENDING: "bg-slate-400",
 };
 
 /**
@@ -113,6 +137,18 @@ const statusLabels: Record<string, string> = {
   END_OPERATING: "운영완료",
   DISCARD: "폐기",
   NOW_CHECK: "점검중",
+  // 순찰 계획 상태
+  ONGOING: "진행중",
+  PRE_GOING: "진행 예정",
+  COMPLETE_UNDO: "종료(미수행)",
+  COMPLETE_DO: "종료(수행)",
+  // 순찰 팀 상태
+  ACTIVE: "활성",
+  INACTIVE: "비활성",
+  // NFC 이슈 상태
+  PASS: "통과",
+  FAIL: "불통",
+  PENDING: "대기",
 };
 
 interface StatusBadgeProps extends VariantProps<typeof statusBadgeVariants> {
@@ -139,6 +175,7 @@ const ACTIVE_STATUSES = new Set([
   "ONGOING_OPERATING",
   "ONGOING_CONSTRUCT",
   "NOW_CHECK",
+  "ONGOING",
 ]);
 
 export function StatusBadge({

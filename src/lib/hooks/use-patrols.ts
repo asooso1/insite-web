@@ -51,6 +51,7 @@ export function usePatrolList(params: SearchPatrolPlanVO) {
   return useQuery({
     queryKey: patrolKeys.list(params),
     queryFn: () => getPatrolList(params),
+    staleTime: 30 * 1000,
   });
 }
 
@@ -62,6 +63,7 @@ export function usePatrolPlan(id: number) {
     queryKey: patrolKeys.detail(id),
     queryFn: () => getPatrolPlan(id),
     enabled: id > 0,
+    staleTime: 60 * 1000,
   });
 }
 
@@ -109,6 +111,7 @@ export function usePatrolTeamList(params: SearchPatrolTeamVO) {
   return useQuery({
     queryKey: patrolTeamKeys.list(params),
     queryFn: () => getPatrolTeamList(params),
+    staleTime: 30 * 1000,
   });
 }
 
@@ -120,6 +123,7 @@ export function usePatrolTeam(id: number) {
     queryKey: patrolTeamKeys.detail(id),
     queryFn: () => getPatrolTeam(id),
     enabled: id > 0,
+    staleTime: 60 * 1000,
   });
 }
 

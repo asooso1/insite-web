@@ -2,6 +2,7 @@
 
 import { useState, useMemo, useCallback } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { Plus, MoreHorizontal, Eye, Edit, AlertCircle } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -12,6 +13,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { DataTable } from "@/components/data-display/data-table";
+import { StatusBadge } from "@/components/data-display/status-badge";
 import { EmptyState } from "@/components/data-display/empty-state";
 import { FilterBar, type FilterDef } from "@/components/common/filter-bar";
 import { PageHeader } from "@/components/common/page-header";
@@ -171,21 +173,12 @@ function useIssueColumns(): ColumnDef<NfcRoundIssueDTO>[] {
       {
         accessorKey: "state",
         header: "상태",
-        cell: ({ row }) => {
-          const state = row.original.state;
-          const label = NfcRoundIssueStateLabel[state] ?? state;
-          const bgColor =
-            state === "PASS"
-              ? "bg-green-100 text-green-700"
-              : state === "FAIL"
-                ? "bg-red-100 text-red-700"
-                : "bg-yellow-100 text-yellow-700";
-          return (
-            <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${bgColor}`}>
-              {label}
-            </span>
-          );
-        },
+        cell: ({ row }) => (
+          <StatusBadge
+            status={row.original.state}
+            label={NfcRoundIssueStateLabel[row.original.state] ?? row.original.state}
+          />
+        ),
         size: 90,
       },
       {
@@ -309,10 +302,10 @@ export default function NfcRoundListPage() {
         actions={
           isForms && (
             <Button asChild size="sm">
-              <div onClick={() => router.push("/nfc-rounds/new")}>
+              <Link href="/nfc-rounds/new">
                 <Plus className="mr-1 h-4 w-4" />
                 새 라운드
-              </div>
+              </Link>
             </Button>
           )
         }
