@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "lastScanned": 1773806711724,
+  "lastScanned": 1773895950554,
   "projectRoot": "/Volumes/jinseok-SSD-1tb/00_insite/insite-web",
   "techStack": {
     "languages": [
@@ -104,7 +104,7 @@
       "path": "docs",
       "purpose": "Documentation",
       "fileCount": 6,
-      "lastAccessed": 1773806711600,
+      "lastAccessed": 1773895950529,
       "keyFiles": [
         "CLAUDE.md",
         "backend-changes.md",
@@ -117,7 +117,7 @@
       "path": "e2e",
       "purpose": null,
       "fileCount": 18,
-      "lastAccessed": 1773806711601,
+      "lastAccessed": 1773895950535,
       "keyFiles": [
         "CLAUDE.md",
         "README.md",
@@ -130,7 +130,7 @@
       "path": "playwright-report",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1773806711714,
+      "lastAccessed": 1773895950536,
       "keyFiles": [
         "index.html"
       ]
@@ -139,7 +139,7 @@
       "path": "public",
       "purpose": "Public files",
       "fileCount": 8,
-      "lastAccessed": 1773806711715,
+      "lastAccessed": 1773895950536,
       "keyFiles": [
         "CLAUDE.md",
         "file.svg",
@@ -152,7 +152,7 @@
       "path": "src",
       "purpose": "Source code",
       "fileCount": 2,
-      "lastAccessed": 1773806711716,
+      "lastAccessed": 1773895950536,
       "keyFiles": [
         "CLAUDE.md",
         "middleware.ts"
@@ -162,7 +162,7 @@
       "path": "storybook-static",
       "purpose": null,
       "fileCount": 17,
-      "lastAccessed": 1773806711716,
+      "lastAccessed": 1773895950537,
       "keyFiles": [
         "CLAUDE.md",
         "favicon.svg",
@@ -175,14 +175,14 @@
       "path": "test-results",
       "purpose": null,
       "fileCount": 0,
-      "lastAccessed": 1773806711717,
+      "lastAccessed": 1773895950537,
       "keyFiles": []
     },
     "tests": {
       "path": "tests",
       "purpose": "Test files",
       "fileCount": 2,
-      "lastAccessed": 1773806711717,
+      "lastAccessed": 1773895950538,
       "keyFiles": [
         "setup.ts",
         "utils.tsx"
@@ -192,7 +192,7 @@
       "path": "src/app",
       "purpose": "Application code",
       "fileCount": 6,
-      "lastAccessed": 1773806711718,
+      "lastAccessed": 1773895950539,
       "keyFiles": [
         "error.tsx",
         "favicon.ico",
@@ -203,14 +203,14 @@
       "path": "src/components",
       "purpose": "UI components",
       "fileCount": 0,
-      "lastAccessed": 1773806711719,
+      "lastAccessed": 1773895950540,
       "keyFiles": []
     },
     "src/lib": {
       "path": "src/lib",
       "purpose": "Library code",
       "fileCount": 2,
-      "lastAccessed": 1773806711719,
+      "lastAccessed": 1773895950540,
       "keyFiles": [
         "animations.ts",
         "utils.ts"
@@ -220,18 +220,27 @@
       "path": "src/mocks",
       "purpose": "Mock data",
       "fileCount": 4,
-      "lastAccessed": 1773806711719,
+      "lastAccessed": 1773895950540,
       "keyFiles": [
         "browser.ts",
         "handlers.ts",
         "index.ts"
       ]
     },
+    "src/types": {
+      "path": "src/types",
+      "purpose": "Type definitions",
+      "fileCount": 1,
+      "lastAccessed": 1773895950541,
+      "keyFiles": [
+        "kakao.d.ts"
+      ]
+    },
     "storybook-static/assets": {
       "path": "storybook-static/assets",
       "purpose": "Static assets",
       "fileCount": 188,
-      "lastAccessed": 1773806711723,
+      "lastAccessed": 1773895950543,
       "keyFiles": [
         "AreaChart-CZ1p62BF.js",
         "CartesianGrid-nBDQLgpk.js",
@@ -241,303 +250,129 @@
   },
   "hotPaths": [
     {
-      "path": "src/lib/types/control.ts",
-      "accessCount": 4,
-      "lastAccessed": 1773819537344,
-      "type": "file"
-    },
-    {
-      "path": "src/lib/types/invoice.ts",
-      "accessCount": 4,
-      "lastAccessed": 1773819716362,
-      "type": "file"
-    },
-    {
-      "path": "src/lib/types/nfc-round.ts",
-      "accessCount": 4,
-      "lastAccessed": 1773819718134,
-      "type": "file"
-    },
-    {
-      "path": "src/app/(modules)/users/roles/page.tsx",
-      "accessCount": 3,
-      "lastAccessed": 1773819551877,
-      "type": "file"
-    },
-    {
-      "path": "src/lib/api/invoice.ts",
-      "accessCount": 3,
-      "lastAccessed": 1773819912912,
-      "type": "file"
-    },
-    {
       "path": "src/lib/api/nfc-round.ts",
-      "accessCount": 3,
-      "lastAccessed": 1773819938672,
-      "type": "file"
-    },
-    {
-      "path": "src/lib/api/qna.ts",
-      "accessCount": 3,
-      "lastAccessed": 1773819970531,
-      "type": "file"
-    },
-    {
-      "path": "src/lib/types/work-order.ts",
-      "accessCount": 2,
-      "lastAccessed": 1773810079916,
+      "accessCount": 12,
+      "lastAccessed": 1773901247748,
       "type": "file"
     },
     {
       "path": "src/lib/api/work-order.ts",
-      "accessCount": 2,
-      "lastAccessed": 1773810080208,
+      "accessCount": 11,
+      "lastAccessed": 1773900916482,
       "type": "file"
     },
     {
-      "path": "src/app/(modules)/work-orders/page.tsx",
-      "accessCount": 2,
-      "lastAccessed": 1773819532803,
-      "type": "file"
-    },
-    {
-      "path": "src/lib/types/duty.ts",
-      "accessCount": 2,
-      "lastAccessed": 1773819537955,
-      "type": "file"
-    },
-    {
-      "path": "src/lib/types/rental.ts",
-      "accessCount": 2,
-      "lastAccessed": 1773819541320,
-      "type": "file"
-    },
-    {
-      "path": "src/lib/types/faq.ts",
-      "accessCount": 2,
-      "lastAccessed": 1773819547069,
-      "type": "file"
-    },
-    {
-      "path": "src/lib/types/qna.ts",
-      "accessCount": 2,
-      "lastAccessed": 1773819547598,
-      "type": "file"
-    },
-    {
-      "path": "src/lib/types/role.ts",
-      "accessCount": 2,
-      "lastAccessed": 1773819552108,
-      "type": "file"
-    },
-    {
-      "path": "src/lib/types/facility.ts",
-      "accessCount": 1,
-      "lastAccessed": 1773809981386,
-      "type": "file"
-    },
-    {
-      "path": "src/lib/hooks/use-facilities.ts",
-      "accessCount": 1,
-      "lastAccessed": 1773809981490,
-      "type": "file"
-    },
-    {
-      "path": "src/app/(modules)/facilities/page.tsx",
-      "accessCount": 1,
-      "lastAccessed": 1773809984229,
-      "type": "file"
-    },
-    {
-      "path": "src/lib/types/user.ts",
-      "accessCount": 1,
-      "lastAccessed": 1773809984384,
-      "type": "file"
-    },
-    {
-      "path": "src/lib/api/role.ts",
-      "accessCount": 1,
-      "lastAccessed": 1773809993126,
-      "type": "file"
-    },
-    {
-      "path": "src/lib/hooks/use-roles.ts",
-      "accessCount": 1,
-      "lastAccessed": 1773809999444,
-      "type": "file"
-    },
-    {
-      "path": "src/lib/types/patrol.ts",
-      "accessCount": 1,
-      "lastAccessed": 1773810001167,
+      "path": "src/app/(modules)/nfc-rounds/page.tsx",
+      "accessCount": 10,
+      "lastAccessed": 1773898296900,
       "type": "file"
     },
     {
       "path": "src/lib/api/patrol.ts",
-      "accessCount": 1,
-      "lastAccessed": 1773810001325,
+      "accessCount": 8,
+      "lastAccessed": 1773900926589,
       "type": "file"
     },
     {
-      "path": "src/lib/hooks/use-patrols.ts",
-      "accessCount": 1,
-      "lastAccessed": 1773810001521,
+      "path": "src/lib/types/nfc-round.ts",
+      "accessCount": 6,
+      "lastAccessed": 1773901239790,
+      "type": "file"
+    },
+    {
+      "path": "src/lib/api/material.ts",
+      "accessCount": 5,
+      "lastAccessed": 1773900751297,
+      "type": "file"
+    },
+    {
+      "path": "src/lib/api/report.ts",
+      "accessCount": 4,
+      "lastAccessed": 1773898664356,
+      "type": "file"
+    },
+    {
+      "path": "src/app/(modules)/work-orders/page.tsx",
+      "accessCount": 3,
+      "lastAccessed": 1773898032802,
       "type": "file"
     },
     {
       "path": "src/app/(modules)/patrols/page.tsx",
-      "accessCount": 1,
-      "lastAccessed": 1773810001685,
+      "accessCount": 3,
+      "lastAccessed": 1773898296502,
       "type": "file"
     },
     {
-      "path": "src/lib/types/license.ts",
-      "accessCount": 1,
-      "lastAccessed": 1773810015193,
+      "path": "src/app/(modules)/materials/page.tsx",
+      "accessCount": 3,
+      "lastAccessed": 1773898296683,
       "type": "file"
     },
     {
-      "path": "src/lib/api/license.ts",
-      "accessCount": 1,
-      "lastAccessed": 1773810015412,
-      "type": "file"
-    },
-    {
-      "path": "src/lib/hooks/use-licenses.ts",
-      "accessCount": 1,
-      "lastAccessed": 1773810015666,
-      "type": "file"
-    },
-    {
-      "path": "src/app/(modules)/licenses/page.tsx",
-      "accessCount": 1,
-      "lastAccessed": 1773810017744,
-      "type": "file"
-    },
-    {
-      "path": "src/app/(modules)/licenses/new/page.tsx",
-      "accessCount": 1,
-      "lastAccessed": 1773810018162,
-      "type": "file"
-    },
-    {
-      "path": "src/app/(modules)/facilities/new/page.tsx",
-      "accessCount": 1,
-      "lastAccessed": 1773810024827,
-      "type": "file"
-    },
-    {
-      "path": "src/app/(modules)/work-orders/_components/work-order-form.tsx",
-      "accessCount": 1,
-      "lastAccessed": 1773810025033,
-      "type": "file"
-    },
-    {
-      "path": "src/app/(modules)/facilities/_components/facility-form.tsx",
-      "accessCount": 1,
-      "lastAccessed": 1773810028953,
+      "path": "src/app/(modules)/reports/page.tsx",
+      "accessCount": 3,
+      "lastAccessed": 1773898297045,
       "type": "file"
     },
     {
       "path": "src/lib/hooks/use-nfc-rounds.ts",
-      "accessCount": 1,
-      "lastAccessed": 1773810032060,
+      "accessCount": 2,
+      "lastAccessed": 1773896467648,
       "type": "file"
     },
     {
-      "path": "src/app/(modules)/users/roles/[id]/page.tsx",
-      "accessCount": 1,
-      "lastAccessed": 1773810032616,
+      "path": "",
+      "accessCount": 2,
+      "lastAccessed": 1773898797126,
+      "type": "directory"
+    },
+    {
+      "path": "eslint.config.mjs",
+      "accessCount": 2,
+      "lastAccessed": 1773898810826,
       "type": "file"
     },
     {
-      "path": "src/lib/types/board.ts",
-      "accessCount": 1,
-      "lastAccessed": 1773810035250,
+      "path": "src/app/api/auth/login/route.ts",
+      "accessCount": 2,
+      "lastAccessed": 1773899296820,
       "type": "file"
     },
     {
-      "path": "src/lib/api/board.ts",
+      "path": "src",
       "accessCount": 1,
-      "lastAccessed": 1773810035340,
+      "lastAccessed": 1773896286914,
+      "type": "directory"
+    },
+    {
+      "path": "e2e/global-setup.ts",
+      "accessCount": 1,
+      "lastAccessed": 1773897021713,
       "type": "file"
     },
     {
-      "path": "src/app/(modules)/boards/page.tsx",
+      "path": "src/app",
       "accessCount": 1,
-      "lastAccessed": 1773810037369,
+      "lastAccessed": 1773897429114,
+      "type": "directory"
+    },
+    {
+      "path": "src/lib/utils.ts",
+      "accessCount": 1,
+      "lastAccessed": 1773897980480,
       "type": "file"
     },
     {
-      "path": "src/lib/hooks/use-boards.ts",
+      "path": "e2e/reports.spec.ts",
       "accessCount": 1,
-      "lastAccessed": 1773810040492,
+      "lastAccessed": 1773898658055,
       "type": "file"
     },
     {
-      "path": "src/app/(modules)/layout.tsx",
+      "path": "e2e/fixtures.ts",
       "accessCount": 1,
-      "lastAccessed": 1773810043308,
-      "type": "file"
-    },
-    {
-      "path": "src/lib/api/control.ts",
-      "accessCount": 1,
-      "lastAccessed": 1773810044453,
-      "type": "file"
-    },
-    {
-      "path": "src/lib/api/rental.ts",
-      "accessCount": 1,
-      "lastAccessed": 1773810046716,
-      "type": "file"
-    },
-    {
-      "path": "src/lib/hooks/use-controls.ts",
-      "accessCount": 1,
-      "lastAccessed": 1773810052433,
-      "type": "file"
-    },
-    {
-      "path": "src/app/\\(modules\\)/nfc-rounds/page.tsx",
-      "accessCount": 1,
-      "lastAccessed": 1773810052495,
-      "type": "file"
-    },
-    {
-      "path": "src/lib/hooks/use-invoices.ts",
-      "accessCount": 1,
-      "lastAccessed": 1773810052608,
-      "type": "file"
-    },
-    {
-      "path": "src/lib/types/privacy.ts",
-      "accessCount": 1,
-      "lastAccessed": 1773810053397,
-      "type": "file"
-    },
-    {
-      "path": "src/lib/hooks/use-rentals.ts",
-      "accessCount": 1,
-      "lastAccessed": 1773810057898,
-      "type": "file"
-    },
-    {
-      "path": "src/lib/api/faq.ts",
-      "accessCount": 1,
-      "lastAccessed": 1773810058612,
-      "type": "file"
-    },
-    {
-      "path": "src/lib/api/privacy.ts",
-      "accessCount": 1,
-      "lastAccessed": 1773810062596,
-      "type": "file"
-    },
-    {
-      "path": "src/lib/hooks/use-faqs.ts",
-      "accessCount": 1,
-      "lastAccessed": 1773810070190,
+      "lastAccessed": 1773898789450,
       "type": "file"
     }
   ],
