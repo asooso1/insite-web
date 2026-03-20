@@ -79,3 +79,11 @@ storybook-static/
 STORYBOOK_*.txt
 STORYBOOK_*.md
 debug-storybook.log
+
+# OMC (oh-my-claudecode) 세션/상태 파일
+.omc/sessions/
+.omc/state/
+.omc/notepad.md
+
+# Claude 로컬 메모리 (CLAUDE.md는 커밋, rules/는 커밋)
+.claude/settings.local.json
