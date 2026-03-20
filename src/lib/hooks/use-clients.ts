@@ -156,9 +156,12 @@ export function useDownloadClientExcel() {
       a.href = url;
       a.download = `clients-${new Date().toISOString().split("T")[0]}.xlsx`;
       document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      window.URL.revokeObjectURL(url);
+      try {
+        a.click();
+      } finally {
+        if (a.parentNode) document.body.removeChild(a);
+        window.URL.revokeObjectURL(url);
+      }
     },
   });
 }
