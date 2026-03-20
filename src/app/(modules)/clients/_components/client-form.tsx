@@ -315,7 +315,7 @@ export function ClientForm({ mode, initialData, clientId }: ClientFormProps) {
                 <div className="space-y-2">
                   <Label htmlFor="state">상태 *</Label>
                   <Select
-                    value={form.watch("state")}
+                    value={form.watch("state") ?? ""}
                     onValueChange={(value) => form.setValue("state", value)}
                   >
                     <SelectTrigger className="w-48">

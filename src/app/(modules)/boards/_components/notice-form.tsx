@@ -201,7 +201,7 @@ export function NoticeForm({ mode, initialData, noticeId }: NoticeFormProps) {
                   <div className="space-y-2">
                     <Label>유형 *</Label>
                     <Select
-                      value={form.watch("noticeType")}
+                      value={form.watch("noticeType") ?? ""}
                       onValueChange={(value) => form.setValue("noticeType", value)}
                     >
                       <SelectTrigger>

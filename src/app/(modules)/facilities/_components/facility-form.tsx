@@ -275,7 +275,7 @@ export function FacilityForm({
                   <div className="space-y-2">
                     <Label htmlFor="state">상태 *</Label>
                     <Select
-                      value={form.watch("state")}
+                      value={form.watch("state") ?? FacilityState.BEFORE_OPERATING}
                       onValueChange={(value) =>
                         form.setValue("state", value as FacilityState)
                       }

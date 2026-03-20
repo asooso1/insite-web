@@ -100,7 +100,7 @@ export function FaqForm() {
               errorMessage={form.formState.errors.menuId?.message}
             >
               <Select
-                value={form.watch("menuId")}
+                value={form.watch("menuId") ?? ""}
                 onValueChange={(value) => form.setValue("menuId", value)}
               >
                 <SelectTrigger>

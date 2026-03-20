@@ -204,7 +204,7 @@ export function MaterialForm({ mode, initialData, materialId }: MaterialFormProp
                   <div className="space-y-2">
                     <Label>유형 *</Label>
                     <Select
-                      value={form.watch("type")}
+                      value={form.watch("type") ?? ""}
                       onValueChange={(value) => form.setValue("type", value)}
                     >
                       <SelectTrigger>
@@ -222,7 +222,7 @@ export function MaterialForm({ mode, initialData, materialId }: MaterialFormProp
                   <div className="space-y-2">
                     <Label>상태 *</Label>
                     <Select
-                      value={form.watch("state")}
+                      value={form.watch("state") ?? ""}
                       onValueChange={(value) => form.setValue("state", value)}
                     >
                       <SelectTrigger>

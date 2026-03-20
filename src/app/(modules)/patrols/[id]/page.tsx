@@ -87,7 +87,7 @@ export default function PatrolPlanDetailPage() {
           <h2 className="mb-3 font-semibold">담당 건물 ({plan.patrolPlanBuildings.length}개)</h2>
           <div className="divide-y">
             {plan.patrolPlanBuildings.map((building) => (
-              <div key={building.id} className="flex items-center justify-between py-2">
+              <div key={building.buildingId} className="flex items-center justify-between py-2">
                 <span>{building.buildingName}</span>
                 <span className="text-sm text-muted-foreground">{building.stateName}</span>
               </div>
@@ -102,7 +102,7 @@ export default function PatrolPlanDetailPage() {
           <h2 className="mb-3 font-semibold">담당자 ({plan.patrolPlanAccounts.length}명)</h2>
           <div className="divide-y">
             {plan.patrolPlanAccounts.map((account) => (
-              <div key={account.id} className="py-2">
+              <div key={account.accountId} className="py-2">
                 <span>{account.accountName}</span>
               </div>
             ))}

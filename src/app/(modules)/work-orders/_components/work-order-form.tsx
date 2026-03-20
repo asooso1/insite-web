@@ -284,7 +284,7 @@ export function WorkOrderForm({
                   <div className="space-y-2">
                     <Label htmlFor="type">작업 유형 *</Label>
                     <Select
-                      value={form.watch("type")}
+                      value={form.watch("type") ?? ""}
                       onValueChange={(value) =>
                         form.setValue("type", value as WorkOrderType)
                       }

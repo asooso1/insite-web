@@ -286,7 +286,7 @@ export function UserForm({ mode, initialData, userId }: UserFormProps) {
                   <div className="space-y-2">
                     <Label htmlFor="gender">성별 *</Label>
                     <Select
-                      value={form.watch("gender")}
+                      value={form.watch("gender") ?? ""}
                       onValueChange={(value) =>
                         form.setValue("gender", value as "M" | "F")
                       }
@@ -314,7 +314,7 @@ export function UserForm({ mode, initialData, userId }: UserFormProps) {
                   <div className="space-y-2">
                     <Label htmlFor="state">상태 *</Label>
                     <Select
-                      value={form.watch("state")}
+                      value={form.watch("state") ?? ""}
                       onValueChange={(value) => form.setValue("state", value)}
                     >
                       <SelectTrigger>
