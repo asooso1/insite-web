@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -99,7 +100,7 @@ export function FieldWorkOrderForm({
         router.push(`/fieldwork/work-orders/${data.id}`);
       }
     } catch (error) {
-      console.error("Form submission error:", error);
+      toast.error("작업지시 저장에 실패했습니다.");
     }
   };
 

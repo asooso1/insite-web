@@ -40,6 +40,7 @@ export function useLicenseList(params: SearchLicenseVO) {
   return useQuery({
     queryKey: licenseKeys.list(params),
     queryFn: () => getLicenseList(params),
+    staleTime: 30 * 1000, // 30초 - 목록 쿼리 표준
   });
 }
 
@@ -51,6 +52,7 @@ export function useLicenseView(id: number) {
     queryKey: licenseKeys.detail(id),
     queryFn: () => getLicenseView(id),
     enabled: id > 0,
+    staleTime: 60 * 1000, // 1분 - 상세 쿼리 표준
   });
 }
 
@@ -61,6 +63,7 @@ export function useLicenseUserList(params: SearchLicenseVO) {
   return useQuery({
     queryKey: licenseKeys.userList(params),
     queryFn: () => getLicenseUserList(params),
+    staleTime: 30 * 1000, // 30초 - 목록 쿼리 표준
   });
 }
 

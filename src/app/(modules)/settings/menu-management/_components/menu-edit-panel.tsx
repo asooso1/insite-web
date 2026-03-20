@@ -16,6 +16,16 @@ import {
 import { Switch } from "@/components/ui/switch";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { useSaveMenuOverride, useDeleteMenuOverride } from "@/lib/hooks/use-menu";
 import { handleApiError } from "@/lib/api/error-handler";
 import type { MenuWithStatus, MenuOverride } from "@/lib/types/menu";
@@ -40,6 +50,8 @@ function getDepth1Menus(menus: MenuWithStatus[]): MenuWithStatus[] {
 export function MenuEditPanel({ selectedMenu, allMenus }: MenuEditPanelProps) {
   const saveMutation = useSaveMenuOverride();
   const deleteMutation = useDeleteMenuOverride();
+
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
 
   const [formData, setFormData] = useState<Omit<MenuOverride, "updatedAt">>({
     menuId: 0,
@@ -118,14 +130,6 @@ export function MenuEditPanel({ selectedMenu, allMenus }: MenuEditPanelProps) {
   };
 
   const handleDelete = async (): Promise<void> => {
-    if (
-      !window.confirm(
-        "이 메뉴의 오버라이드를 삭제하시겠습니까? 원본 설정이 복원됩니다."
-      )
-    ) {
-      return;
-    }
-
     try {
       await deleteMutation.mutateAsync(selectedMenu.id);
       toast.success("오버라이드가 삭제되었습니다.");
@@ -289,7 +293,7 @@ export function MenuEditPanel({ selectedMenu, allMenus }: MenuEditPanelProps) {
           </Button>
           {selectedMenu.hasOverride && (
             <Button
-              onClick={handleDelete}
+              onClick={() => setDeleteDialogOpen(true)}
               variant="destructive"
               disabled={isLoading}
               className="flex-1"
@@ -299,6 +303,26 @@ export function MenuEditPanel({ selectedMenu, allMenus }: MenuEditPanelProps) {
           )}
         </div>
       </CardContent>
+
+      <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>오버라이드 삭제</AlertDialogTitle>
+            <AlertDialogDescription>
+              이 메뉴의 오버라이드를 삭제하시겠습니까? 원본 설정이 복원됩니다.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>취소</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={() => void handleDelete()}
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+            >
+              삭제
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </Card>
   );
 }

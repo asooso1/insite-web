@@ -42,6 +42,7 @@ export function useFieldWorkOrderList(
   return useQuery({
     queryKey: fieldWorkOrderKeys.list(params),
     queryFn: () => getFieldWorkOrderList(params),
+    staleTime: 30 * 1000, // 30초 - 목록 쿼리 표준
   });
 }
 
@@ -53,6 +54,7 @@ export function useFieldWorkOrder(id: number) {
     queryKey: fieldWorkOrderKeys.detail(id),
     queryFn: () => getFieldWorkOrder(id),
     enabled: !!id,
+    staleTime: 60 * 1000, // 1분 - 상세 쿼리 표준
   });
 }
 

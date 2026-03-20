@@ -103,7 +103,7 @@ export async function getWorkOrderStatePerCount(
   // 상태 (null이면 csp-was NPE 발생 → 항상 전송)
   searchParams.set("state", params.state ?? "");
   if (params.states) params.states.forEach((s) => searchParams.append("states", s));
-  searchParams.set("type", params.type ?? "");
+  searchParams.set("type", params.type || "all");
   if (params.types) params.types.forEach((t) => searchParams.append("types", t));
   if (params.firstClassId)
     searchParams.set("firstClassId", String(params.firstClassId));
@@ -342,7 +342,7 @@ export async function downloadWorkOrderListExcel(
   // 상태 (null이면 csp-was NPE 발생 → 항상 전송)
   searchParams.set("state", params.state ?? "");
   if (params.states) params.states.forEach((s) => searchParams.append("states", s));
-  searchParams.set("type", params.type ?? "");
+  searchParams.set("type", params.type || "all");
   if (params.types) params.types.forEach((t) => searchParams.append("types", t));
   if (params.firstClassId)
     searchParams.set("firstClassId", String(params.firstClassId));

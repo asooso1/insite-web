@@ -41,6 +41,7 @@ export function useTbmList(
   return useQuery({
     queryKey: tbmKeys.list(params),
     queryFn: () => getTbmList(params),
+    staleTime: 30 * 1000, // 30초 - 목록 쿼리 표준
   });
 }
 
@@ -52,6 +53,7 @@ export function useTbmView(id: number) {
     queryKey: tbmKeys.detail(id),
     queryFn: () => getTbmView(id),
     enabled: id > 0,
+    staleTime: 60 * 1000, // 1분 - 상세 쿼리 표준
   });
 }
 

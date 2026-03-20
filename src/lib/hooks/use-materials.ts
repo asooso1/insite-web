@@ -39,6 +39,7 @@ export function useMaterialList(
   return useQuery({
     queryKey: materialKeys.list(params),
     queryFn: () => getMaterialList(params),
+    staleTime: 30 * 1000,
   });
 }
 
@@ -50,6 +51,7 @@ export function useMaterialView(id: number) {
     queryKey: materialKeys.detail(id),
     queryFn: () => getMaterialView(id),
     enabled: id > 0,
+    staleTime: 60 * 1000,
   });
 }
 

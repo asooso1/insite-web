@@ -61,6 +61,7 @@ export function useNoticeList(params: SearchNoticeVO) {
   return useQuery({
     queryKey: noticeKeys.list(params),
     queryFn: () => getNoticeList(params),
+    staleTime: 30 * 1000,
   });
 }
 
@@ -72,6 +73,7 @@ export function useNoticeView(id: number) {
     queryKey: noticeKeys.detail(id),
     queryFn: () => getNoticeView(id),
     enabled: id > 0,
+    staleTime: 60 * 1000,
   });
 }
 
@@ -190,6 +192,7 @@ export function useReferenceDataList(params: SearchReferenceDataVO) {
   return useQuery({
     queryKey: referenceDataKeys.list(params),
     queryFn: () => getReferenceDataList(params),
+    staleTime: 30 * 1000,
   });
 }
 
@@ -201,6 +204,7 @@ export function useReferenceDataView(id: number) {
     queryKey: referenceDataKeys.detail(id),
     queryFn: () => getReferenceDataView(id),
     enabled: id > 0,
+    staleTime: 60 * 1000,
   });
 }
 

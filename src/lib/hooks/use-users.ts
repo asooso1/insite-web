@@ -47,6 +47,7 @@ export function useUserList(
   return useQuery({
     queryKey: userKeys.list(params),
     queryFn: () => getUserList(params),
+    staleTime: 30 * 1000,
   });
 }
 
@@ -58,6 +59,7 @@ export function useUserView(id: number) {
     queryKey: userKeys.detail(id),
     queryFn: () => getUserView(id),
     enabled: id > 0,
+    staleTime: 60 * 1000,
   });
 }
 
@@ -69,6 +71,7 @@ export function useCheckUserId(userId: string) {
     queryKey: userKeys.checkUserId(userId),
     queryFn: () => checkUserId(userId),
     enabled: userId.length >= 4,
+    staleTime: 60 * 1000,
   });
 }
 
@@ -79,6 +82,7 @@ export function useRoleList() {
   return useQuery({
     queryKey: userKeys.roles(),
     queryFn: () => getRoleList(),
+    staleTime: Infinity,
   });
 }
 
@@ -89,6 +93,7 @@ export function useRegisterRoleList() {
   return useQuery({
     queryKey: userKeys.registerRoles(),
     queryFn: async () => (await getRegisterRoleList()) ?? [],
+    staleTime: Infinity,
   });
 }
 

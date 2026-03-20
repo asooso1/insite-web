@@ -72,6 +72,7 @@ export function useConfigGroupList(params?: SearchKeywordVO) {
   return useQuery({
     queryKey: configKeys.groupList(params),
     queryFn: () => getConfigGroupList(params),
+    staleTime: 30 * 1000, // 30초 - 목록 쿼리 표준
   });
 }
 
@@ -80,6 +81,7 @@ export function useConfig(id: number) {
     queryKey: configKeys.detail(id),
     queryFn: () => getConfig(id),
     enabled: id > 0,
+    staleTime: 60 * 1000, // 1분 - 상세 쿼리 표준
   });
 }
 
@@ -101,6 +103,7 @@ export function useFacilityCategoryTree() {
   return useQuery({
     queryKey: facilityCategoryKeys.tree(),
     queryFn: () => getFacilityCategoryTreeList(),
+    staleTime: Infinity, // 정적 데이터
   });
 }
 
@@ -132,6 +135,7 @@ export function useFacilityMasterList(params: SearchFacilityMasterVO) {
   return useQuery({
     queryKey: facilityMasterKeys.list(params),
     queryFn: () => getFacilityMasterList(params),
+    staleTime: 30 * 1000, // 30초 - 목록 쿼리 표준
   });
 }
 
@@ -140,6 +144,7 @@ export function useFacilityMasterView(id: number) {
     queryKey: facilityMasterKeys.detail(id),
     queryFn: () => getFacilityMasterView(id),
     enabled: id > 0,
+    staleTime: 60 * 1000, // 1분 - 상세 쿼리 표준
   });
 }
 
@@ -193,6 +198,7 @@ export function useCleaningCategoryList(params?: SearchKeywordVO) {
   return useQuery({
     queryKey: cleaningCategoryKeys.list(params),
     queryFn: () => getCleaningCategoryList(params),
+    staleTime: 30 * 1000, // 30초 - 목록 쿼리 표준
   });
 }
 
@@ -231,6 +237,7 @@ export function useCleaningTargetList(params?: SearchKeywordVO) {
   return useQuery({
     queryKey: cleaningTargetKeys.list(params),
     queryFn: () => getCleaningTargetList(params),
+    staleTime: 30 * 1000, // 30초 - 목록 쿼리 표준
   });
 }
 
@@ -269,6 +276,7 @@ export function useCleaningUtilList(params?: SearchKeywordVO) {
   return useQuery({
     queryKey: cleaningUtilKeys.list(params),
     queryFn: () => getCleaningUtilList(params),
+    staleTime: 30 * 1000, // 30초 - 목록 쿼리 표준
   });
 }
 
@@ -306,6 +314,7 @@ export function useCleaningCoefficientList(params?: { type?: string }) {
   return useQuery({
     queryKey: cleaningCoefficientKeys.list(params),
     queryFn: () => getCleaningCoefficientList(params),
+    staleTime: 30 * 1000, // 30초 - 목록 쿼리 표준
   });
 }
 

@@ -112,6 +112,18 @@ _components/          # {module}-form.tsx
 | `rules/performance.md` | React Query 표준, staleTime 기준 |
 | `rules/coding-style.md` | 코드 스타일, TypeScript 규칙 |
 
+## 커스텀 스킬 (커밋 전 검증)
+
+커밋 전 `/pre-commit` 실행 필수. 개별 검증은 아래 스킬 사용:
+
+| 스킬 | 용도 |
+|------|------|
+| `/pre-commit` | 전체 검증 종합 (빌드 + 린트 + 아래 모든 검사) |
+| `/check-api` | API 클라이언트 패턴 (buildingId 주입, fetch 금지, 파라미터 기본값) |
+| `/check-hooks` | React Query 패턴 (staleTime, queryKey factory, enabled 조건) |
+| `/check-components` | 컴포넌트 패턴 (window.alert, console.log, StatusBadge, DataTable) |
+| `/check-security` | 보안 패턴 (localStorage 토큰, 하드코딩 시크릿, open redirect, XSS) |
+
 ## 명령어
 
 `npm run dev` | `npm run build` (커밋 전 필수) | `npm run lint`

@@ -38,6 +38,7 @@ export function useBuildingFloors(buildingId: number) {
     queryKey: buildingKeys.floors(buildingId),
     queryFn: () => getBuildingFloors(buildingId),
     enabled: buildingId > 0,
+    staleTime: 30 * 1000,
   });
 }
 
@@ -49,6 +50,7 @@ export function useBuildingFloorZones(floorId: number) {
     queryKey: buildingKeys.zones(floorId),
     queryFn: () => getBuildingFloorZones(floorId),
     enabled: floorId > 0,
+    staleTime: 30 * 1000,
   });
 }
 
@@ -61,6 +63,7 @@ export function useComplainList(
   return useQuery({
     queryKey: complainKeys.list(params),
     queryFn: () => getComplainList(params),
+    staleTime: 30 * 1000,
   });
 }
 
@@ -72,6 +75,7 @@ export function useComplainView(id: number) {
     queryKey: complainKeys.detail(id),
     queryFn: () => getComplainView(id),
     enabled: id > 0,
+    staleTime: 60 * 1000,
   });
 }
 

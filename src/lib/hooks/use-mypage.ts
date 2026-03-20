@@ -31,6 +31,7 @@ export function useMyInfo() {
   return useQuery({
     queryKey: mypageKeys.myInfo(),
     queryFn: () => getMyInfo(),
+    staleTime: 60 * 1000,
   });
 }
 

@@ -53,6 +53,7 @@ export function useMonthlyReportList(params: SearchReportVO) {
   return useQuery({
     queryKey: reportKeys.monthlyList(params),
     queryFn: () => getMonthlyReportList(params),
+    staleTime: 30 * 1000,
   });
 }
 
@@ -61,6 +62,7 @@ export function useMonthlyReport(id: number) {
     queryKey: reportKeys.monthlyDetail(id),
     queryFn: () => getMonthlyReport(id),
     enabled: id > 0,
+    staleTime: 60 * 1000,
   });
 }
 
@@ -107,6 +109,7 @@ export function useWeeklyReportList(params: SearchReportVO) {
   return useQuery({
     queryKey: reportKeys.weeklyList(params),
     queryFn: () => getWeeklyReportList(params),
+    staleTime: 30 * 1000,
   });
 }
 
@@ -115,6 +118,7 @@ export function useWeeklyReport(id: number) {
     queryKey: reportKeys.weeklyDetail(id),
     queryFn: () => getWeeklyReport(id),
     enabled: id > 0,
+    staleTime: 60 * 1000,
   });
 }
 
@@ -161,6 +165,7 @@ export function useWorkLogList(params: SearchReportVO) {
   return useQuery({
     queryKey: reportKeys.workLogList(params),
     queryFn: () => getWorkLogList(params),
+    staleTime: 30 * 1000,
   });
 }
 
@@ -169,6 +174,7 @@ export function useWorkLog(id: number) {
     queryKey: reportKeys.workLogDetail(id),
     queryFn: () => getWorkLog(id),
     enabled: id > 0,
+    staleTime: 60 * 1000,
   });
 }
 

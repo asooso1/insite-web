@@ -2,6 +2,7 @@
 
 import { use, useState } from "react";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 import { Eye, Edit, AlertCircle, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { PageHeader } from "@/components/common/page-header";
@@ -46,7 +47,7 @@ export default function FieldWorkOrderDetailPage({
       });
       setCommentContent("");
     } catch (error) {
-      console.error("Failed to add comment:", error);
+      toast.error("댓글 등록에 실패했습니다.");
     }
   };
 

@@ -32,5 +32,6 @@ export function useFieldAttendanceList(
     queryKey: fieldAttendanceKeys.list(params),
     queryFn: () => getFieldAttendanceList(params),
     enabled: !!params.startDate && !!params.endDate,
+    staleTime: 30 * 1000,
   });
 }

@@ -3,6 +3,15 @@ import type { NextRequest } from "next/server";
 import { jwtVerify } from "jose";
 
 /**
+ * 안전한 내부 경로인지 검증 (Open Redirect 방지)
+ */
+function isValidRedirectPath(path: string): boolean {
+  if (!path.startsWith("/")) return false;
+  if (/^\/\//i.test(path)) return false;
+  return true;
+}
+
+/**
  * 레거시 csp-web URL → insite-web 경로 리다이렉트 매핑
  */
 const LEGACY_REDIRECTS: Record<string, string> = {
@@ -200,7 +209,7 @@ export async function proxy(request: NextRequest): Promise<NextResponse> {
   // 토큰이 없으면 로그인 페이지로 리다이렉트
   if (!token) {
     const loginUrl = new URL("/login", request.url);
-    loginUrl.searchParams.set("redirect", pathname);
+    loginUrl.searchParams.set("redirect", isValidRedirectPath(pathname) ? pathname : "/dashboard");
     return NextResponse.redirect(loginUrl);
   }
 
@@ -208,7 +217,7 @@ export async function proxy(request: NextRequest): Promise<NextResponse> {
   // 실제 API 데이터 보안은 csp-was JWT Bearer 검증이 담당
   if (isTokenExpired(token)) {
     const loginUrl = new URL("/login", request.url);
-    loginUrl.searchParams.set("redirect", pathname);
+    loginUrl.searchParams.set("redirect", isValidRedirectPath(pathname) ? pathname : "/dashboard");
     return NextResponse.redirect(loginUrl);
   }
 

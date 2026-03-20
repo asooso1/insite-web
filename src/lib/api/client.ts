@@ -209,7 +209,7 @@ export async function apiPostForm<T>(
 ): Promise<T> {
   const url = endpoint.startsWith("http")
     ? endpoint
-    : `${API_BASE_URL}${endpoint}`;
+    : `${API_BASE_URL}${injectBuildingId(endpoint)}`;
 
   const headers = new Headers(options?.headers);
   // FormData는 Content-Type을 자동으로 설정 (boundary 포함)
@@ -250,7 +250,7 @@ export async function apiPutForm<T>(
 ): Promise<T> {
   const url = endpoint.startsWith("http")
     ? endpoint
-    : `${API_BASE_URL}${endpoint}`;
+    : `${API_BASE_URL}${injectBuildingId(endpoint)}`;
 
   const headers = new Headers(options?.headers);
 
@@ -289,7 +289,7 @@ export async function apiGetBlob(
 ): Promise<Blob> {
   const url = endpoint.startsWith("http")
     ? endpoint
-    : `${API_BASE_URL}${endpoint}`;
+    : `${API_BASE_URL}${injectBuildingId(endpoint)}`;
 
   const headers = new Headers(options?.headers);
 

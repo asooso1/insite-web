@@ -40,6 +40,7 @@ export function useWidgetList(params: WidgetVO) {
   return useQuery({
     queryKey: dashboardKeys.widgetList(params),
     queryFn: () => dashboardApi.widgetList(params),
+    staleTime: 30 * 1000,
   });
 }
 
@@ -50,6 +51,7 @@ export function useWorkOrderStatus(params: SearchWidgetVO) {
   return useQuery({
     queryKey: dashboardKeys.workOrderStatus(params),
     queryFn: () => dashboardApi.workOrderStatus(params),
+    staleTime: 30 * 1000,
   });
 }
 
@@ -60,6 +62,7 @@ export function useNoticeList(noticeType: string, params: SearchWidgetVO) {
   return useQuery({
     queryKey: dashboardKeys.noticeList(noticeType, params),
     queryFn: () => dashboardApi.noticeList(noticeType, params),
+    staleTime: 30 * 1000,
   });
 }
 
@@ -70,6 +73,7 @@ export function useWorkStatusDetail(state: string, params: SearchWidgetVO) {
   return useQuery({
     queryKey: dashboardKeys.workStatusDetail(state, params),
     queryFn: () => dashboardApi.workStatusDetail(state, params),
+    staleTime: 30 * 1000,
   });
 }
 
@@ -80,6 +84,7 @@ export function useMonthlySchedule(params: SearchWidgetVO) {
   return useQuery({
     queryKey: dashboardKeys.monthlySchedule(params),
     queryFn: () => dashboardApi.monthlySchedule(params),
+    staleTime: 30 * 1000,
   });
 }
 
@@ -90,5 +95,6 @@ export function useWeeklySchedule(params: SearchWidgetVO) {
   return useQuery({
     queryKey: dashboardKeys.weeklySchedule(params),
     queryFn: () => dashboardApi.weeklySchedule(params),
+    staleTime: 30 * 1000,
   });
 }

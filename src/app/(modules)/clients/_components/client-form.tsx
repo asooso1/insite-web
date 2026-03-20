@@ -20,6 +20,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
+import { toast } from "sonner";
 import { useAddClient, useEditClient } from "@/lib/hooks/use-clients";
 import { checkBusinessNo } from "@/lib/api/company";
 import {
@@ -122,7 +123,7 @@ export function ClientForm({ mode, initialData, clientId }: ClientFormProps) {
   const handleCheckBusinessNo = useCallback(async () => {
     const currentBusinessNo = form.getValues("businessNo");
     if (!currentBusinessNo.trim()) {
-      alert("사업자번호를 입력해주세요.");
+      toast.error("사업자번호를 입력해주세요.");
       return;
     }
 
@@ -131,12 +132,12 @@ export function ClientForm({ mode, initialData, clientId }: ClientFormProps) {
       const isDuplicate = await checkBusinessNo(currentBusinessNo);
       setBusinessNoAvailable(!isDuplicate);
       if (isDuplicate) {
-        alert("이미 등록된 사업자번호입니다.");
+        toast.error("이미 등록된 사업자번호입니다.");
       } else {
-        alert("사용 가능한 사업자번호입니다.");
+        toast.success("사용 가능한 사업자번호입니다.");
       }
     } catch {
-      alert("중복 확인에 실패했습니다.");
+      toast.error("중복 확인에 실패했습니다.");
     } finally {
       setCheckingBusinessNo(false);
     }
@@ -144,7 +145,7 @@ export function ClientForm({ mode, initialData, clientId }: ClientFormProps) {
 
   const onSubmit = (data: ClientFormData) => {
     if (mode === "create" && businessNoAvailable !== true) {
-      alert("사업자번호 중복 확인을 해주세요.");
+      toast.error("사업자번호 중복 확인을 해주세요.");
       return;
     }
 

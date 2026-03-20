@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useForm, useFieldArray } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { toast } from "sonner";
 import {
   ArrowLeft,
   Save,
@@ -38,6 +39,7 @@ import {
   type SopVO,
 } from "@/lib/types/sop";
 import { useAuthStore } from "@/lib/stores/auth-store";
+import { handleApiError } from "@/lib/api/error-handler";
 
 // ============================================================================
 // 폼 스키마
@@ -154,7 +156,7 @@ export function SopForm({
         router.push(`/work-orders/sop/${sopId}`);
       }
     } catch (error) {
-      console.error("폼 제출 오류:", error);
+      handleApiError(error as Error);
     }
   };
 

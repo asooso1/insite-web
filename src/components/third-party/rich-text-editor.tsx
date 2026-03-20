@@ -1,6 +1,6 @@
 "use client";
 
-import { type ReactNode, useCallback } from "react";
+import { type ReactNode, useCallback, useState } from "react";
 import { useEditor, EditorContent, type Editor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Link from "@tiptap/extension-link";
@@ -34,6 +34,7 @@ import {
   Heading3,
   RemoveFormatting,
 } from "lucide-react";
+import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Toggle } from "@/components/ui/toggle";
@@ -45,6 +46,13 @@ import {
 } from "@/components/ui/popover";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from "@/components/ui/dialog";
 
 // ============================================================================
 // Types
@@ -123,39 +131,63 @@ interface ToolbarProps {
 function Toolbar({ editor }: ToolbarProps): ReactNode {
   if (!editor) return null;
 
-  const addLink = useCallback(() => {
+  const [linkDialogOpen, setLinkDialogOpen] = useState(false);
+  const [linkUrl, setLinkUrl] = useState("");
+  const [imageDialogOpen, setImageDialogOpen] = useState(false);
+  const [imageUrl, setImageUrl] = useState("");
+
+  const handleOpenLinkDialog = useCallback(() => {
     const previousUrl = editor.getAttributes("link").href;
-    const url = window.prompt("URL을 입력하세요", previousUrl);
+    setLinkUrl(previousUrl || "");
+    setLinkDialogOpen(true);
+  }, [editor]);
 
-    if (url === null) return;
+  const handleConfirmLink = useCallback(() => {
+    const trimmedUrl = linkUrl.trim();
 
-    if (url === "") {
+    if (trimmedUrl === "") {
       editor.chain().focus().extendMarkRange("link").unsetLink().run();
+      setLinkDialogOpen(false);
+      setLinkUrl("");
       return;
     }
 
     // http/https 프로토콜만 허용 (javascript: XSS 방지)
-    if (!isValidUrl(url)) {
-      window.alert("https:// 또는 http:// 로 시작하는 URL만 허용됩니다.");
+    if (!isValidUrl(trimmedUrl)) {
+      toast.error("https:// 또는 http:// 로 시작하는 URL만 허용됩니다.");
       return;
     }
 
-    editor.chain().focus().extendMarkRange("link").setLink({ href: url }).run();
-  }, [editor]);
+    editor.chain().focus().extendMarkRange("link").setLink({ href: trimmedUrl }).run();
+    setLinkDialogOpen(false);
+    setLinkUrl("");
+    toast.success("링크가 추가되었습니다.");
+  }, [editor, linkUrl]);
 
-  const addImage = useCallback(() => {
-    const url = window.prompt("이미지 URL을 입력하세요");
+  const handleOpenImageDialog = useCallback(() => {
+    setImageUrl("");
+    setImageDialogOpen(true);
+  }, []);
 
-    if (!url) return;
+  const handleConfirmImage = useCallback(() => {
+    const trimmedUrl = imageUrl.trim();
+
+    if (!trimmedUrl) {
+      toast.error("이미지 URL을 입력해주세요.");
+      return;
+    }
 
     // http/https 프로토콜만 허용 (javascript: XSS 방지)
-    if (!isValidUrl(url)) {
-      window.alert("https:// 또는 http:// 로 시작하는 URL만 허용됩니다.");
+    if (!isValidUrl(trimmedUrl)) {
+      toast.error("https:// 또는 http:// 로 시작하는 URL만 허용됩니다.");
       return;
     }
 
-    editor.chain().focus().setImage({ src: url }).run();
-  }, [editor]);
+    editor.chain().focus().setImage({ src: trimmedUrl }).run();
+    setImageDialogOpen(false);
+    setImageUrl("");
+    toast.success("이미지가 추가되었습니다.");
+  }, [editor, imageUrl]);
 
   return (
     <div className="flex flex-wrap items-center gap-0.5 border-b p-1">
@@ -307,13 +339,13 @@ function Toolbar({ editor }: ToolbarProps): ReactNode {
 
       {/* 링크 / 이미지 */}
       <ToolbarButton
-        onClick={addLink}
+        onClick={handleOpenLinkDialog}
         isActive={editor.isActive("link")}
         title="링크"
       >
         <LinkIcon className="h-4 w-4" />
       </ToolbarButton>
-      <ToolbarButton onClick={addImage} title="이미지">
+      <ToolbarButton onClick={handleOpenImageDialog} title="이미지">
         <ImageIcon className="h-4 w-4" />
       </ToolbarButton>
 
@@ -326,6 +358,82 @@ function Toolbar({ editor }: ToolbarProps): ReactNode {
       >
         <RemoveFormatting className="h-4 w-4" />
       </ToolbarButton>
+
+      {/* 링크 추가 Dialog */}
+      <Dialog open={linkDialogOpen} onOpenChange={setLinkDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>링크 추가</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="link-url">URL</Label>
+              <Input
+                id="link-url"
+                placeholder="https://example.com"
+                value={linkUrl}
+                onChange={(e) => setLinkUrl(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    handleConfirmLink();
+                  }
+                }}
+                autoFocus
+              />
+            </div>
+          </div>
+          <DialogFooter>
+            <Button
+              variant="outline"
+              onClick={() => {
+                setLinkDialogOpen(false);
+                setLinkUrl("");
+              }}
+            >
+              취소
+            </Button>
+            <Button onClick={handleConfirmLink}>추가</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* 이미지 추가 Dialog */}
+      <Dialog open={imageDialogOpen} onOpenChange={setImageDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>이미지 추가</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="image-url">이미지 URL</Label>
+              <Input
+                id="image-url"
+                placeholder="https://example.com/image.jpg"
+                value={imageUrl}
+                onChange={(e) => setImageUrl(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    handleConfirmImage();
+                  }
+                }}
+                autoFocus
+              />
+            </div>
+          </div>
+          <DialogFooter>
+            <Button
+              variant="outline"
+              onClick={() => {
+                setImageDialogOpen(false);
+                setImageUrl("");
+              }}
+            >
+              취소
+            </Button>
+            <Button onClick={handleConfirmImage}>추가</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

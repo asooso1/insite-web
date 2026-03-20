@@ -39,6 +39,7 @@ export function useSopList(params: SearchSopVO) {
   return useQuery({
     queryKey: sopKeys.list(params),
     queryFn: () => getSopList(params),
+    staleTime: 30 * 1000,
   });
 }
 
@@ -50,6 +51,7 @@ export function useSopView(id: number) {
     queryKey: sopKeys.detail(id),
     queryFn: () => getSopView(id),
     enabled: id > 0,
+    staleTime: 60 * 1000,
   });
 }
 

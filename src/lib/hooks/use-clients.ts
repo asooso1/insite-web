@@ -47,6 +47,7 @@ export function useClientList(
   return useQuery({
     queryKey: clientKeys.list(params),
     queryFn: () => getClientList(params),
+    staleTime: 30 * 1000,
   });
 }
 
@@ -58,6 +59,7 @@ export function useClientView(id: number) {
     queryKey: clientKeys.detail(id),
     queryFn: () => getClientView(id),
     enabled: id > 0,
+    staleTime: 60 * 1000,
   });
 }
 
