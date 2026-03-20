@@ -88,7 +88,7 @@ export function useRoleList() {
 export function useRegisterRoleList() {
   return useQuery({
     queryKey: userKeys.registerRoles(),
-    queryFn: () => getRegisterRoleList(),
+    queryFn: async () => (await getRegisterRoleList()) ?? [],
   });
 }
 

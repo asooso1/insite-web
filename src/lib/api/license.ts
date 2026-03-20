@@ -69,7 +69,10 @@ export async function getLicenseUserList(
  * 자격증 분류 목록 조회
  */
 export async function getLicenseCategoryList(): Promise<LicenseCategoryDTO[]> {
-  return apiClient.get<LicenseCategoryDTO[]>("/open/license/licenseCategoryList");
+  const res = await apiClient.get<{ licenseCategoryList: LicenseCategoryDTO[] }>(
+    "/open/license/licenseCategory"
+  );
+  return res?.licenseCategoryList ?? [];
 }
 
 /**
