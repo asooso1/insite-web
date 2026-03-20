@@ -25,6 +25,7 @@ import {
   useDeleteWorkLog,
 } from "@/lib/hooks/use-reports";
 import {
+  ReportState,
   ReportStateLabel,
   ReportStateStyle,
   type MonthlyReportDTO,
@@ -57,7 +58,7 @@ function getInitialFilters() {
   oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1);
   const fmt = (d: Date) => d.toISOString().slice(0, 10);
   return {
-    state: "ALL" as const,
+    state: "ALL" as ReportState | "ALL",
     dateFrom: fmt(oneMonthAgo),
     dateTo: fmt(today),
     dateType: "lastModifiedDate",
@@ -396,7 +397,7 @@ export default function ReportListPage() {
   const searchParams: SearchReportVO = useMemo(() => ({
     page,
     size,
-    state: filters.state !== "ALL" ? (filters.state as any) : undefined,
+    state: filters.state !== "ALL" ? filters.state : undefined,
     dateFrom: filters.dateFrom || undefined,
     dateTo: filters.dateTo || undefined,
     dateType: filters.dateType || undefined,

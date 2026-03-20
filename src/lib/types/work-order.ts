@@ -268,7 +268,7 @@ export interface WorkOrderListDTO {
   buildingUserGroupId: number;
   buildingUserGroupName: string;
 
-  state: string;
+  state: WorkOrderState;
   stateName: string;
   stateStyle: string;
   type: string;

@@ -163,14 +163,14 @@ export default function FieldProjectsPage() {
   const { user } = useAuthStore();
   const [page, setPage] = useState(0);
   const [size, setSize] = useState(10);
-  const [status, setStatus] = useState<string>("all");
+  const [status, setStatus] = useState<FieldProjectStatus | "all">("all");
   const [keyword, setKeyword] = useState("");
 
   const buildingId = Number(user?.currentBuildingId ?? 0);
 
   const { data, isLoading, isError } = useFieldProjectList({
     buildingId: buildingId > 0 ? buildingId : undefined,
-    status: (status !== "all" ? status as any : undefined),
+    status: status !== "all" ? status : undefined,
     keyword: keyword || undefined,
     page,
     size,
@@ -224,7 +224,7 @@ export default function FieldProjectsPage() {
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
           <div>
             <label className="text-sm font-medium text-foreground">상태</label>
-            <Select value={status} onValueChange={setStatus}>
+            <Select value={status} onValueChange={(v) => setStatus(v as FieldProjectStatus | "all")}>
               <SelectTrigger className="mt-1">
                 <SelectValue placeholder="전체" />
               </SelectTrigger>

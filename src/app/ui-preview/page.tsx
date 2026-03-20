@@ -266,7 +266,7 @@ export default async function UIPreviewPage(): Promise<ReactNode> {
                       <td className="px-4 py-2.5 text-muted-foreground">{wo.id}</td>
                       <td className="px-4 py-2.5 font-medium max-w-[200px] truncate">{wo.name}</td>
                       <td className="px-4 py-2.5">
-                        <StatusBadge status={wo.stateStyle as any} />
+                        <StatusBadge status={wo.state} />
                       </td>
                       <td className="px-4 py-2.5 text-muted-foreground">{wo.buildingName}</td>
                       <td className="px-4 py-2.5 text-muted-foreground">{wo.writeUserName}</td>

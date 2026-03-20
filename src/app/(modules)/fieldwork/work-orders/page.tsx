@@ -198,8 +198,8 @@ export default function FieldWorkOrdersPage() {
   const { user } = useAuthStore();
   const [page, setPage] = useState(0);
   const [size, setSize] = useState(10);
-  const [status, setStatus] = useState<string>("all");
-  const [priority, setPriority] = useState<string>("all");
+  const [status, setStatus] = useState<FieldWorkOrderStatus | "all">("all");
+  const [priority, setPriority] = useState<FieldWorkOrderPriority | "all">("all");
   const [keyword, setKeyword] = useState("");
   const { startDate, endDate } = getDefaultDateRange();
 
@@ -209,8 +209,8 @@ export default function FieldWorkOrdersPage() {
     projectId: buildingId > 0 ? buildingId : undefined,
     startDate,
     endDate,
-    status: (status !== "all" ? status as any : undefined),
-    priority: (priority !== "all" ? priority as any : undefined),
+    status: status !== "all" ? status : undefined,
+    priority: priority !== "all" ? priority : undefined,
     keyword: keyword || undefined,
     page,
     size,
@@ -247,7 +247,7 @@ export default function FieldWorkOrdersPage() {
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
           <div>
             <label className="text-sm font-medium text-foreground">상태</label>
-            <Select value={status} onValueChange={setStatus}>
+            <Select value={status} onValueChange={(v) => setStatus(v as FieldWorkOrderStatus | "all")}>
               <SelectTrigger className="mt-1">
                 <SelectValue placeholder="전체" />
               </SelectTrigger>
@@ -262,7 +262,7 @@ export default function FieldWorkOrdersPage() {
           </div>
           <div>
             <label className="text-sm font-medium text-foreground">우선순위</label>
-            <Select value={priority} onValueChange={setPriority}>
+            <Select value={priority} onValueChange={(v) => setPriority(v as FieldWorkOrderPriority | "all")}>
               <SelectTrigger className="mt-1">
                 <SelectValue placeholder="전체" />
               </SelectTrigger>

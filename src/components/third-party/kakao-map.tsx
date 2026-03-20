@@ -274,8 +274,8 @@ export function KakaoMapComponent({
         map.setCenter(new kakao.maps.LatLng(latitude, longitude));
         map.setLevel(3);
       },
-      (error) => {
-        console.error("현재 위치를 가져올 수 없습니다:", error);
+      () => {
+        // 위치 조회 실패 시 현재 위치 센터링 생략 (지도는 정상 동작)
       }
     );
   }, [map]);
