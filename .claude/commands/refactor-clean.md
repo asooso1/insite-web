@@ -1,3 +1,7 @@
+---
+description: 미사용 코드, 불필요한 의존성, 중복 함수 안전하게 제거
+allowed-tools: ["Bash", "Read", "Edit", "Grep"]
+---
 # /refactor-clean - 불필요한 코드 제거
 
 미사용 코드, 불필요한 의존성, 중복 함수를 안전하게 제거합니다.

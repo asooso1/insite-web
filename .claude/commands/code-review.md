@@ -1,3 +1,7 @@
+---
+description: 미커밋 변경사항 보안 및 품질 종합 리뷰
+allowed-tools: ["Bash", "Read", "Grep"]
+---
 # /code-review - 코드 품질 검토
 
 미커밋 변경사항에 대한 보안 및 품질 종합 리뷰를 실행합니다.

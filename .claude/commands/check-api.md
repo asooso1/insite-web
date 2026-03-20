@@ -1,3 +1,7 @@
+---
+description: API 클라이언트 패턴 검증 (buildingId 주입, fetch 금지, any 타입)
+allowed-tools: ["Bash", "Grep"]
+---
 # /check-api - API 클라이언트 패턴 검증
 
 API 레이어 코드에서 아키텍처 규칙 위반을 검사합니다.

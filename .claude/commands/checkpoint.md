@@ -1,3 +1,7 @@
+---
+description: 개발 진행 상태 저장 및 비교
+allowed-tools: ["Bash", "Read"]
+---
 # /checkpoint - 작업 체크포인트
 
 개발 진행 상태를 저장하고 비교하는 워크플로우 상태 관리 도구입니다.

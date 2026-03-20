@@ -1,3 +1,7 @@
+---
+description: 컴포넌트 패턴 검증 (window.alert, console.log, StatusBadge, DataTable)
+allowed-tools: ["Bash", "Grep"]
+---
 # /check-components - 컴포넌트 패턴 검증
 
 컴포넌트 코드에서 디자인 시스템 및 패턴 규칙 위반을 검사합니다.

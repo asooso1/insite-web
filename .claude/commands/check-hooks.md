@@ -1,3 +1,7 @@
+---
+description: React Query 훅 패턴 검증 (staleTime, queryKey factory, enabled 조건)
+allowed-tools: ["Bash", "Grep"]
+---
 # /check-hooks - React Query 훅 패턴 검증
 
 전체 훅 파일에서 React Query 표준 패턴 위반을 검사합니다.

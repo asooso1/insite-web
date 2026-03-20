@@ -1,3 +1,7 @@
+---
+description: 보안 패턴 검증 (localStorage 토큰, 하드코딩 시크릿, open redirect, XSS)
+allowed-tools: ["Bash", "Grep"]
+---
 # /check-security - 보안 패턴 검증
 
 보안 취약점 및 민감 데이터 노출 위험 코드를 검사합니다.

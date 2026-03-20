@@ -1,3 +1,7 @@
+---
+description: 구현 전 planner 에이전트로 단계별 실행 계획 수립
+allowed-tools: ["Bash", "Read", "Grep"]
+---
 # /plan - 구현 계획 수립
 
 구현 전 planner 에이전트를 호출하여 단계별 실행 계획을 수립합니다.

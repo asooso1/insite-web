@@ -1,3 +1,7 @@
+---
+description: 커밋 전 종합 검증 (빌드 + 린트 + API/훅/컴포넌트/보안 패턴 검사)
+allowed-tools: ["Bash", "Grep"]
+---
 # /pre-commit - 커밋 전 종합 검증
 
 커밋 전 반드시 실행하는 종합 품질 검증 커맨드입니다.

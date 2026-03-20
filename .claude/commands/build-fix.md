@@ -1,3 +1,7 @@
+---
+description: TypeScript 빌드 에러를 최소 변경으로 해결
+allowed-tools: ["Bash", "Read", "Edit", "Grep"]
+---
 # /build-fix - 빌드 에러 해결
 
 TypeScript 컴파일 에러와 빌드 실패를 최소 변경으로 체계적으로 해결합니다.

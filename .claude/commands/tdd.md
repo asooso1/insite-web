@@ -1,3 +1,7 @@
+---
+description: 테스트 먼저 작성하는 TDD 워크플로우 강제
+allowed-tools: ["Bash", "Read", "Edit", "Write", "Grep"]
+---
 # /tdd - 테스트 주도 개발
 
 구현 전 테스트를 먼저 작성하는 TDD 워크플로우를 강제합니다.
