@@ -225,18 +225,6 @@ export default function InvoiceListPage() {
         pageSize={size}
       />
 
-      {!isLoading && !data?.content?.length && (
-        <EmptyState
-          icon={FileText}
-          title="데이터가 없습니다."
-          description="청구서를 등록해보세요."
-          action={{
-            label: "등록",
-            onClick: () => router.push("/invoices/new"),
-          }}
-        />
-      )}
-
       {data && data.totalPages > 0 && (
         <div className="flex items-center justify-between border-t pt-4">
           <div className="text-sm text-muted-foreground">

@@ -310,19 +310,6 @@ export default function MaterialListPage() {
         pagination={false}
       />
 
-      {/* 데이터 없음 */}
-      {!isLoading && (data?.content ?? []).length === 0 && (
-        <EmptyState
-          icon={Package}
-          title="데이터가 없습니다."
-          description="자재를 등록해보세요."
-          action={{
-            label: "등록",
-            onClick: () => router.push("/materials/new"),
-          }}
-        />
-      )}
-
       {/* 서버 사이드 페이지네이션 */}
       {data && data.totalPages > 0 && (
         <div className="flex items-center justify-between border-t pt-4">

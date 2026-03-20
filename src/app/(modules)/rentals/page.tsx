@@ -217,18 +217,6 @@ export default function RentalListPage() {
         pageSize={size}
       />
 
-      {!isLoading && !data?.content?.length && (
-        <EmptyState
-          icon={Home}
-          title="데이터가 없습니다."
-          description="임차 정보를 등록해보세요."
-          action={{
-            label: "등록",
-            onClick: () => router.push("/rentals/new"),
-          }}
-        />
-      )}
-
       {data && data.totalPages > 0 && (
         <div className="flex items-center justify-between border-t pt-4">
           <div className="text-sm text-muted-foreground">

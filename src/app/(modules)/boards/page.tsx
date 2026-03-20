@@ -485,17 +485,6 @@ export default function BoardListPage() {
             loading={noticeLoading}
             pagination={false}
           />
-          {!noticeLoading && (noticeData?.content ?? []).length === 0 && (
-            <EmptyState
-              icon={Megaphone}
-              title="데이터가 없습니다."
-              description="공지사항을 등록해보세요."
-              action={{
-                label: "등록",
-                onClick: () => router.push("/boards/notices/new"),
-              }}
-            />
-          )}
         </>
       ) : (
         <>
@@ -505,17 +494,6 @@ export default function BoardListPage() {
             loading={dataLoading}
             pagination={false}
           />
-          {!dataLoading && (refData?.content ?? []).length === 0 && (
-            <EmptyState
-              icon={FileText}
-              title="데이터가 없습니다."
-              description="자료를 등록해보세요."
-              action={{
-                label: "등록",
-                onClick: () => router.push("/boards/data/new"),
-              }}
-            />
-          )}
         </>
       )}
 

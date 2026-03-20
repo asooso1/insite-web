@@ -404,9 +404,9 @@ export default function ReportListPage() {
     searchKeyword: filters.searchKeyword || undefined,
   }), [page, size, filters]);
 
-  const { data: monthlyData, isLoading: monthlyLoading } = useMonthlyReportList(searchParams);
-  const { data: weeklyData, isLoading: weeklyLoading } = useWeeklyReportList(searchParams);
-  const { data: workLogData, isLoading: workLogLoading } = useWorkLogList(searchParams);
+  const { data: monthlyData, isLoading: monthlyLoading, isError: monthlyError } = useMonthlyReportList(searchParams);
+  const { data: weeklyData, isLoading: weeklyLoading, isError: weeklyError } = useWeeklyReportList(searchParams);
+  const { data: workLogData, isLoading: workLogLoading, isError: workLogError } = useWorkLogList(searchParams);
 
   const monthlyColumns = useMonthlyColumns();
   const weeklyColumns = useWeeklyColumns();
@@ -459,8 +459,27 @@ export default function ReportListPage() {
       ? workLogLoading
       : false;
 
+  const isError =
+    activeTab === "monthly"
+      ? monthlyError
+      : activeTab === "weekly"
+      ? weeklyError
+      : activeTab === "workLog"
+      ? workLogError
+      : false;
+
   const totalPages = currentData?.totalPages ?? 0;
   const totalElements = currentData?.totalElements ?? 0;
+
+  if (isError) {
+    return (
+      <EmptyState
+        icon={AlertCircle}
+        title="데이터를 불러올 수 없습니다"
+        description="잠시 후 다시 시도해주세요."
+      />
+    );
+  }
 
   return (
     <div className="flex flex-col gap-6 p-6">
@@ -509,33 +528,18 @@ export default function ReportListPage() {
       {activeTab === "monthly" && (
         <>
           <DataTable columns={monthlyColumns} data={monthlyData?.content ?? []} loading={monthlyLoading} pagination={false} />
-          {!monthlyLoading && (monthlyData?.content ?? []).length === 0 && (
-            <EmptyState icon={FileText} title="월간보고서가 없습니다" description="새 보고서를 등록해보세요."
-              action={{ label: "새 월간보고서", onClick: () => router.push("/reports/monthly/new") }}
-            />
-          )}
         </>
       )}
 
       {activeTab === "weekly" && (
         <>
           <DataTable columns={weeklyColumns} data={weeklyData?.content ?? []} loading={weeklyLoading} pagination={false} />
-          {!weeklyLoading && (weeklyData?.content ?? []).length === 0 && (
-            <EmptyState icon={FileText} title="주간보고서가 없습니다" description="새 보고서를 등록해보세요."
-              action={{ label: "새 주간보고서", onClick: () => router.push("/reports/weekly/new") }}
-            />
-          )}
         </>
       )}
 
       {activeTab === "workLog" && (
         <>
           <DataTable columns={workLogColumns} data={workLogData?.content ?? []} loading={workLogLoading} pagination={false} />
-          {!workLogLoading && (workLogData?.content ?? []).length === 0 && (
-            <EmptyState icon={FileText} title="업무일지가 없습니다" description="새 업무일지를 등록해보세요."
-              action={{ label: "새 업무일지", onClick: () => router.push("/reports/work-logs/new") }}
-            />
-          )}
         </>
       )}
 

@@ -410,14 +410,6 @@ export default function PatrolListPage() {
             loading={planLoading}
             pagination={false}
           />
-          {!planLoading && (planData?.content ?? []).length === 0 && (
-            <EmptyState
-              icon={Shield}
-              title="데이터가 없습니다."
-              description="순찰 계획을 등록해보세요."
-              action={{ label: "등록", onClick: () => router.push("/patrols/new") }}
-            />
-          )}
         </>
       ) : (
         <>
@@ -427,14 +419,6 @@ export default function PatrolListPage() {
             loading={teamLoading}
             pagination={false}
           />
-          {!teamLoading && (teamData?.content ?? []).length === 0 && (
-            <EmptyState
-              icon={Shield}
-              title="데이터가 없습니다."
-              description="순찰 팀을 등록해보세요."
-              action={{ label: "등록", onClick: () => router.push("/patrols/teams/new") }}
-            />
-          )}
         </>
       )}
 

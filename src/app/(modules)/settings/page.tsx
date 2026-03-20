@@ -410,8 +410,18 @@ function MasterSection() {
     [page, size, keyword]
   );
 
-  const { data, isLoading } = useFacilityMasterList(searchParams);
+  const { data, isLoading, isError } = useFacilityMasterList(searchParams);
   const columns = useMasterColumns();
+
+  if (isError) {
+    return (
+      <EmptyState
+        icon={AlertCircle}
+        title="데이터를 불러올 수 없습니다"
+        description="잠시 후 다시 시도해주세요."
+      />
+    );
+  }
 
   return (
     <div className="space-y-4">
@@ -438,18 +448,6 @@ function MasterSection() {
         loading={isLoading}
         pagination={false}
       />
-
-      {!isLoading && (data?.content ?? []).length === 0 && (
-        <EmptyState
-          icon={Wrench}
-          title="표준 설비가 없습니다"
-          description="새 표준 설비를 등록해보세요."
-          action={{
-            label: "새 표준 설비 등록",
-            onClick: () => router.push("/settings/facility-masters/new"),
-          }}
-        />
-      )}
 
       {data && data.totalPages > 0 && (
         <div className="flex items-center justify-between border-t pt-4">

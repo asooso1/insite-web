@@ -349,12 +349,6 @@ export default function NfcRoundListPage() {
 
       <div className="px-6">
         {renderTable()}
-        {!isLoading && ((isForms ? formData?.content : issueData?.content) ?? []).length === 0 && (
-          <EmptyState
-            title="데이터가 없습니다."
-            description={isForms ? "NFC 라운드 양식을 등록해보세요." : "등록된 이슈가 없습니다."}
-          />
-        )}
       </div>
 
       {totalPages > 0 && (

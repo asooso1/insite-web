@@ -260,16 +260,6 @@ export default function TagListPage() {
           loading={isLoading}
           pagination={false}
         />
-        {!isLoading && (data?.content ?? []).length === 0 && (
-          <EmptyState
-            title="데이터가 없습니다."
-            description="태그를 등록해보세요."
-            action={{
-              label: "등록",
-              onClick: () => router.push("/tags/new"),
-            }}
-          />
-        )}
       </div>
 
       {totalPages > 0 && (
