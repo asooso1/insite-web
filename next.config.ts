@@ -53,6 +53,11 @@ const nextConfig: NextConfig = {
         source: "/widget/:path*",
         destination: `${backendUrl}/widget/:path*`,
       },
+      {
+        // /open/* → csp-was 비인증 공개 API 프록시
+        source: "/open/:path*",
+        destination: `${backendUrl}/open/:path*`,
+      },
     ];
   },
 
