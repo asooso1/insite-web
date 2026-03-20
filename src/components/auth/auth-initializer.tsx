@@ -37,7 +37,8 @@ export function AuthInitializer(): null {
         // 성공/실패 모두 초기화 완료 처리
         setInitialized();
       });
-  }, []); // 빈 배열 필수 - Zustand 함수 참조 변경 방지
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // 빈 배열 필수 - Zustand 함수 참조 변경 방지 (마운트 시 1회만 실행)
 
   return null;
 }

@@ -17,12 +17,13 @@ import {
 import { StatusBadge } from "@/components/data-display/status-badge";
 import type { ColumnDef } from "@tanstack/react-table";
 import { useMemo } from "react";
+import type { FieldProjectAccountDTO } from "@/lib/types/field-project";
 
 // ============================================================================
 // 참여자 테이블 컬럼
 // ============================================================================
 
-function useAccountColumns(): ColumnDef<any>[] {
+function useAccountColumns(): ColumnDef<FieldProjectAccountDTO>[] {
   return useMemo(
     () => [
       {
