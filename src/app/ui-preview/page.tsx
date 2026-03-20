@@ -68,7 +68,7 @@ function Section({
     <section data-section={id} className="space-y-4">
       <div className="border-b pb-2">
         <h2 className="text-lg font-semibold text-foreground">{title}</h2>
-        <p className="text-xs text-muted-foreground font-mono">data-section="{id}"</p>
+        <p className="text-xs text-muted-foreground font-mono">data-section=&quot;{id}&quot;</p>
       </div>
       {children}
     </section>
@@ -284,7 +284,7 @@ export default async function UIPreviewPage(): Promise<ReactNode> {
       <Section id="filter-bar" title="SearchFilterBar — 필터 토글">
         <Card className="shadow-[var(--shadow-card)] p-4">
           <p className="text-xs text-muted-foreground mb-3">
-            showFilterToggle=true 일 때 "필터" 버튼으로 접기/펼치기
+            showFilterToggle=true 일 때 &apos;필터&apos; 버튼으로 접기/펼치기
           </p>
           <div className="space-y-2">
             <div className="flex gap-2 items-center">

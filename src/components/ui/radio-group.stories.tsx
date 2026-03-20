@@ -70,7 +70,6 @@ export const Disabled: Story = {
 
 export const InForm: Story = {
   render: () => {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
     const { control, watch } = useForm({
       defaultValues: {
         priority: "medium",

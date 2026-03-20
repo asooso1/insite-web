@@ -559,6 +559,24 @@ export function StaticMap({
 }: StaticMapProps): ReactNode {
   const apiKey = process.env.NEXT_PUBLIC_KAKAO_MAP_API_KEY;
 
+  // 정적 지도 API URL 생성 (훅은 early return 전에 호출해야 함)
+  const staticMapUrl = useMemo(() => {
+    if (!apiKey) return "";
+    const params = new URLSearchParams({
+      appkey: apiKey,
+      lat: center.lat.toString(),
+      lng: center.lng.toString(),
+      level: level.toString(),
+      width: typeof width === "number" ? width.toString() : "400",
+      height: typeof height === "number" ? height.toString() : "200",
+      ...(showMarker && {
+        markers: `type:d|pos:${center.lng},${center.lat}`,
+      }),
+    });
+
+    return `https://dapi.kakao.com/v2/maps/api/staticMap?${params.toString()}`;
+  }, [apiKey, center, level, width, height, showMarker]);
+
   if (!apiKey) {
     return (
       <div
@@ -574,23 +592,6 @@ export function StaticMap({
       </div>
     );
   }
-
-  // 정적 지도 API URL 생성
-  const staticMapUrl = useMemo(() => {
-    const params = new URLSearchParams({
-      appkey: apiKey,
-      lat: center.lat.toString(),
-      lng: center.lng.toString(),
-      level: level.toString(),
-      width: typeof width === "number" ? width.toString() : "400",
-      height: typeof height === "number" ? height.toString() : "200",
-      ...(showMarker && {
-        markers: `type:d|pos:${center.lng},${center.lat}`,
-      }),
-    });
-
-    return `https://dapi.kakao.com/v2/maps/api/staticMap?${params.toString()}`;
-  }, [apiKey, center, level, width, height, showMarker]);
 
   return (
     <div

@@ -80,10 +80,8 @@ export const Variants: Story = {
 
 export const Animated: Story = {
   render: () => {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
     const [progress, setProgress] = useState(0)
 
-    // eslint-disable-next-line react-hooks/rules-of-hooks
     useEffect(() => {
       const timer = setInterval(() => {
         setProgress((prev) => {

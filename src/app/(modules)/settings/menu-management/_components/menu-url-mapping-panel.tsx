@@ -178,7 +178,7 @@ export function MenuUrlMappingPanel({
             id="url-format-hint"
             className="text-xs text-muted-foreground"
           >
-            "/"로 시작하는 경로를 입력하세요. (예: /work-orders, /facilities)
+            /로 시작하는 경로를 입력하세요. (예: /work-orders, /facilities)
           </p>
         </div>
 

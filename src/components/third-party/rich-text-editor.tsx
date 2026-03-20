@@ -129,20 +129,20 @@ interface ToolbarProps {
 }
 
 function Toolbar({ editor }: ToolbarProps): ReactNode {
-  if (!editor) return null;
-
   const [linkDialogOpen, setLinkDialogOpen] = useState(false);
   const [linkUrl, setLinkUrl] = useState("");
   const [imageDialogOpen, setImageDialogOpen] = useState(false);
   const [imageUrl, setImageUrl] = useState("");
 
   const handleOpenLinkDialog = useCallback(() => {
+    if (!editor) return;
     const previousUrl = editor.getAttributes("link").href;
     setLinkUrl(previousUrl || "");
     setLinkDialogOpen(true);
   }, [editor]);
 
   const handleConfirmLink = useCallback(() => {
+    if (!editor) return;
     const trimmedUrl = linkUrl.trim();
 
     if (trimmedUrl === "") {
@@ -170,6 +170,7 @@ function Toolbar({ editor }: ToolbarProps): ReactNode {
   }, []);
 
   const handleConfirmImage = useCallback(() => {
+    if (!editor) return;
     const trimmedUrl = imageUrl.trim();
 
     if (!trimmedUrl) {
@@ -188,6 +189,8 @@ function Toolbar({ editor }: ToolbarProps): ReactNode {
     setImageUrl("");
     toast.success("이미지가 추가되었습니다.");
   }, [editor, imageUrl]);
+
+  if (!editor) return null;
 
   return (
     <div className="flex flex-wrap items-center gap-0.5 border-b p-1">

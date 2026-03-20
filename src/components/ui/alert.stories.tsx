@@ -136,7 +136,6 @@ export const WithDescription: Story = {
 
 export const Dismissible: Story = {
   render: () => {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
     const [isVisible, setIsVisible] = useState(true)
 
     if (!isVisible) {
