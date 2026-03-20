@@ -107,18 +107,22 @@ class WidgetRegistryImpl implements IWidgetRegistry {
 
   register(definition: WidgetDefinition): void {
     if (this.widgets.has(definition.meta.id)) {
-      console.warn(
-        `[WidgetRegistry] 위젯 "${definition.meta.id}"가 이미 등록되어 있습니다. 덮어씁니다.`
-      );
+      if (process.env.NODE_ENV === "development") {
+        console.warn(
+          `[WidgetRegistry] 위젯 "${definition.meta.id}"가 이미 등록되어 있습니다. 덮어씁니다.`
+        );
+      }
     }
     this.widgets.set(definition.meta.id, definition);
   }
 
   unregister(id: string): void {
     if (!this.widgets.has(id)) {
-      console.warn(
-        `[WidgetRegistry] 위젯 "${id}"가 등록되어 있지 않습니다.`
-      );
+      if (process.env.NODE_ENV === "development") {
+        console.warn(
+          `[WidgetRegistry] 위젯 "${id}"가 등록되어 있지 않습니다.`
+        );
+      }
       return;
     }
     this.widgets.delete(id);
