@@ -1,11 +1,13 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { ArrowLeft, Save, Building2, MapPin, Calendar } from "lucide-react";
+import dynamic from "next/dynamic";
+import Script from "next/script";
+import { ArrowLeft, Save, Building2, MapPin, Calendar, Search } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -20,6 +22,40 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+
+import type { KakaoMapComponentProps, LatLng } from "@/components/third-party/kakao-map";
+
+// 카카오맵은 SSR 비활성화 필수
+const KakaoMapComponent = dynamic<KakaoMapComponentProps>(
+  () =>
+    import("@/components/third-party/kakao-map").then((m) => ({
+      default: m.KakaoMapComponent,
+    })),
+  { ssr: false }
+);
+
+// ============================================================================
+// 다음 우편번호 API 타입
+// ============================================================================
+
+interface DaumPostcodeData {
+  zonecode: string;       // 우편번호
+  address: string;        // 지번주소 (기본)
+  roadAddress: string;    // 도로명주소
+  jibunAddress: string;   // 지번주소 (명시적)
+  addressType: "R" | "J"; // R: 도로명, J: 지번
+}
+
+declare global {
+  interface Window {
+    daum?: {
+      Postcode: new (config: {
+        oncomplete: (data: DaumPostcodeData) => void;
+        onclose?: () => void;
+      }) => { open: () => void };
+    };
+  }
+}
 
 import { toast } from "sonner";
 import {
@@ -128,6 +164,43 @@ export function BuildingForm({ mode, initialData, buildingId }: BuildingFormProp
   const { data: useType2List } = useBuildingUseType2(selectedUseType1Id);
   const { data: baseAreaList } = useBaseAreaList(watchedCompanyId > 0 ? watchedCompanyId : undefined);
 
+  // 지도 중심 좌표 (위도/경도 폼 값 기반)
+  const watchedLat = form.watch("latitude");
+  const watchedLng = form.watch("longitude");
+  const mapCenter = useMemo<LatLng>(() => {
+    const lat = parseFloat(watchedLat);
+    const lng = parseFloat(watchedLng);
+    if (!isNaN(lat) && !isNaN(lng) && lat !== 0 && lng !== 0) {
+      return { lat, lng };
+    }
+    return { lat: 37.5665, lng: 126.978 }; // 기본: 서울시청
+  }, [watchedLat, watchedLng]);
+
+  // 지도 클릭 시 좌표 설정
+  const handleMapClick = useCallback(
+    (position: LatLng) => {
+      form.setValue("latitude", position.lat.toFixed(7));
+      form.setValue("longitude", position.lng.toFixed(7));
+    },
+    [form]
+  );
+
+  // 다음 우편번호 검색
+  const handleAddressSearch = useCallback(() => {
+    if (!window.daum?.Postcode) return;
+    new window.daum.Postcode({
+      oncomplete: (data) => {
+        const jibun = data.jibunAddress || data.address;
+        const road = data.roadAddress;
+        form.setValue("zipCode", data.zonecode, { shouldValidate: true });
+        form.setValue("address", jibun, { shouldValidate: true });
+        if (road) {
+          form.setValue("addressRoad", road);
+        }
+      },
+    }).open();
+  }, [form]);
+
   useEffect(() => {
     if (mode === "edit" && initialData) {
       form.reset({
@@ -212,6 +285,12 @@ export function BuildingForm({ mode, initialData, buildingId }: BuildingFormProp
   const isPending = addBuilding.isPending || editBuilding.isPending;
 
   return (
+    <>
+      {/* 다음 우편번호 API 스크립트 */}
+      <Script
+        src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"
+        strategy="lazyOnload"
+      />
     <div className="flex flex-col gap-6 p-6">
       {/* 헤더 */}
       <div className="flex items-center justify-between">
@@ -420,7 +499,7 @@ export function BuildingForm({ mode, initialData, buildingId }: BuildingFormProp
               </CardContent>
             </Card>
 
-            {/* 주소 */}
+            {/* 위치 */}
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
@@ -429,26 +508,42 @@ export function BuildingForm({ mode, initialData, buildingId }: BuildingFormProp
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                <div className="grid gap-4 sm:grid-cols-2">
-                  <div className="space-y-2">
-                    <Label htmlFor="zipCode">우편번호 *</Label>
+                {/* 우편번호 + 주소 검색 버튼 */}
+                <div className="space-y-2">
+                  <Label htmlFor="zipCode">우편번호 *</Label>
+                  <div className="flex gap-2">
                     <Input
                       id="zipCode"
                       placeholder="우편번호"
+                      readOnly
+                      className="bg-muted"
                       {...form.register("zipCode")}
                     />
-                    {form.formState.errors.zipCode && (
-                      <p className="text-sm text-destructive">
-                        {form.formState.errors.zipCode.message}
-                      </p>
-                    )}
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={handleAddressSearch}
+                      className="shrink-0"
+                    >
+                      <Search className="mr-2 h-4 w-4" />
+                      주소 검색
+                    </Button>
                   </div>
+                  {form.formState.errors.zipCode && (
+                    <p className="text-sm text-destructive">
+                      {form.formState.errors.zipCode.message}
+                    </p>
+                  )}
                 </div>
+
+                {/* 지번주소 (자동입력) */}
                 <div className="space-y-2">
                   <Label htmlFor="address">지번주소 *</Label>
                   <Input
                     id="address"
-                    placeholder="지번주소"
+                    placeholder="주소 검색 후 자동 입력됩니다"
+                    readOnly
+                    className="bg-muted"
                     {...form.register("address")}
                   />
                   {form.formState.errors.address && (
@@ -457,19 +552,25 @@ export function BuildingForm({ mode, initialData, buildingId }: BuildingFormProp
                     </p>
                   )}
                 </div>
+
+                {/* 도로명주소 (자동입력) */}
                 <div className="space-y-2">
                   <Label htmlFor="addressRoad">도로명주소</Label>
                   <Input
                     id="addressRoad"
-                    placeholder="도로명주소"
+                    placeholder="주소 검색 후 자동 입력됩니다"
+                    readOnly
+                    className="bg-muted"
                     {...form.register("addressRoad")}
                   />
                 </div>
+
+                {/* 상세주소 */}
                 <div className="space-y-2">
                   <Label htmlFor="addressDetail">상세주소 *</Label>
                   <Input
                     id="addressDetail"
-                    placeholder="상세주소"
+                    placeholder="동/호수 등 상세주소를 입력하세요"
                     {...form.register("addressDetail")}
                   />
                   {form.formState.errors.addressDetail && (
@@ -478,12 +579,39 @@ export function BuildingForm({ mode, initialData, buildingId }: BuildingFormProp
                     </p>
                   )}
                 </div>
+
+                {/* 지도 — 클릭으로 위도/경도 선택 */}
+                <div className="space-y-2">
+                  <Label>지도 위치 선택</Label>
+                  <p className="text-xs text-muted-foreground">
+                    지도를 클릭하면 위도/경도가 자동으로 설정됩니다.
+                  </p>
+                  <KakaoMapComponent
+                    center={mapCenter}
+                    height={280}
+                    onMapClick={handleMapClick}
+                    markers={
+                      watchedLat && watchedLng
+                        ? [
+                            {
+                              id: "building-location",
+                              position: mapCenter,
+                              title: form.watch("name") || "건물 위치",
+                            },
+                          ]
+                        : []
+                    }
+                    showCurrentLocation
+                  />
+                </div>
+
+                {/* 위도/경도 (지도 클릭 또는 직접 입력) */}
                 <div className="grid gap-4 sm:grid-cols-2">
                   <div className="space-y-2">
                     <Label htmlFor="latitude">위도 *</Label>
                     <Input
                       id="latitude"
-                      placeholder="37.5665"
+                      placeholder="37.5665000"
                       {...form.register("latitude")}
                     />
                     {form.formState.errors.latitude && (
@@ -496,7 +624,7 @@ export function BuildingForm({ mode, initialData, buildingId }: BuildingFormProp
                     <Label htmlFor="longitude">경도 *</Label>
                     <Input
                       id="longitude"
-                      placeholder="126.9780"
+                      placeholder="126.9780000"
                       {...form.register("longitude")}
                     />
                     {form.formState.errors.longitude && (
@@ -589,5 +717,6 @@ export function BuildingForm({ mode, initialData, buildingId }: BuildingFormProp
         </div>
       </form>
     </div>
+    </>
   );
 }
