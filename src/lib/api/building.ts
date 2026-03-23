@@ -4,6 +4,10 @@ import type {
   BuildingListResponse,
   BuildingSaveVO,
   SearchBuildingVO,
+  BuildingUseTypeDTO,
+  WideAreaOptionDTO,
+  BaseAreaOptionDTO,
+  CompanySelectDTO,
 } from "@/lib/types/building";
 
 // ============================================================================
@@ -98,6 +102,35 @@ function buildSaveFormData(data: BuildingSaveVO): FormData {
   fd.append("building.servicePatrol", String(data.servicePatrol ?? false));
   fd.append("building.excludeFromAnalysis", String(data.excludeFromAnalysis ?? false));
   return fd;
+}
+
+// ============================================================================
+// 선택 옵션 조회 (폼용)
+// ============================================================================
+
+export async function getCompanySelectList(): Promise<CompanySelectDTO[]> {
+  const res = await apiClient.get<{ data: CompanySelectDTO[] }>("/open/companyList");
+  return res.data ?? [];
+}
+
+export async function getBuildingUseType1(): Promise<BuildingUseTypeDTO[]> {
+  const res = await apiClient.get<{ data: BuildingUseTypeDTO[] }>("/open/building/useType1Id");
+  return res.data ?? [];
+}
+
+export async function getBuildingUseType2(useType1Id: number): Promise<BuildingUseTypeDTO[]> {
+  const res = await apiClient.get<{ data: BuildingUseTypeDTO[] }>(`/open/building/useType2Id/${useType1Id}`);
+  return res.data ?? [];
+}
+
+export async function getWideAreaList(): Promise<WideAreaOptionDTO[]> {
+  const res = await apiClient.get<{ data: WideAreaOptionDTO[] }>("/open/wideArea/wideAreaList");
+  return res.data ?? [];
+}
+
+export async function getBaseAreaList(companyId: number): Promise<BaseAreaOptionDTO[]> {
+  const res = await apiClient.get<{ data: BaseAreaOptionDTO[] }>(`/open/baseArea/baseAreaList/${companyId}?type=selection`);
+  return res.data ?? [];
 }
 
 // ============================================================================

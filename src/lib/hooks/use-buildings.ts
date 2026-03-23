@@ -8,10 +8,22 @@ import {
   editBuilding,
   deleteBuilding,
   downloadBuildingListExcel,
+  getCompanySelectList,
+  getBuildingUseType1,
+  getBuildingUseType2,
+  getWideAreaList,
+  getBaseAreaList,
   type BuildingInfoDTO,
   type CommonListDTO,
 } from "@/lib/api/building";
-import type { SearchBuildingVO, BuildingSaveVO } from "@/lib/types/building";
+import type {
+  SearchBuildingVO,
+  BuildingSaveVO,
+  BuildingUseTypeDTO,
+  WideAreaOptionDTO,
+  BaseAreaOptionDTO,
+  CompanySelectDTO,
+} from "@/lib/types/building";
 
 export const buildingKeys = {
   all: ["buildings"] as const,
@@ -141,5 +153,51 @@ export function useDownloadBuildingExcel() {
         if (a.parentNode) document.body.removeChild(a);
       }
     },
+  });
+}
+
+// ============================================================================
+// 폼 선택 옵션 훅
+// ============================================================================
+
+export function useCompanySelectList() {
+  return useQuery({
+    queryKey: ["companies", "select"] as const,
+    queryFn: getCompanySelectList,
+    staleTime: 5 * 60 * 1000, // 5분
+  });
+}
+
+export function useBuildingUseType1() {
+  return useQuery({
+    queryKey: ["building", "useType1"] as const,
+    queryFn: getBuildingUseType1,
+    staleTime: Infinity, // 정적 데이터
+  });
+}
+
+export function useBuildingUseType2(useType1Id: number | undefined) {
+  return useQuery({
+    queryKey: ["building", "useType2", useType1Id] as const,
+    queryFn: () => getBuildingUseType2(useType1Id!),
+    enabled: !!useType1Id && useType1Id > 0,
+    staleTime: Infinity, // 정적 데이터
+  });
+}
+
+export function useWideAreaList() {
+  return useQuery({
+    queryKey: ["wideArea", "list"] as const,
+    queryFn: getWideAreaList,
+    staleTime: Infinity, // 정적 데이터
+  });
+}
+
+export function useBaseAreaList(companyId: number | undefined) {
+  return useQuery({
+    queryKey: ["baseArea", "list", companyId] as const,
+    queryFn: () => getBaseAreaList(companyId!),
+    enabled: !!companyId && companyId > 0,
+    staleTime: 5 * 60 * 1000, // 5분
   });
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -22,7 +22,15 @@ import {
 } from "@/components/ui/select";
 
 import { toast } from "sonner";
-import { useAddBuilding, useEditBuilding } from "@/lib/hooks/use-buildings";
+import {
+  useAddBuilding,
+  useEditBuilding,
+  useCompanySelectList,
+  useBuildingUseType1,
+  useBuildingUseType2,
+  useWideAreaList,
+  useBaseAreaList,
+} from "@/lib/hooks/use-buildings";
 import {
   BuildingState,
   BuildingStateLabel,
@@ -107,6 +115,18 @@ export function BuildingForm({ mode, initialData, buildingId }: BuildingFormProp
       note: "",
     },
   });
+
+  // 폼 선택 옵션 데이터
+  const { data: companies } = useCompanySelectList();
+  const { data: useType1List } = useBuildingUseType1();
+  const { data: wideAreaList } = useWideAreaList();
+
+  // 동적 데이터 (선택에 따라 변함)
+  const [selectedUseType1Id, setSelectedUseType1Id] = useState<number | undefined>();
+  const watchedCompanyId = form.watch("companyId");
+
+  const { data: useType2List } = useBuildingUseType2(selectedUseType1Id);
+  const { data: baseAreaList } = useBaseAreaList(watchedCompanyId > 0 ? watchedCompanyId : undefined);
 
   useEffect(() => {
     if (mode === "edit" && initialData) {
@@ -265,13 +285,25 @@ export function BuildingForm({ mode, initialData, buildingId }: BuildingFormProp
 
                 <div className="grid gap-4 sm:grid-cols-2">
                   <div className="space-y-2">
-                    <Label htmlFor="companyId">고객사 ID *</Label>
-                    <Input
-                      id="companyId"
-                      type="number"
-                      placeholder="고객사 ID"
-                      {...form.register("companyId", { valueAsNumber: true })}
-                    />
+                    <Label htmlFor="companyId">고객사 *</Label>
+                    <Select
+                      value={form.watch("companyId")?.toString() ?? ""}
+                      onValueChange={(value) => {
+                        form.setValue("companyId", Number(value));
+                        form.setValue("baseAreaId", 0);
+                      }}
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="고객사 선택" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {companies?.map((company) => (
+                          <SelectItem key={company.id} value={company.id.toString()}>
+                            {company.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
                     {form.formState.errors.companyId && (
                       <p className="text-sm text-destructive">
                         {form.formState.errors.companyId.message}
@@ -288,29 +320,72 @@ export function BuildingForm({ mode, initialData, buildingId }: BuildingFormProp
                   </div>
                 </div>
 
-                <div className="grid gap-4 sm:grid-cols-3">
+                <div className="grid gap-4 sm:grid-cols-2">
                   <div className="space-y-2">
-                    <Label htmlFor="useType2Id">건물 용도 ID *</Label>
-                    <Input
-                      id="useType2Id"
-                      type="number"
-                      placeholder="용도 ID"
-                      {...form.register("useType2Id", { valueAsNumber: true })}
-                    />
+                    <Label htmlFor="useType1Id">건물 용도 대분류 *</Label>
+                    <Select
+                      value={selectedUseType1Id?.toString() ?? ""}
+                      onValueChange={(value) => {
+                        setSelectedUseType1Id(Number(value));
+                        form.setValue("useType2Id", 0);
+                      }}
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="대분류 선택" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {useType1List?.map((type) => (
+                          <SelectItem key={type.id} value={type.id.toString()}>
+                            {type.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="useType2Id">건물 용도 소분류 *</Label>
+                    <Select
+                      value={form.watch("useType2Id")?.toString() ?? ""}
+                      onValueChange={(value) => form.setValue("useType2Id", Number(value))}
+                      disabled={!selectedUseType1Id}
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder={selectedUseType1Id ? "소분류 선택" : "대분류를 먼저 선택하세요"} />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {useType2List?.map((type) => (
+                          <SelectItem key={type.id} value={type.id.toString()}>
+                            {type.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
                     {form.formState.errors.useType2Id && (
                       <p className="text-sm text-destructive">
                         {form.formState.errors.useType2Id.message}
                       </p>
                     )}
                   </div>
+                </div>
+
+                <div className="grid gap-4 sm:grid-cols-2">
                   <div className="space-y-2">
-                    <Label htmlFor="wideAreaId">광역 ID *</Label>
-                    <Input
-                      id="wideAreaId"
-                      type="number"
-                      placeholder="광역 ID"
-                      {...form.register("wideAreaId", { valueAsNumber: true })}
-                    />
+                    <Label htmlFor="wideAreaId">광역 *</Label>
+                    <Select
+                      value={form.watch("wideAreaId")?.toString() ?? ""}
+                      onValueChange={(value) => form.setValue("wideAreaId", Number(value))}
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="광역 선택" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {wideAreaList?.map((area) => (
+                          <SelectItem key={area.id} value={area.id.toString()}>
+                            {area.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
                     {form.formState.errors.wideAreaId && (
                       <p className="text-sm text-destructive">
                         {form.formState.errors.wideAreaId.message}
@@ -318,13 +393,23 @@ export function BuildingForm({ mode, initialData, buildingId }: BuildingFormProp
                     )}
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="baseAreaId">거점 ID *</Label>
-                    <Input
-                      id="baseAreaId"
-                      type="number"
-                      placeholder="거점 ID"
-                      {...form.register("baseAreaId", { valueAsNumber: true })}
-                    />
+                    <Label htmlFor="baseAreaId">거점 *</Label>
+                    <Select
+                      value={form.watch("baseAreaId")?.toString() ?? ""}
+                      onValueChange={(value) => form.setValue("baseAreaId", Number(value))}
+                      disabled={!watchedCompanyId || watchedCompanyId <= 0}
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder={watchedCompanyId > 0 ? "거점 선택" : "고객사를 먼저 선택하세요"} />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {baseAreaList?.map((area) => (
+                          <SelectItem key={area.id} value={area.id.toString()}>
+                            {area.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
                     {form.formState.errors.baseAreaId && (
                       <p className="text-sm text-destructive">
                         {form.formState.errors.baseAreaId.message}

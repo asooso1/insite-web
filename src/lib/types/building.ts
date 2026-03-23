@@ -184,3 +184,37 @@ export interface BuildingSaveVO {
 // ============================================================================
 
 export type BuildingListResponse = PageResponse<BuildingFullDTO>;
+
+// ============================================================================
+// 선택 옵션용 DTO (폼 - 고객사, 용도, 광역, 거점)
+// ============================================================================
+
+export interface BuildingUseTypeDTO {
+  id: number;
+  depth: number;
+  parentId: number;
+  name: string;
+  sortNo: number;
+}
+
+export interface WideAreaOptionDTO {
+  id: number;
+  code: string;
+  name: string;
+  sortNo: number;
+}
+
+export interface BaseAreaOptionDTO {
+  id: number;
+  name: string;
+  companyId: number;
+  companyName: string;
+  state: string;
+}
+
+export interface CompanySelectDTO {
+  id: number;
+  name: string;
+  phone?: string;
+  state?: string;
+}
