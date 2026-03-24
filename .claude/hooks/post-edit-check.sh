@@ -28,11 +28,11 @@ if [ -n "$ALERT" ]; then
   ISSUES="$ISSUES\n[window.alert/confirm] → toast 또는 AlertDialog 사용:\n$ALERT"
 fi
 
-# 2. console.log (개발 환경 체크 없는 것)
-CONSOLE=$(grep -n "console\.log\|console\.error\|console\.warn" "$FILE" 2>/dev/null \
-  | grep -v "NODE_ENV\|development")
+# 2. console.log/error (개발 환경 조건 없는 것, console.warn은 의도적 경고로 허용)
+CONSOLE=$(grep -n "console\.log\|console\.error" "$FILE" 2>/dev/null \
+  | grep -v "NODE_ENV\|development\|//")
 if [ -n "$CONSOLE" ]; then
-  ISSUES="$ISSUES\n[console.log 프로덕션 코드]:\n$CONSOLE"
+  ISSUES="$ISSUES\n[console.log/error 프로덕션 코드]:\n$CONSOLE"
 fi
 
 # 3. any 타입

@@ -52,8 +52,7 @@ docs/
 
 | 규칙 파일 | 내용 |
 |----------|------|
-| `api-auth.md` | API 인증 패턴 (Bearer 토큰, 쿠키) |
-| `auth.md` | JWT 처리, 토큰 저장, 인증 상태 |
+| `auth.md` | JWT 처리, 토큰 저장, API 인증 패턴, 인증 상태 |
 | `building-context.md` | buildingId 자동 주입 |
 | `coding-style.md` | TypeScript/React 코딩 규칙 |
 | `component-patterns.md` | 목록/상세/폼 페이지 표준 |

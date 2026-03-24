@@ -1,6 +1,7 @@
 ---
 name: check-security
 description: 보안 패턴 검증 (localStorage 토큰, 하드코딩 시크릿, open redirect, XSS)
+disable-model-invocation: true
 allowed-tools: Bash, Grep
 ---
 

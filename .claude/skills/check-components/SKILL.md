@@ -1,6 +1,7 @@
 ---
 name: check-components
 description: 컴포넌트 패턴 검증 (window.alert, console.log, StatusBadge, DataTable, any 타입)
+disable-model-invocation: true
 allowed-tools: Bash, Grep
 ---
 

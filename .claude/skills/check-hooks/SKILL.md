@@ -1,6 +1,7 @@
 ---
 name: check-hooks
 description: React Query 훅 패턴 검증 (staleTime, queryKey factory, enabled 조건)
+disable-model-invocation: true
 allowed-tools: Bash, Grep
 ---
 

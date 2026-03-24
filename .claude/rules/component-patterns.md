@@ -7,225 +7,32 @@
 ## 목록 페이지 패턴
 
 ```
-page.tsx (목록)
-├── PageHeader (title + description + icon + stats + actions)
-├── FilterBar (FilterDef[] 선언형 필터 — tabs/date-range/select/search)
-├── DataTable (columns + data + loading + pagination)
-└── 페이지네이션 (DataTable 내장 또는 별도)
+page.tsx ("use client") → PageHeader + FilterBar + DataTable
 ```
 
-### 표준 구현 템플릿
-
-```typescript
-"use client";
-import { useState } from "react";
-import { PageHeader } from "@/components/common/page-header";
-import { FilterBar, type FilterDef } from "@/components/common/filter-bar";
-import { DataTable, type ColumnDef } from "@/components/data-display/data-table";
-import { StatusBadge } from "@/components/data-display/status-badge";
-import { EmptyState } from "@/components/data-display/empty-state";
-import { Button } from "@/components/ui/button";
-import { Plus, Wrench } from "lucide-react";
-import Link from "next/link";
-import { useModuleList } from "@/lib/hooks/use-module";
-
-// ── 상수 ──────────────────────────────────────────────────────
-const STATE_OPTIONS = [
-  { value: "", label: "전체" },
-  { value: "WRITE", label: "작성" },
-  { value: "ISSUE", label: "발행" },
-];
-
-const FILTER_DEFS: FilterDef[] = [
-  { type: "tabs", key: "state", options: STATE_OPTIONS },
-  { type: "date-range", fromKey: "dateFrom", toKey: "dateTo" },
-  { type: "search", key: "keyword", placeholder: "검색어를 입력하세요" },
-];
-
-const INITIAL_FILTERS = { state: "", dateFrom: "", dateTo: "", keyword: "" };
-
-// ── 컬럼 정의 ──────────────────────────────────────────────────
-const columns: ColumnDef<ModuleItem>[] = [
-  { accessorKey: "id", header: "No", size: 60 },
-  { accessorKey: "name", header: "제목", size: 200 },
-  {
-    accessorKey: "state",
-    header: "상태",
-    cell: ({ row }) => <StatusBadge status={row.original.state} />,
-    size: 100,
-  },
-];
-
-// ── 컴포넌트 ──────────────────────────────────────────────────
-export default function ModulePage() {
-  const [filters, setFilters] = useState(INITIAL_FILTERS);
-
-  const { data, isLoading, isError, refetch } = useModuleList(filters);
-
-  const handleFilterChange = (key: string, value: string) =>
-    setFilters(prev => ({ ...prev, [key]: value }));
-
-  const handleFilterReset = () => setFilters(INITIAL_FILTERS);
-
-  if (isError) return <EmptyState type="error" onRetry={refetch} />;
-
-  return (
-    <div className="space-y-4">
-      <PageHeader
-        title="모듈 목록"
-        description="모듈 설명"
-        icon={Wrench}
-        actions={
-          <Button asChild size="sm">
-            <Link href="/module/new"><Plus className="mr-1 h-4 w-4" />새 등록</Link>
-          </Button>
-        }
-      />
-      <FilterBar
-        filters={FILTER_DEFS}
-        values={filters}
-        onChange={handleFilterChange}
-        onReset={handleFilterReset}
-      />
-      <DataTable
-        columns={columns}
-        data={data ?? []}
-        loading={isLoading}
-        pagination
-        pageSize={20}
-      />
-    </div>
-  );
-}
-```
-
-**필수 사항:**
-- `DataTable` 컴포넌트 사용 (`<table>` 직접 사용 금지)
-- `FilterBar` 컴포넌트 사용 (직접 Input/Tabs/Select 구성 금지)
-- `StatusBadge` 컴포넌트 사용 (직접 색상 클래스 금지)
-- 빈 데이터: `<EmptyState type="no-data">` + 등록 유도 버튼
-- 에러: `<EmptyState type="error" onRetry={refetch}>` + 재시도 버튼
-
----
+필수:
+- `DataTable` 사용 (`<table>` 금지), `FilterBar` 사용 (직접 Input/Tabs 구성 금지)
+- `StatusBadge` 사용 (직접 색상 클래스 금지)
+- 빈 데이터: `<EmptyState type="no-data">`, 에러: `<EmptyState type="error" onRetry={refetch}>`
+- 기존 모듈 참조: `src/app/(modules)/facilities/page.tsx`
 
 ## 상세 페이지 패턴
 
 ```
-[id]/page.tsx (상세, Server Component)
-├── PageHeader (title + actions: [BackButton, EditButton, DeleteButton])
-├── Tabs (기본정보 / 관련데이터1 / 관련데이터2)
-│   ├── TabsTrigger
-│   └── TabsContent
-│       └── InfoPanel (레이블-값 목록)
-└── 삭제: AlertDialog 확인 후 실행
+[id]/page.tsx (Server Component) → PageHeader + Tabs + InfoPanel
+삭제: AlertDialog 확인 후 실행 (window.confirm 금지)
+뒤로가기: _components/back-button.tsx (Client Component)로 분리
 ```
-
-```typescript
-// [id]/page.tsx
-import { PageHeader } from "@/components/common/page-header";
-import { InfoPanel } from "@/components/data-display/info-panel";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { DetailActions } from "./_components/detail-actions"; // Client Component
-
-export default async function DetailPage({ params }: { params: { id: string } }) {
-  const item = await getModuleDetail(Number(params.id));
-
-  return (
-    <div className="space-y-4">
-      <PageHeader
-        title={item.name}
-        actions={<DetailActions id={item.id} />}
-      />
-      <Tabs defaultValue="info">
-        <TabsList>
-          <TabsTrigger value="info">기본정보</TabsTrigger>
-          <TabsTrigger value="related">관련 데이터</TabsTrigger>
-        </TabsList>
-        <TabsContent value="info">
-          <InfoPanel
-            items={[
-              { label: "상태", value: <StatusBadge status={item.state} /> },
-              { label: "등록일", value: item.createdAt },
-            ]}
-          />
-        </TabsContent>
-      </Tabs>
-    </div>
-  );
-}
-```
-
----
 
 ## 폼 페이지 패턴
 
 ```
-new/page.tsx 또는 [id]/edit/page.tsx
-├── PageHeader (title + actions: [BackButton])
-└── _components/{module}-form.tsx (Client Component)
-    ├── React Hook Form + Zod 스키마
-    ├── FormField (label + input + error)
-    ├── 취소 버튼 (router.back())
-    └── 저장 버튼 (isPending 로딩 상태)
+new/ or [id]/edit/ → PageHeader + _components/{module}-form.tsx (Client Component)
+폼: React Hook Form + zodResolver, 성공: toast.success(), 실패: handleApiError(error)
+저장 버튼: disabled={isPending}, 취소: router.back()
 ```
 
-```typescript
-// _components/module-form.tsx
-"use client";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-import { FormField } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { toast } from "sonner";
-import { handleApiError } from "@/lib/api/error-handler";
-
-const schema = z.object({
-  name: z.string().min(1, "이름을 입력해주세요"),
-  // ...
-});
-
-export function ModuleForm({ defaultValues }: { defaultValues?: Partial<FormValues> }) {
-  const router = useRouter();
-  const { mutate, isPending } = useAddModule();
-
-  const form = useForm({ resolver: zodResolver(schema), defaultValues });
-
-  async function onSubmit(data: FormValues) {
-    try {
-      await mutate(data);
-      toast.success("등록되었습니다.");
-      router.push("/module");
-    } catch (error) {
-      handleApiError(error);
-    }
-  }
-
-  return (
-    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-      <div className="grid grid-cols-2 gap-4">
-        <FormField label="이름" required error={form.formState.errors.name?.message}>
-          <Input aria-invalid={!!form.formState.errors.name} {...form.register("name")} />
-        </FormField>
-      </div>
-      <div className="flex justify-end gap-2">
-        <Button type="button" variant="outline" onClick={() => router.back()}>취소</Button>
-        <Button type="submit" disabled={isPending}>
-          {isPending ? "저장 중..." : "저장"}
-        </Button>
-      </div>
-    </form>
-  );
-}
-```
-
-**필수 사항:**
-- React Hook Form + Zod 스키마 조합 필수
-- 성공: `toast.success("등록/수정되었습니다.")`
-- 실패: `handleApiError(error)`
-- 필수 필드: `label` 끝에 `*` 표시 (`required` prop)
-- 삭제: `AlertDialog` 사용 (`window.confirm` 금지)
+기존 모듈 참조: `src/app/(modules)/facilities/new/page.tsx`
 
 ---
 

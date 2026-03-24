@@ -8,6 +8,8 @@
 npm run dev          # 개발 서버 (localhost:3000)
 npm run build        # 프로덕션 빌드 (커밋 전 필수)
 npm run lint         # ESLint
+npm run test         # Vitest 단위/통합 테스트
+npm run test:run     # CI용 1회 실행
 npm run storybook    # Storybook (localhost:6006)
 ```
 

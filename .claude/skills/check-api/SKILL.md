@@ -1,6 +1,7 @@
 ---
 name: check-api
 description: API 클라이언트 패턴 검증 (buildingId 주입, fetch 금지, any 타입)
+disable-model-invocation: true
 allowed-tools: Bash, Grep
 ---
 
