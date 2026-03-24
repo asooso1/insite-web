@@ -38,3 +38,8 @@ export {
   type InfoPanelProps,
   type InfoItem,
 } from "./info-panel";
+export {
+  BulkActionBar,
+  type BulkActionBarAction,
+  type BulkActionBarProps,
+} from "./bulk-action-bar";

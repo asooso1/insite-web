@@ -358,3 +358,33 @@ export async function downloadWorkOrderListExcel(
     `/api/workOrder/workOrderListExcelDownload?${searchParams.toString()}`
   );
 }
+
+// ============================================================================
+// 작업 분류
+// ============================================================================
+
+/**
+ * 작업 분류 DTO
+ */
+export interface WorkOrderClassDTO {
+  id: number;
+  name: string;
+}
+
+/**
+ * 작업 1차 분류 목록 조회
+ * GET /open/workOrder/getFirstClassDTOs
+ */
+export function getWorkOrderFirstClasses(): Promise<WorkOrderClassDTO[]> {
+  return apiClient.get<WorkOrderClassDTO[]>("/open/workOrder/getFirstClassDTOs");
+}
+
+/**
+ * 작업 2차 분류 목록 조회
+ * GET /open/workOrder/getSecondClassDTOs/{firstClassId}
+ */
+export function getWorkOrderSecondClasses(firstClassId: number): Promise<WorkOrderClassDTO[]> {
+  return apiClient.get<WorkOrderClassDTO[]>(
+    `/open/workOrder/getSecondClassDTOs/${firstClassId}`
+  );
+}

@@ -8,7 +8,6 @@ import { useTheme } from "next-themes";
 import {
   Menu,
   Search,
-  Bell,
   Sun,
   Moon,
   User,
@@ -33,6 +32,7 @@ import { useAuthStore } from "@/lib/stores/auth-store";
 import { useTenantStore } from "@/lib/stores/tenant-store";
 import { useUserBuildings, useAdminBuildings } from "@/lib/hooks/use-buildings";
 import type { CommonListDTO } from "@/lib/api/building";
+import { NotificationPanel } from "./notification-panel";
 import { cn } from "@/lib/utils";
 
 // ============================================================================
@@ -524,19 +524,7 @@ export function Header({ onMobileMenuClick }: HeaderProps): React.JSX.Element {
         </Button>
 
         {/* 알림 */}
-        <Button
-          variant="ghost"
-          size="icon"
-          className="relative h-8 w-8 rounded-lg text-muted-foreground hover:bg-accent hover:text-foreground"
-          aria-label="알림"
-        >
-          <Bell className="h-[17px] w-[17px]" />
-          {/* TODO: 알림 API 연동 후 unreadCount 조건부 렌더 */}
-          <span
-            className="absolute right-[7px] top-[7px] h-2 w-2 rounded-full bg-destructive ring-[1.5px] ring-background"
-            aria-hidden="true"
-          />
-        </Button>
+        <NotificationPanel />
 
         {/* 테마 토글 */}
         {mounted && (

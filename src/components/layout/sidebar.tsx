@@ -98,7 +98,7 @@ const SECTION_PREFIXES: Record<string, string[]> = {
     "/work-orders", "/facilities", "/patrols", "/fieldwork", "/analysis",
     "/reports", "/boards", "/materials", "/licenses", "/mypage", "/users", "/clients",
     "/controls", "/duty", "/invoices", "/rentals", "/nfc-rounds", "/tags",
-    "/personal-work-orders", "/privacy", "/support", "/service",
+    "/personal-work-orders", "/privacy", "/support", "/service", "/buildings",
   ],
   bems: ["/bems"],
   becm: ["/becm"],
@@ -140,6 +140,7 @@ const FALLBACK_MENUS: MenuDTO[] = [
     ],
   },
   { id: 29, depth: 1, sortNo: 29, parentId: 0, name: "고객 관리", use: true, url: "/clients", show: true, icon: "client", children: [] },
+  { id: 42, depth: 1, sortNo: 42, parentId: 0, name: "빌딩 관리", use: true, url: "/buildings", show: true, icon: "building", children: [] },
   { id: 30, depth: 1, sortNo: 30, parentId: 0, name: "마이페이지", use: true, url: "/mypage", show: true, icon: "mypage", children: [] },
   {
     id: 31, depth: 1, sortNo: 31, parentId: 0, name: "제어 관리", use: true, url: "/controls", show: true, icon: "settings",

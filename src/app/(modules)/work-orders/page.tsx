@@ -2,6 +2,7 @@
 
 import { useState, useMemo, useCallback } from "react";
 import { useRouter } from "next/navigation";
+import { useQueryState, parseAsString, parseAsInteger } from "nuqs";
 import {
   Plus,
   Download,
@@ -24,6 +25,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { DataTable } from "@/components/data-display/data-table";
 import { StatusBadge } from "@/components/data-display/status-badge";
+import { BulkActionBar } from "@/components/data-display/bulk-action-bar";
 import { EmptyState } from "@/components/data-display/empty-state";
 import { PageHeader } from "@/components/common/page-header";
 import { FilterBar, type FilterDef } from "@/components/common/filter-bar";
@@ -292,34 +294,61 @@ function RowActions({ row }: { row: Row<WorkOrderListDTO> }) {
 export default function WorkOrderListPage() {
   const router = useRouter();
 
-  const [page, setPage] = useState(0);
-  const [size] = useState(20);
-  const [filters, setFilters] = useState(getInitialFilters);
+  // URL 상태 관리 (nuqs) - 필터/페이지 URL에 반영되어 공유/북마크 가능
+  const defaultFilters = getInitialFilters();
+  const [page, setPage] = useQueryState("page", parseAsInteger.withDefault(0));
+  const [state, setState] = useQueryState("state", parseAsString.withDefault(""));
+  const [type, setType] = useQueryState("type", parseAsString.withDefault(""));
+  const [termType, setTermType] = useQueryState("termType", parseAsString.withDefault(defaultFilters.termType));
+  const [termDateFrom, setTermDateFrom] = useQueryState("termDateFrom", parseAsString.withDefault(defaultFilters.termDateFrom));
+  const [termDateTo, setTermDateTo] = useQueryState("termDateTo", parseAsString.withDefault(defaultFilters.termDateTo));
+  const [searchCode, setSearchCode] = useQueryState("searchCode", parseAsString.withDefault(defaultFilters.searchCode));
+  const [keyword, setKeyword] = useQueryState("keyword", parseAsString.withDefault(""));
+
+  const size = 20;
+
+  const filters = { state, type, termType, termDateFrom, termDateTo, searchCode, keyword };
+
+  const FILTER_SETTERS: Record<string, (v: string) => void> = useMemo(() => ({
+    state: (v) => void setState(v),
+    type: (v) => void setType(v),
+    termType: (v) => void setTermType(v),
+    termDateFrom: (v) => void setTermDateFrom(v),
+    termDateTo: (v) => void setTermDateTo(v),
+    searchCode: (v) => void setSearchCode(v),
+    keyword: (v) => void setKeyword(v),
+  }), [setState, setType, setTermType, setTermDateFrom, setTermDateTo, setSearchCode, setKeyword]);
 
   const handleFilterChange = useCallback((key: string, value: string) => {
-    setFilters((prev) => ({ ...prev, [key]: value }));
-    setPage(0);
-  }, []);
+    FILTER_SETTERS[key]?.(value);
+    void setPage(0);
+  }, [FILTER_SETTERS, setPage]);
 
   const handleFilterReset = useCallback(() => {
-    setFilters(getInitialFilters());
-    setPage(0);
-  }, []);
+    void setState("");
+    void setType("");
+    void setTermType(defaultFilters.termType);
+    void setTermDateFrom(defaultFilters.termDateFrom);
+    void setTermDateTo(defaultFilters.termDateTo);
+    void setSearchCode(defaultFilters.searchCode);
+    void setKeyword("");
+    void setPage(0);
+  }, [setState, setType, setTermType, setTermDateFrom, setTermDateTo, setSearchCode, setKeyword, setPage, defaultFilters.termType, defaultFilters.termDateFrom, defaultFilters.termDateTo, defaultFilters.searchCode]);
 
   // 검색 파라미터
   const searchParams: SearchWorkOrderVO & { page: number; size: number } = useMemo(
     () => ({
       page,
       size,
-      state: (filters.state as WorkOrderState) || undefined,
-      type: (filters.type as WorkOrderType) || undefined,
-      termType: filters.termType as SearchWorkOrderVO["termType"],
-      termDateFrom: filters.termDateFrom || undefined,
-      termDateTo: filters.termDateTo || undefined,
-      searchCode: filters.searchCode as SearchWorkOrderVO["searchCode"],
-      keyword: filters.keyword || undefined,
+      state: (state as WorkOrderState) || undefined,
+      type: (type as WorkOrderType) || undefined,
+      termType: termType as SearchWorkOrderVO["termType"],
+      termDateFrom: termDateFrom || undefined,
+      termDateTo: termDateTo || undefined,
+      searchCode: searchCode as SearchWorkOrderVO["searchCode"],
+      keyword: keyword || undefined,
     }),
-    [page, size, filters]
+    [page, size, state, type, termType, termDateFrom, termDateTo, searchCode, keyword]
   );
 
   // 데이터 조회
@@ -339,8 +368,8 @@ export default function WorkOrderListPage() {
   const columns = useColumns();
 
   const handlePageChange = useCallback((newPage: number) => {
-    setPage(newPage);
-  }, []);
+    void setPage(newPage);
+  }, [setPage]);
 
   const handleDownloadExcel = useCallback(() => {
     downloadExcel.mutate(searchParams);
@@ -399,31 +428,6 @@ export default function WorkOrderListPage() {
         values={filters}
         onChange={handleFilterChange}
         onReset={handleFilterReset}
-        leftSlot={
-          selectedRows.length > 0 && (
-            <>
-              <span className="text-sm text-muted-foreground">
-                {selectedRows.length}개 선택됨
-              </span>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={handleApproveSelected}
-                disabled={approveMulti.isPending}
-              >
-                일괄 승인
-              </Button>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={handleCancelSelected}
-                disabled={cancelMulti.isPending}
-              >
-                일괄 취소
-              </Button>
-            </>
-          )
-        }
         rightSlot={
           <Button
             variant="outline"
@@ -435,6 +439,27 @@ export default function WorkOrderListPage() {
             엑셀 다운로드
           </Button>
         }
+      />
+
+      {/* 벌크 액션 바 */}
+      <BulkActionBar
+        selectedCount={selectedRows.length}
+        onClear={() => setSelectedRows([])}
+        actions={[
+          {
+            label: "일괄 승인",
+            onClick: handleApproveSelected,
+            disabled: approveMulti.isPending,
+            loading: approveMulti.isPending,
+          },
+          {
+            label: "일괄 취소",
+            onClick: handleCancelSelected,
+            variant: "destructive",
+            disabled: cancelMulti.isPending,
+            loading: cancelMulti.isPending,
+          },
+        ]}
       />
 
       {/* 테이블 */}
