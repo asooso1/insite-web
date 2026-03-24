@@ -104,6 +104,7 @@ export interface CompanyDTO {
 export interface SearchClientVO {
   companyId?: number;
   accountId?: number;
+  state?: CompanyState;
   writeDateFrom?: string;
   writeDateTo?: string;
   searchCode?: "companyName" | "businessNo";

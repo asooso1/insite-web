@@ -9,6 +9,7 @@ import type {
   BaseAreaOptionDTO,
   CompanySelectDTO,
 } from "@/lib/types/building";
+import type { UserGroupDTO } from "@/lib/types/tbm";
 
 // ============================================================================
 // 건물 관리 CRUD (SiteController)
@@ -225,4 +226,12 @@ export function getBuildingFloorZones(
   return apiClient.get<BuildingFloorZoneDTO[]>(
     `/api/site/buildingFloorZone/${floorId}`
   );
+}
+
+/**
+ * 빌딩의 사용자 그룹(담당팀) 목록 조회
+ * GET /api/site/userGroupView/{buildingId}
+ */
+export function getBuildingUserGroups(buildingId: number): Promise<UserGroupDTO[]> {
+  return apiClient.get<UserGroupDTO[]>(`/api/site/userGroupView/${buildingId}`);
 }

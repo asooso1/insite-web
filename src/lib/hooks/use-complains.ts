@@ -4,7 +4,7 @@
 
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { getComplainList, getComplainView, createComplain } from "@/lib/api/complain";
-import { getBuildingFloors, getBuildingFloorZones } from "@/lib/api/building";
+import { getBuildingFloors, getBuildingFloorZones, getBuildingUserGroups } from "@/lib/api/building";
 import type { SearchVocVO, VocVO } from "@/lib/types/complain";
 
 // ============================================================================
@@ -24,6 +24,7 @@ export const buildingKeys = {
   all: ["buildings"] as const,
   floors: (buildingId: number) => [...buildingKeys.all, "floors", buildingId] as const,
   zones: (floorId: number) => [...buildingKeys.all, "zones", floorId] as const,
+  userGroups: (buildingId: number) => [...buildingKeys.all, "userGroups", buildingId] as const,
 };
 
 // ============================================================================
@@ -51,6 +52,18 @@ export function useBuildingFloorZones(floorId: number) {
     queryFn: () => getBuildingFloorZones(floorId),
     enabled: floorId > 0,
     staleTime: 30 * 1000,
+  });
+}
+
+/**
+ * 빌딩 사용자 그룹(담당팀) 목록 조회 훅
+ */
+export function useBuildingUserGroups(buildingId: number) {
+  return useQuery({
+    queryKey: buildingKeys.userGroups(buildingId),
+    queryFn: () => getBuildingUserGroups(buildingId),
+    enabled: buildingId > 0,
+    staleTime: 5 * 60 * 1000, // 5분 (팀 데이터는 잘 안 바뀜)
   });
 }
 

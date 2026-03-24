@@ -28,6 +28,7 @@ export async function getClientList(
   const searchParams = new URLSearchParams();
 
   if (params.companyId) searchParams.set("companyId", String(params.companyId));
+  if (params.state) searchParams.set("state", params.state);
   if (params.writeDateFrom) searchParams.set("writeDateFrom", params.writeDateFrom);
   if (params.writeDateTo) searchParams.set("writeDateTo", params.writeDateTo);
   if (params.searchCode) searchParams.set("searchCode", params.searchCode);
