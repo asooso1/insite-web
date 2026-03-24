@@ -19,8 +19,8 @@
 | Phase 9 | ✅ 완료 | 100% | 현장작업(Fieldwork)/분석(Analysis)/설정 고도화 |
 | Phase 10 | ⏳ 추후 구현 | 0% | BEMS (85개 HTML) - 빌딩 에너지 관리 시스템 |
 | Phase 11 | ⏳ 추후 구현 | 0% | BECM (64개 HTML) - 보일러/냉동 모니터링 시스템 |
-| **[필수]** csp-was pageInfoId 이슈 | ❌ 차단됨 | - | csp-was JwtFilter 수정 필요 → `docs/csp-was-pageinfoid-issue.md` |
-| **[필수]** 종합 검토 이슈 수정 | ⏳ 대기 | - | 보안/구현/UX 39건 → `docs/comprehensive-review-plan.md` |
+| **[필수]** csp-was pageInfoId 이슈 | ❌ 차단됨 | - | csp-was JwtFilter 수정 필요 → `docs/reference/csp-was-pageinfoid-issue.md` |
+| **[필수]** 종합 검토 이슈 수정 | ✅ 완료 | 100% | 보안/구현/UX 39건 모두 해결 → `docs/deprecated/comprehensive-review-plan.md` |
 
 **상태 범례:** ✅ 완료 | 🔄 진행중 | ⏳ 대기 | ❌ 차단됨
 
@@ -28,7 +28,7 @@
 
 ## 종합 검토 이슈 (2026-03-11)
 
-> 상세 내용: `docs/comprehensive-review-plan.md`
+> 상세 내용: `docs/deprecated/comprehensive-review-plan.md` (모두 해결됨)
 
 ### 🔴 즉시 수정 필요 (보안 Critical)
 

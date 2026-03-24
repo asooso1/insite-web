@@ -4,9 +4,9 @@
 
 ## 현재 상태
 
-Phase 1-6 완료 (~75%) | Phase 7 대기
-- 구현 완료: work-orders, facilities, users, clients, materials, boards, settings, licenses, patrols, reports
-- 진행 현황: `docs/task-progress.md` 참조
+Phase 1-9 + A-B 완료 (~75%) | Phase C-D 대기
+- 구현 완료: work-orders, facilities, users, clients, materials, boards, settings, licenses, patrols, reports, fieldwork, analysis, support
+- 진행 현황: `docs/task-progress.md` | 다음 단계: `docs/task-next.md`
 
 ## 필수 규칙
 
