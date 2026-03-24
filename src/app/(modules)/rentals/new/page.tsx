@@ -12,8 +12,8 @@ export default function RentalNewPage() {
   return (
     <div className="flex flex-col gap-6 p-6">
       <div className="flex items-center gap-4">
-        <Button variant="ghost" size="icon" onClick={() => router.push("/rentals")}>
-          <ArrowLeft className="h-4 w-4" />
+        <Button variant="ghost" size="icon" onClick={() => router.push("/rentals")} aria-label="뒤로가기">
+          <ArrowLeft aria-hidden="true" className="h-4 w-4" />
         </Button>
         <div>
           <h1 className="text-2xl font-bold">임차 등록</h1>

@@ -51,8 +51,8 @@ export default function LicenseDetailPage() {
     <div className="flex flex-col gap-6 p-6">
       {/* 헤더 */}
       <div className="flex items-center gap-4">
-        <Button variant="ghost" size="icon" onClick={() => router.push("/licenses")}>
-          <ArrowLeft className="h-4 w-4" />
+        <Button variant="ghost" size="icon" onClick={() => router.push("/licenses")} aria-label="뒤로가기">
+          <ArrowLeft aria-hidden="true" className="h-4 w-4" />
         </Button>
         <div className="flex-1">
           <h1 className="text-2xl font-bold">{license.name}</h1>
@@ -64,7 +64,7 @@ export default function LicenseDetailPage() {
             상태 변경
           </Button>
           <Button onClick={() => router.push(`/licenses/${id}/edit`)}>
-            <Edit className="mr-2 h-4 w-4" />
+            <Edit aria-hidden="true" className="mr-2 h-4 w-4" />
             수정
           </Button>
         </div>

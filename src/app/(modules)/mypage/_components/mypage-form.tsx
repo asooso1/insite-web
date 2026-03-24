@@ -119,7 +119,7 @@ export function MypageForm() {
           onClick={() => router.back()}
           className="h-10 w-10"
         >
-          <ArrowLeft className="h-5 w-5" />
+          <ArrowLeft aria-hidden="true" className="h-5 w-5" />
         </Button>
         <h1 className="text-3xl font-bold">내 정보 수정</h1>
       </div>

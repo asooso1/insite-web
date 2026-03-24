@@ -224,7 +224,7 @@ export function WorkOrderForm({
             size="icon"
             onClick={() => router.back()}
           >
-            <ArrowLeft className="h-5 w-5" />
+            <ArrowLeft aria-hidden="true" className="h-5 w-5" />
           </Button>
           <div>
             <h1 className="text-2xl font-bold">

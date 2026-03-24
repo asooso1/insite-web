@@ -130,7 +130,7 @@ export function CleaningUtilTab() {
           }}
           size="sm"
         >
-          <Plus className="mr-2 h-4 w-4" />
+          <Plus aria-hidden="true" className="mr-2 h-4 w-4" />
           추가
         </Button>
       </div>

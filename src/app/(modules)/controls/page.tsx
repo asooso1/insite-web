@@ -158,13 +158,13 @@ function RowActions({ row }: { row: Row<ControlListDTO> }) {
         <DropdownMenuItem
           onClick={() => router.push(`/controls/${row.original.id}`)}
         >
-          <Eye className="mr-2 h-4 w-4" />
+          <Eye aria-hidden="true" className="mr-2 h-4 w-4" />
           상세 보기
         </DropdownMenuItem>
         <DropdownMenuItem
           onClick={() => router.push(`/controls/${row.original.id}/edit`)}
         >
-          <Edit className="mr-2 h-4 w-4" />
+          <Edit aria-hidden="true" className="mr-2 h-4 w-4" />
           수정
         </DropdownMenuItem>
       </DropdownMenuContent>
@@ -237,7 +237,7 @@ export default function ControlListPage() {
         icon={Settings}
         actions={
           <Button onClick={() => router.push("/controls/new")}>
-            <Plus className="mr-2 h-4 w-4" />
+            <Plus aria-hidden="true" className="mr-2 h-4 w-4" />
             등록
           </Button>
         }

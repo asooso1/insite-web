@@ -124,7 +124,7 @@ export default function ReferenceDataDetailPage() {
             size="icon"
             onClick={() => router.push("/boards")}
           >
-            <ArrowLeft className="h-5 w-5" />
+            <ArrowLeft aria-hidden="true" className="h-5 w-5" />
           </Button>
           <div>
             <h1 className="text-2xl font-bold">{refData.title}</h1>
@@ -138,7 +138,7 @@ export default function ReferenceDataDetailPage() {
             variant="outline"
             onClick={() => router.push(`/boards/data/${id}/edit`)}
           >
-            <Edit className="mr-2 h-4 w-4" />
+            <Edit aria-hidden="true" className="mr-2 h-4 w-4" />
             수정
           </Button>
           <Button
@@ -146,7 +146,7 @@ export default function ReferenceDataDetailPage() {
             className="text-destructive"
             onClick={handleDelete}
           >
-            <Trash2 className="mr-2 h-4 w-4" />
+            <Trash2 aria-hidden="true" className="mr-2 h-4 w-4" />
             삭제
           </Button>
         </div>

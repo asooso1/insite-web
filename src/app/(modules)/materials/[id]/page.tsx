@@ -157,7 +157,7 @@ export default function MaterialDetailPage() {
             size="icon"
             onClick={() => router.push("/materials")}
           >
-            <ArrowLeft className="h-5 w-5" />
+            <ArrowLeft aria-hidden="true" className="h-5 w-5" />
           </Button>
           <div>
             <div className="flex items-center gap-3">
@@ -177,7 +177,7 @@ export default function MaterialDetailPage() {
           variant="outline"
           onClick={() => router.push(`/materials/${id}/edit`)}
         >
-          <Edit className="mr-2 h-4 w-4" />
+          <Edit aria-hidden="true" className="mr-2 h-4 w-4" />
           수정
         </Button>
       </div>

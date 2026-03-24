@@ -101,7 +101,7 @@ export default function MenuManagementPage() {
           onClick={() => router.push("/settings")}
           aria-label="설정으로 돌아가기"
         >
-          <ArrowLeft className="h-4 w-4" />
+          <ArrowLeft aria-hidden="true" className="h-4 w-4" />
         </Button>
         <div>
           <h1 className="text-xl font-semibold">메뉴 관리</h1>
@@ -116,7 +116,7 @@ export default function MenuManagementPage() {
             onClick={() => router.refresh()}
             aria-label="새로고침"
           >
-            <RefreshCw className="mr-2 h-3.5 w-3.5" />
+            <RefreshCw aria-hidden="true" className="mr-2 h-3.5 w-3.5" />
             새로고침
           </Button>
         </div>

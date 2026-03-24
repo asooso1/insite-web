@@ -251,8 +251,8 @@ function RowActions({ row }: { row: Row<WorkOrderListDTO> }) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="icon" className="h-8 w-8">
-          <MoreHorizontal className="h-4 w-4" />
+        <Button variant="ghost" size="icon" className="h-8 w-8" aria-label="더 보기">
+          <MoreHorizontal aria-hidden="true" className="h-4 w-4" />
           <span className="sr-only">메뉴 열기</span>
         </Button>
       </DropdownMenuTrigger>
@@ -260,7 +260,7 @@ function RowActions({ row }: { row: Row<WorkOrderListDTO> }) {
         <DropdownMenuItem
           onClick={() => router.push(`/work-orders/${item.id}`)}
         >
-          <Eye className="mr-2 h-4 w-4" />
+          <Eye aria-hidden="true" className="mr-2 h-4 w-4" />
           상세 보기
         </DropdownMenuItem>
         <DropdownMenuItem
@@ -270,7 +270,7 @@ function RowActions({ row }: { row: Row<WorkOrderListDTO> }) {
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem>
-          <Copy className="mr-2 h-4 w-4" />
+          <Copy aria-hidden="true" className="mr-2 h-4 w-4" />
           복사
         </DropdownMenuItem>
         {item.state !== WorkOrderState.CANCEL &&
@@ -387,7 +387,7 @@ export default function WorkOrderListPage() {
         icon={ClipboardList}
         actions={
           <Button onClick={() => router.push("/work-orders/new")}>
-            <Plus className="mr-2 h-4 w-4" />
+            <Plus aria-hidden="true" className="mr-2 h-4 w-4" />
             신규 등록
           </Button>
         }
@@ -431,7 +431,7 @@ export default function WorkOrderListPage() {
             onClick={handleDownloadExcel}
             disabled={downloadExcel.isPending}
           >
-            <Download className="mr-2 h-4 w-4" />
+            <Download aria-hidden="true" className="mr-2 h-4 w-4" />
             엑셀 다운로드
           </Button>
         }

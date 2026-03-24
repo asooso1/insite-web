@@ -88,8 +88,8 @@ function RowActions({ row }: { row: Row<RoleDTO> }) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="icon" className="h-8 w-8">
-          <Eye className="h-4 w-4" />
+        <Button variant="ghost" size="icon" className="h-8 w-8" aria-label="상세 보기">
+          <Eye aria-hidden="true" className="h-4 w-4" />
           <span className="sr-only">메뉴 열기</span>
         </Button>
       </DropdownMenuTrigger>
@@ -97,7 +97,7 @@ function RowActions({ row }: { row: Row<RoleDTO> }) {
         <DropdownMenuItem
           onClick={() => router.push(`/users/roles/${row.original.id}`)}
         >
-          <Eye className="mr-2 h-4 w-4" />
+          <Eye aria-hidden="true" className="mr-2 h-4 w-4" />
           상세 보기
         </DropdownMenuItem>
       </DropdownMenuContent>

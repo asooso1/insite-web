@@ -90,24 +90,24 @@ function RowActions({ row }: { row: Row<BuildingFullDTO> }) {
     <AlertDialog>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="ghost" size="icon" className="h-8 w-8">
-            <MoreHorizontal className="h-4 w-4" />
+          <Button variant="ghost" size="icon" className="h-8 w-8" aria-label="더 보기">
+            <MoreHorizontal aria-hidden="true" className="h-4 w-4" />
             <span className="sr-only">메뉴 열기</span>
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           <DropdownMenuItem onClick={() => router.push(`/buildings/${building.id}`)}>
-            <Eye className="mr-2 h-4 w-4" />
+            <Eye aria-hidden="true" className="mr-2 h-4 w-4" />
             상세 보기
           </DropdownMenuItem>
           <DropdownMenuItem onClick={() => router.push(`/buildings/${building.id}/edit`)}>
-            <Edit className="mr-2 h-4 w-4" />
+            <Edit aria-hidden="true" className="mr-2 h-4 w-4" />
             수정
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <AlertDialogTrigger asChild>
             <DropdownMenuItem className="text-destructive" onSelect={(e) => e.preventDefault()}>
-              <Trash2 className="mr-2 h-4 w-4" />
+              <Trash2 aria-hidden="true" className="mr-2 h-4 w-4" />
               삭제
             </DropdownMenuItem>
           </AlertDialogTrigger>
@@ -265,7 +265,7 @@ export default function BuildingListPage() {
         icon={Building2}
         actions={
           <Button onClick={() => router.push("/buildings/new")}>
-            <Plus className="mr-2 h-4 w-4" />
+            <Plus aria-hidden="true" className="mr-2 h-4 w-4" />
             등록
           </Button>
         }
@@ -283,7 +283,7 @@ export default function BuildingListPage() {
             onClick={() => downloadExcel.mutate(searchParams)}
             disabled={downloadExcel.isPending}
           >
-            <Download className="mr-2 h-4 w-4" />
+            <Download aria-hidden="true" className="mr-2 h-4 w-4" />
             엑셀 다운로드
           </Button>
         }

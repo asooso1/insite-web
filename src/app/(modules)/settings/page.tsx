@@ -122,9 +122,9 @@ function ConfigGroupCard({ group }: { group: ConfigGroupDTO }) {
         <CardTitle className="flex items-center justify-between text-base">
           <div className="flex items-center gap-2">
             {expanded ? (
-              <ChevronDown className="h-4 w-4" />
+              <ChevronDown aria-hidden="true" className="h-4 w-4" />
             ) : (
-              <ChevronRight className="h-4 w-4" />
+              <ChevronRight aria-hidden="true" className="h-4 w-4" />
             )}
             {group.value}
             {groupCode && (
@@ -155,7 +155,7 @@ function ConfigGroupCard({ group }: { group: ConfigGroupDTO }) {
                       {config.enabled ? (
                         <Check className="h-3.5 w-3.5 text-green-600" />
                       ) : (
-                        <X className="h-3.5 w-3.5 text-muted-foreground" />
+                        <X aria-hidden="true" className="h-3.5 w-3.5 text-muted-foreground" />
                       )}
                     </div>
                     {config.description && (
@@ -244,9 +244,9 @@ function CategoryTreeNode({
         {hasChildren ? (
           <button onClick={() => setExpanded(!expanded)} className="shrink-0">
             {expanded ? (
-              <ChevronDown className="h-4 w-4 text-muted-foreground" />
+              <ChevronDown aria-hidden="true" className="h-4 w-4 text-muted-foreground" />
             ) : (
-              <ChevronRight className="h-4 w-4 text-muted-foreground" />
+              <ChevronRight aria-hidden="true" className="h-4 w-4 text-muted-foreground" />
             )}
           </button>
         ) : (
@@ -362,8 +362,8 @@ function MasterRowActions({ row }: { row: Row<FacilityMasterDTO> }) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="icon" className="h-8 w-8">
-          <MoreHorizontal className="h-4 w-4" />
+        <Button variant="ghost" size="icon" className="h-8 w-8" aria-label="더 보기">
+          <MoreHorizontal aria-hidden="true" className="h-4 w-4" />
           <span className="sr-only">메뉴 열기</span>
         </Button>
       </DropdownMenuTrigger>
@@ -371,13 +371,13 @@ function MasterRowActions({ row }: { row: Row<FacilityMasterDTO> }) {
         <DropdownMenuItem
           onClick={() => router.push(`/settings/facility-masters/${master.id}`)}
         >
-          <Eye className="mr-2 h-4 w-4" />
+          <Eye aria-hidden="true" className="mr-2 h-4 w-4" />
           상세 보기
         </DropdownMenuItem>
         <DropdownMenuItem
           onClick={() => router.push(`/settings/facility-masters/${master.id}/edit`)}
         >
-          <Edit className="mr-2 h-4 w-4" />
+          <Edit aria-hidden="true" className="mr-2 h-4 w-4" />
           수정
         </DropdownMenuItem>
         <DropdownMenuItem
@@ -387,7 +387,7 @@ function MasterRowActions({ row }: { row: Row<FacilityMasterDTO> }) {
             }
           }}
         >
-          <Copy className="mr-2 h-4 w-4" />
+          <Copy aria-hidden="true" className="mr-2 h-4 w-4" />
           복사
         </DropdownMenuItem>
       </DropdownMenuContent>
@@ -437,7 +437,7 @@ function MasterSection() {
           className="h-9 w-64 rounded-md border bg-background px-3 text-sm"
         />
         <Button onClick={() => router.push("/settings/facility-masters/new")}>
-          <Plus className="mr-2 h-4 w-4" />
+          <Plus aria-hidden="true" className="mr-2 h-4 w-4" />
           새 표준 설비
         </Button>
       </div>
@@ -537,7 +537,7 @@ export default function SettingsPage() {
               </p>
             </div>
           </div>
-          <ChevronRight className="h-4 w-4 text-muted-foreground" />
+          <ChevronRight aria-hidden="true" className="h-4 w-4 text-muted-foreground" />
         </button>
       </div>
     </div>

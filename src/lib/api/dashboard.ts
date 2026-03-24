@@ -12,7 +12,9 @@ import type {
   NoticeWidgetItem,
   Widget37DTO,
   ScheduleItem,
+  FacilityStatusWidget,
 } from '../types/dashboard';
+import type { FacilityListResponse } from '../types/facility';
 
 // ============================================================================
 // 대시보드 API
@@ -84,4 +86,17 @@ export const dashboardApi = {
    */
   weeklySchedule: (params: SearchWidgetVO) =>
     apiClient.get<ScheduleItem[]>(`/widget/widget43${toSearchParams(params)}`),
+
+  /**
+   * 시설 현황 KPI 조회 (클라이언트사이드 집계)
+   * GET /api/facility/facilityList (전체 데이터 로드 후 클라이언트에서 집계)
+   */
+  facilityStatus: (params: SearchWidgetVO) => {
+    const searchParams = new URLSearchParams();
+    if (params.buildingId) searchParams.set('buildingId', String(params.buildingId));
+    // 전체 시설 로드 (size는 매우 크게 설정)
+    searchParams.set('page', '0');
+    searchParams.set('size', '10000');
+    return apiClient.get<FacilityListResponse>(`/api/facility/facilityList?${searchParams.toString()}`);
+  },
 };

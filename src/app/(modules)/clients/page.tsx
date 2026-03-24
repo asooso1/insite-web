@@ -182,8 +182,8 @@ function RowActions({ row }: { row: Row<CompanyDTO> }) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="icon" className="h-8 w-8">
-          <MoreHorizontal className="h-4 w-4" />
+        <Button variant="ghost" size="icon" className="h-8 w-8" aria-label="더 보기">
+          <MoreHorizontal aria-hidden="true" className="h-4 w-4" />
           <span className="sr-only">메뉴 열기</span>
         </Button>
       </DropdownMenuTrigger>
@@ -191,13 +191,13 @@ function RowActions({ row }: { row: Row<CompanyDTO> }) {
         <DropdownMenuItem
           onClick={() => router.push(`/clients/${client.id}`)}
         >
-          <Eye className="mr-2 h-4 w-4" />
+          <Eye aria-hidden="true" className="mr-2 h-4 w-4" />
           상세 보기
         </DropdownMenuItem>
         <DropdownMenuItem
           onClick={() => router.push(`/clients/${client.id}/edit`)}
         >
-          <Edit className="mr-2 h-4 w-4" />
+          <Edit aria-hidden="true" className="mr-2 h-4 w-4" />
           수정
         </DropdownMenuItem>
         <DropdownMenuSeparator />
@@ -205,7 +205,7 @@ function RowActions({ row }: { row: Row<CompanyDTO> }) {
           onClick={handleDelete}
           className="text-destructive"
         >
-          <Trash2 className="mr-2 h-4 w-4" />
+          <Trash2 aria-hidden="true" className="mr-2 h-4 w-4" />
           삭제
         </DropdownMenuItem>
       </DropdownMenuContent>
@@ -287,7 +287,7 @@ export default function ClientListPage() {
         icon={Building2}
         actions={
           <Button onClick={() => router.push("/clients/new")}>
-            <Plus className="mr-2 h-4 w-4" />
+            <Plus aria-hidden="true" className="mr-2 h-4 w-4" />
             등록
           </Button>
         }
@@ -306,7 +306,7 @@ export default function ClientListPage() {
             onClick={handleDownloadExcel}
             disabled={downloadExcel.isPending}
           >
-            <Download className="mr-2 h-4 w-4" />
+            <Download aria-hidden="true" className="mr-2 h-4 w-4" />
             엑셀 다운로드
           </Button>
         }

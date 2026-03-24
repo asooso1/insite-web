@@ -10,6 +10,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 // ============================================================================
 // 타입 정의
@@ -25,6 +31,7 @@ export type FilterDef =
       type: "search";
       key: string;
       placeholder?: string;
+      tooltip?: string;
     }
   | {
       type: "select";
@@ -33,6 +40,7 @@ export type FilterDef =
       placeholder?: string;
       /** 전체 선택 옵션 레이블. undefined이면 전체 옵션 미표시 */
       allLabel?: string;
+      tooltip?: string;
     }
   | {
       type: "tabs";
@@ -45,6 +53,7 @@ export type FilterDef =
       toKey: string;
       fromPlaceholder?: string;
       toPlaceholder?: string;
+      tooltip?: string;
     };
 
 export interface FilterBarProps {
@@ -72,7 +81,7 @@ function SearchFilter({
   value: string;
   onChange: (value: string) => void;
 }) {
-  return (
+  const input = (
     <Input
       placeholder={def.placeholder ?? "검색..."}
       value={value}
@@ -80,6 +89,23 @@ function SearchFilter({
       className="w-56"
     />
   );
+
+  if (def.tooltip) {
+    return (
+      <TooltipProvider>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <span>{input}</span>
+          </TooltipTrigger>
+          <TooltipContent>
+            <p>{def.tooltip}</p>
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
+    );
+  }
+
+  return input;
 }
 
 /** Select에서 "전체" 옵션을 나타내는 센티넬 값 (Radix UI는 빈 문자열 value 금지) */
@@ -100,7 +126,7 @@ function SelectFilter({
     onChange(v === SELECT_ALL_VALUE ? "" : v);
   };
 
-  return (
+  const select = (
     <Select value={selectValue} onValueChange={handleChange}>
       <SelectTrigger className="w-32">
         <SelectValue placeholder={def.placeholder ?? "선택"} />
@@ -120,6 +146,23 @@ function SelectFilter({
       </SelectContent>
     </Select>
   );
+
+  if (def.tooltip) {
+    return (
+      <TooltipProvider>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <span>{select}</span>
+          </TooltipTrigger>
+          <TooltipContent>
+            <p>{def.tooltip}</p>
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
+    );
+  }
+
+  return select;
 }
 
 function DateRangeFilter({
@@ -133,7 +176,7 @@ function DateRangeFilter({
   toValue: string;
   onChange: (key: string, value: string) => void;
 }) {
-  return (
+  const dateRange = (
     <div className="flex items-center gap-1">
       <Input
         type="date"
@@ -152,6 +195,23 @@ function DateRangeFilter({
       />
     </div>
   );
+
+  if (def.tooltip) {
+    return (
+      <TooltipProvider>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <span>{dateRange}</span>
+          </TooltipTrigger>
+          <TooltipContent>
+            <p>{def.tooltip}</p>
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
+    );
+  }
+
+  return dateRange;
 }
 
 // ============================================================================

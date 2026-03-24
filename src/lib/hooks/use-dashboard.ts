@@ -6,7 +6,9 @@
 
 import { useQuery } from '@tanstack/react-query';
 import { dashboardApi } from '@/lib/api/dashboard';
-import type { WidgetVO, SearchWidgetVO, Widget37DTO } from '@/lib/types/dashboard';
+import type { WidgetVO, SearchWidgetVO, Widget37DTO, FacilityStatusWidget } from '@/lib/types/dashboard';
+import { FacilityState } from '@/lib/types/facility';
+import type { FacilityListDTO, PageResponse } from '@/lib/types/facility';
 
 // ============================================================================
 // Query Keys Factory
@@ -27,6 +29,8 @@ export const dashboardKeys = {
     [...dashboardKeys.widgets(), 'monthlySchedule', params] as const,
   weeklySchedule: (params: SearchWidgetVO) =>
     [...dashboardKeys.widgets(), 'weeklySchedule', params] as const,
+  facilityStatus: (params: SearchWidgetVO) =>
+    [...dashboardKeys.widgets(), 'facilityStatus', params] as const,
 };
 
 // ============================================================================
@@ -95,6 +99,46 @@ export function useWeeklySchedule(params: SearchWidgetVO) {
   return useQuery({
     queryKey: dashboardKeys.weeklySchedule(params),
     queryFn: () => dashboardApi.weeklySchedule(params),
+    staleTime: 30 * 1000,
+  });
+}
+
+/**
+ * 시설 현황 KPI 조회 훅 (클라이언트사이드 집계)
+ *
+ * 시설 목록을 조회한 후 클라이언트에서 상태별로 집계합니다.
+ * - 전체: 전체 시설 수
+ * - 운영중: ONGOING_OPERATING 상태
+ * - 점검중: NOW_CHECK 상태
+ * - 공사중: ONGOING_CONSTRUCT 상태
+ */
+export function useFacilityStatus(params: SearchWidgetVO) {
+  return useQuery({
+    queryKey: dashboardKeys.facilityStatus(params),
+    queryFn: async () => {
+      const response = await dashboardApi.facilityStatus(params);
+
+      // 시설 목록에서 상태별 집계
+      const facilities = (response as PageResponse<FacilityListDTO>)?.content ?? [];
+      const operatingCount = facilities.filter(
+        (f) => f.facilityDTO?.state === FacilityState.ONGOING_OPERATING,
+      ).length;
+      const checkingCount = facilities.filter(
+        (f) => f.facilityDTO?.state === FacilityState.NOW_CHECK,
+      ).length;
+      const constructingCount = facilities.filter(
+        (f) => f.facilityDTO?.state === FacilityState.ONGOING_CONSTRUCT,
+      ).length;
+
+      const result: FacilityStatusWidget = {
+        totalCount: (response as PageResponse<FacilityListDTO>)?.totalElements ?? 0,
+        operatingCount,
+        checkingCount,
+        constructingCount,
+      };
+
+      return result;
+    },
     staleTime: 30 * 1000,
   });
 }

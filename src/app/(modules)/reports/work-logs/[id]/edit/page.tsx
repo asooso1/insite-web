@@ -35,8 +35,8 @@ export default function WorkLogEditPage() {
   return (
     <div className="flex flex-col gap-6 p-6">
       <div className="flex items-center gap-4">
-        <Button variant="ghost" size="icon" onClick={() => router.push(`/reports/work-logs/${id}`)}>
-          <ArrowLeft className="h-4 w-4" />
+        <Button variant="ghost" size="icon" onClick={() => router.push(`/reports/work-logs/${id}`)} aria-label="뒤로가기">
+          <ArrowLeft aria-hidden="true" className="h-4 w-4" />
         </Button>
         <div>
           <h1 className="text-2xl font-bold">업무일지 수정</h1>

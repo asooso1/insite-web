@@ -66,7 +66,7 @@ export function MenuTreeSection({
       {/* 검색 및 전체 확장/축소 */}
       <div className="flex gap-2">
         <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground pointer-events-none" />
+          <Search aria-hidden="true" className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground pointer-events-none" />
           <Input
             placeholder="메뉴 검색..."
             value={searchQuery}
@@ -83,9 +83,9 @@ export function MenuTreeSection({
           aria-label={expandAll ? "전체 축소" : "전체 확장"}
         >
           {expandAll ? (
-            <ChevronUp className="h-4 w-4" />
+            <ChevronUp aria-hidden="true" className="h-4 w-4" />
           ) : (
-            <ChevronDown className="h-4 w-4" />
+            <ChevronDown aria-hidden="true" className="h-4 w-4" />
           )}
         </Button>
       </div>

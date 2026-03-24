@@ -133,7 +133,7 @@ export default function UserDetailPage() {
             size="icon"
             onClick={() => router.push("/users")}
           >
-            <ArrowLeft className="h-5 w-5" />
+            <ArrowLeft aria-hidden="true" className="h-5 w-5" />
           </Button>
           <div>
             <div className="flex items-center gap-3">
@@ -162,7 +162,7 @@ export default function UserDetailPage() {
             variant="outline"
             onClick={() => router.push(`/users/${id}/edit`)}
           >
-            <Edit className="mr-2 h-4 w-4" />
+            <Edit aria-hidden="true" className="mr-2 h-4 w-4" />
             수정
           </Button>
         </div>

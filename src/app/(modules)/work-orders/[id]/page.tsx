@@ -114,7 +114,7 @@ function ActionButtons({
           variant="outline"
           onClick={() => router.push(`/work-orders/${workOrderId}/edit`)}
         >
-          <Edit className="mr-2 h-4 w-4" />
+          <Edit aria-hidden="true" className="mr-2 h-4 w-4" />
           수정
         </Button>
       )}
@@ -122,13 +122,13 @@ function ActionButtons({
       {/* 더보기 메뉴 */}
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="outline" size="icon">
-            <MoreHorizontal className="h-4 w-4" />
+          <Button variant="outline" size="icon" aria-label="더 보기">
+            <MoreHorizontal aria-hidden="true" className="h-4 w-4" />
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           <DropdownMenuItem onClick={handleCopy}>
-            <Copy className="mr-2 h-4 w-4" />
+            <Copy aria-hidden="true" className="mr-2 h-4 w-4" />
             복사
           </DropdownMenuItem>
           {state !== WorkOrderState.CANCEL &&
@@ -403,7 +403,7 @@ export default function WorkOrderDetailPage() {
             size="icon"
             onClick={() => router.push("/work-orders")}
           >
-            <ArrowLeft className="h-5 w-5" />
+            <ArrowLeft aria-hidden="true" className="h-5 w-5" />
           </Button>
           <div>
             <div className="flex items-center gap-3">

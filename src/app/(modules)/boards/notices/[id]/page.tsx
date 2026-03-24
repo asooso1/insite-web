@@ -133,7 +133,7 @@ function CommentItem({
               className="h-6 w-6"
               onClick={handleDelete}
             >
-              <Trash2 className="h-3 w-3" />
+              <Trash2 aria-hidden="true" className="h-3 w-3" />
             </Button>
           </div>
         </div>
@@ -214,7 +214,7 @@ export default function NoticeDetailPage() {
             size="icon"
             onClick={() => router.push("/boards")}
           >
-            <ArrowLeft className="h-5 w-5" />
+            <ArrowLeft aria-hidden="true" className="h-5 w-5" />
           </Button>
           <div>
             <div className="flex items-center gap-3">
@@ -239,7 +239,7 @@ export default function NoticeDetailPage() {
             variant="outline"
             onClick={() => router.push(`/boards/notices/${id}/edit`)}
           >
-            <Edit className="mr-2 h-4 w-4" />
+            <Edit aria-hidden="true" className="mr-2 h-4 w-4" />
             수정
           </Button>
           <Button
@@ -247,7 +247,7 @@ export default function NoticeDetailPage() {
             className="text-destructive"
             onClick={handleDelete}
           >
-            <Trash2 className="mr-2 h-4 w-4" />
+            <Trash2 aria-hidden="true" className="mr-2 h-4 w-4" />
             삭제
           </Button>
         </div>

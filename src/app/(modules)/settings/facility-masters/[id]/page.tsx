@@ -110,7 +110,7 @@ export default function FacilityMasterDetailPage() {
             size="icon"
             onClick={() => router.push("/settings")}
           >
-            <ArrowLeft className="h-5 w-5" />
+            <ArrowLeft aria-hidden="true" className="h-5 w-5" />
           </Button>
           <div>
             <h1 className="text-2xl font-bold">{master.name}</h1>
@@ -119,14 +119,14 @@ export default function FacilityMasterDetailPage() {
         </div>
         <div className="flex items-center gap-2">
           <Button variant="outline" onClick={handleCopy}>
-            <Copy className="mr-2 h-4 w-4" />
+            <Copy aria-hidden="true" className="mr-2 h-4 w-4" />
             복사
           </Button>
           <Button
             variant="outline"
             onClick={() => router.push(`/settings/facility-masters/${id}/edit`)}
           >
-            <Edit className="mr-2 h-4 w-4" />
+            <Edit aria-hidden="true" className="mr-2 h-4 w-4" />
             수정
           </Button>
         </div>

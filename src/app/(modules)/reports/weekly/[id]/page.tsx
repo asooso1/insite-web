@@ -33,15 +33,15 @@ export default function WeeklyReportDetailPage() {
   return (
     <div className="flex flex-col gap-6 p-6">
       <div className="flex items-center gap-4">
-        <Button variant="ghost" size="icon" onClick={() => router.push("/reports")}>
-          <ArrowLeft className="h-4 w-4" />
+        <Button variant="ghost" size="icon" onClick={() => router.push("/reports")} aria-label="뒤로가기">
+          <ArrowLeft aria-hidden="true" className="h-4 w-4" />
         </Button>
         <div className="flex-1">
           <h1 className="text-2xl font-bold">주간보고서</h1>
           <p className="text-muted-foreground">{report.buildingName} · {report.workDateFrom} ~ {report.workDateTo}</p>
         </div>
         <Button onClick={() => router.push(`/reports/weekly/${id}/edit`)}>
-          <Edit className="mr-2 h-4 w-4" />수정
+          <Edit aria-hidden="true" className="mr-2 h-4 w-4" />수정
         </Button>
       </div>
       <InfoPanel

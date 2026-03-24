@@ -79,8 +79,8 @@ export default function InvoiceDetailPage() {
     <div className="flex flex-col gap-6 p-6">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
-          <Button variant="ghost" size="icon" onClick={() => router.back()}>
-            <ArrowLeft className="h-4 w-4" />
+          <Button variant="ghost" size="icon" onClick={() => router.back()} aria-label="뒤로가기">
+            <ArrowLeft aria-hidden="true" className="h-4 w-4" />
           </Button>
           <div>
             <h1 className="text-2xl font-bold">{invoice.title}</h1>
@@ -93,7 +93,7 @@ export default function InvoiceDetailPage() {
             onClick={() => router.push(`/invoices/${id}/edit`)}
             size="sm"
           >
-            <Edit className="mr-2 h-4 w-4" />
+            <Edit aria-hidden="true" className="mr-2 h-4 w-4" />
             수정
           </Button>
           <Button
@@ -101,7 +101,7 @@ export default function InvoiceDetailPage() {
             variant="destructive"
             size="sm"
           >
-            <Trash2 className="mr-2 h-4 w-4" />
+            <Trash2 aria-hidden="true" className="mr-2 h-4 w-4" />
             삭제
           </Button>
         </div>

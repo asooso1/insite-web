@@ -76,6 +76,8 @@ export interface DataTableProps<TData> {
   pagination?: boolean;
   /** 페이지 크기 (기본: 10) */
   pageSize?: number;
+  /** 페이지 크기 선택 옵션 (기본: [10, 20, 50, 100]) */
+  pageSizeOptions?: number[];
   /** 가상 스크롤 활성화 (1000+ 행에서 권장) */
   virtualScroll?: boolean;
   /** 가상 스크롤 시 행 높이 (px) */
@@ -427,6 +429,7 @@ export function DataTable<TData>({
   error = false,
   pagination = false,
   pageSize = 10,
+  pageSizeOptions = [10, 20, 50, 100],
   virtualScroll = false,
   estimateRowHeight = 48,
   maxHeight = 600,
@@ -546,7 +549,7 @@ export function DataTable<TData>({
 
       {/* 페이지네이션 (가상 스크롤이 아닌 경우만) */}
       {pagination && !virtualScroll && (
-        <DataTablePagination table={table} />
+        <DataTablePagination table={table} pageSizeOptions={pageSizeOptions} />
       )}
     </div>
   );
@@ -558,10 +561,12 @@ export function DataTable<TData>({
 
 interface DataTablePaginationProps<TData> {
   table: ReturnType<typeof useReactTable<TData>>;
+  pageSizeOptions?: number[];
 }
 
 function DataTablePagination<TData>({
   table,
+  pageSizeOptions = [10, 20, 50, 100],
 }: DataTablePaginationProps<TData>): ReactNode {
   return (
     <div className="flex items-center justify-between px-2">
@@ -589,7 +594,7 @@ function DataTablePagination<TData>({
               <SelectValue placeholder={table.getState().pagination.pageSize} />
             </SelectTrigger>
             <SelectContent side="top">
-              {[10, 20, 30, 50, 100].map((size) => (
+              {pageSizeOptions.map((size) => (
                 <SelectItem key={size} value={`${size}`}>
                   {size}
                 </SelectItem>

@@ -172,17 +172,17 @@ function useMonthlyColumns(): ColumnDef<MonthlyReportDTO>[] {
         cell: ({ row }: { row: Row<MonthlyReportDTO> }) => (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="icon" className="h-8 w-8">
-                <MoreHorizontal className="h-4 w-4" />
+              <Button variant="ghost" size="icon" className="h-8 w-8" aria-label="더 보기">
+                <MoreHorizontal aria-hidden="true" className="h-4 w-4" />
                 <span className="sr-only">메뉴 열기</span>
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <DropdownMenuItem onClick={() => router.push(`/reports/monthly/${row.original.id}`)}>
-                <Eye className="mr-2 h-4 w-4" />상세 보기
+                <Eye aria-hidden="true" className="mr-2 h-4 w-4" />상세 보기
               </DropdownMenuItem>
               <DropdownMenuItem onClick={() => router.push(`/reports/monthly/${row.original.id}/edit`)}>
-                <Edit className="mr-2 h-4 w-4" />수정
+                <Edit aria-hidden="true" className="mr-2 h-4 w-4" />수정
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem
@@ -193,7 +193,7 @@ function useMonthlyColumns(): ColumnDef<MonthlyReportDTO>[] {
                   }
                 }}
               >
-                <Trash2 className="mr-2 h-4 w-4" />삭제
+                <Trash2 aria-hidden="true" className="mr-2 h-4 w-4" />삭제
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
@@ -264,17 +264,17 @@ function useWeeklyColumns(): ColumnDef<WeeklyReportDTO>[] {
         cell: ({ row }: { row: Row<WeeklyReportDTO> }) => (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="icon" className="h-8 w-8">
-                <MoreHorizontal className="h-4 w-4" />
+              <Button variant="ghost" size="icon" className="h-8 w-8" aria-label="더 보기">
+                <MoreHorizontal aria-hidden="true" className="h-4 w-4" />
                 <span className="sr-only">메뉴 열기</span>
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <DropdownMenuItem onClick={() => router.push(`/reports/weekly/${row.original.id}`)}>
-                <Eye className="mr-2 h-4 w-4" />상세 보기
+                <Eye aria-hidden="true" className="mr-2 h-4 w-4" />상세 보기
               </DropdownMenuItem>
               <DropdownMenuItem onClick={() => router.push(`/reports/weekly/${row.original.id}/edit`)}>
-                <Edit className="mr-2 h-4 w-4" />수정
+                <Edit aria-hidden="true" className="mr-2 h-4 w-4" />수정
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem
@@ -285,7 +285,7 @@ function useWeeklyColumns(): ColumnDef<WeeklyReportDTO>[] {
                   }
                 }}
               >
-                <Trash2 className="mr-2 h-4 w-4" />삭제
+                <Trash2 aria-hidden="true" className="mr-2 h-4 w-4" />삭제
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
@@ -350,17 +350,17 @@ function useWorkLogColumns(): ColumnDef<DailyReportDTO>[] {
         cell: ({ row }: { row: Row<DailyReportDTO> }) => (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="icon" className="h-8 w-8">
-                <MoreHorizontal className="h-4 w-4" />
+              <Button variant="ghost" size="icon" className="h-8 w-8" aria-label="더 보기">
+                <MoreHorizontal aria-hidden="true" className="h-4 w-4" />
                 <span className="sr-only">메뉴 열기</span>
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <DropdownMenuItem onClick={() => router.push(`/reports/work-logs/${row.original.id}`)}>
-                <Eye className="mr-2 h-4 w-4" />상세 보기
+                <Eye aria-hidden="true" className="mr-2 h-4 w-4" />상세 보기
               </DropdownMenuItem>
               <DropdownMenuItem onClick={() => router.push(`/reports/work-logs/${row.original.id}/edit`)}>
-                <Edit className="mr-2 h-4 w-4" />수정
+                <Edit aria-hidden="true" className="mr-2 h-4 w-4" />수정
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem
@@ -371,7 +371,7 @@ function useWorkLogColumns(): ColumnDef<DailyReportDTO>[] {
                   }
                 }}
               >
-                <Trash2 className="mr-2 h-4 w-4" />삭제
+                <Trash2 aria-hidden="true" className="mr-2 h-4 w-4" />삭제
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
@@ -492,7 +492,7 @@ export default function ReportListPage() {
         </div>
         {newPath && (
           <Button onClick={() => router.push(newPath)}>
-            <Plus className="mr-2 h-4 w-4" />
+            <Plus aria-hidden="true" className="mr-2 h-4 w-4" />
             새 보고서
           </Button>
         )}

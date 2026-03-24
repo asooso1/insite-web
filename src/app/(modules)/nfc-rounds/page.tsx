@@ -144,18 +144,18 @@ function FormRowActions({ row }: { row: Row<NfcRoundFormDTO> }) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="icon" className="h-8 w-8">
-          <MoreHorizontal className="h-4 w-4" />
+        <Button variant="ghost" size="icon" className="h-8 w-8" aria-label="더 보기">
+          <MoreHorizontal aria-hidden="true" className="h-4 w-4" />
           <span className="sr-only">메뉴 열기</span>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuItem onClick={() => router.push(`/nfc-rounds/${form.id}`)}>
-          <Eye className="mr-2 h-4 w-4" />
+          <Eye aria-hidden="true" className="mr-2 h-4 w-4" />
           상세 보기
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => router.push(`/nfc-rounds/${form.id}/edit`)}>
-          <Edit className="mr-2 h-4 w-4" />
+          <Edit aria-hidden="true" className="mr-2 h-4 w-4" />
           수정
         </DropdownMenuItem>
       </DropdownMenuContent>
@@ -314,7 +314,7 @@ export default function NfcRoundListPage() {
           isForms && (
             <Button asChild size="sm">
               <Link href="/nfc-rounds/new">
-                <Plus className="mr-1 h-4 w-4" />
+                <Plus aria-hidden="true" className="mr-1 h-4 w-4" />
                 새 라운드
               </Link>
             </Button>

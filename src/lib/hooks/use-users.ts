@@ -164,17 +164,11 @@ export function useDownloadUserExcel() {
   return useMutation({
     mutationFn: async (params: SearchUserVO) => {
       const blob = await downloadUserListExcel(params);
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = `users-${new Date().toISOString().split("T")[0]}.xlsx`;
-      document.body.appendChild(a);
-      try {
-        a.click();
-      } finally {
-        if (a.parentNode) document.body.removeChild(a);
-        window.URL.revokeObjectURL(url);
-      }
+      // triggerExcelDownload은 window만 사용하므로 클라이언트에서 직접 호출 가능
+      const { triggerExcelDownload, getTodayDateString } = await import(
+        "@/lib/utils/excel-download"
+      );
+      triggerExcelDownload(blob, `users-${getTodayDateString()}.xlsx`);
     },
   });
 }

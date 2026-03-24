@@ -147,7 +147,7 @@ export default function ClientDetailPage() {
             size="icon"
             onClick={() => router.push("/clients")}
           >
-            <ArrowLeft className="h-5 w-5" />
+            <ArrowLeft aria-hidden="true" className="h-5 w-5" />
           </Button>
           <div>
             <div className="flex items-center gap-3">
@@ -166,7 +166,7 @@ export default function ClientDetailPage() {
           variant="outline"
           onClick={() => router.push(`/clients/${id}/edit`)}
         >
-          <Edit className="mr-2 h-4 w-4" />
+          <Edit aria-hidden="true" className="mr-2 h-4 w-4" />
           수정
         </Button>
       </div>
@@ -288,7 +288,7 @@ export default function ClientDetailPage() {
                   disabled={addBaseArea.isPending}
                   className="shrink-0"
                 >
-                  <Plus className="h-4 w-4" />
+                  <Plus aria-hidden="true" className="h-4 w-4" />
                 </Button>
               </div>
 

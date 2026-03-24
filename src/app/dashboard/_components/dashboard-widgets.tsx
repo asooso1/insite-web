@@ -5,6 +5,7 @@ import { WorkOrderStatusWidget } from "@/components/widgets/dashboard/work-order
 import { NoticeWidget } from "@/components/widgets/dashboard/notice-widget";
 import { WorkStatusTableWidget } from "@/components/widgets/dashboard/work-status-table-widget";
 import { ScheduleWidget } from "@/components/widgets/dashboard/schedule-widget";
+import { FacilityStatusWidget } from "@/components/widgets/dashboard/facility-status-widget";
 import type { AuthUser } from "@/lib/stores/auth-store";
 
 interface DashboardWidgetsProps {
@@ -34,6 +35,14 @@ export function DashboardWidgets({ user }: DashboardWidgetsProps): ReactNode {
       <div className="col-span-1 md:col-span-2 lg:col-span-3">
         <WorkOrderStatusWidget
           instanceId="work-order-status"
+          config={widgetConfig}
+        />
+      </div>
+
+      {/* 시설 현황 KPI - 전체 너비 */}
+      <div className="col-span-1 md:col-span-2 lg:col-span-3">
+        <FacilityStatusWidget
+          instanceId="facility-status"
           config={widgetConfig}
         />
       </div>

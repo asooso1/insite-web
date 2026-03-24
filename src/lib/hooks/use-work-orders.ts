@@ -18,6 +18,9 @@ import {
   cancelMultiWorkOrder,
   addWorkOrderResult,
   downloadWorkOrderListExcel,
+  getWorkOrderFirstClasses,
+  getWorkOrderSecondClasses,
+  type WorkOrderClassDTO,
 } from "@/lib/api/work-order";
 import type {
   SearchWorkOrderVO,
@@ -78,6 +81,29 @@ export function useWorkOrderStateCount(params: SearchWorkOrderVO) {
     queryKey: workOrderKeys.stateCount(params),
     queryFn: () => getWorkOrderStatePerCount(params),
     staleTime: 30 * 1000, // 30초 - 목록 쿼리 표준
+  });
+}
+
+/**
+ * 작업 1차 분류 목록 조회 훅
+ */
+export function useWorkOrderFirstClasses() {
+  return useQuery({
+    queryKey: [...workOrderKeys.all, "firstClasses"] as const,
+    queryFn: getWorkOrderFirstClasses,
+    staleTime: Infinity, // 분류는 거의 안 바뀜
+  });
+}
+
+/**
+ * 작업 2차 분류 목록 조회 훅
+ */
+export function useWorkOrderSecondClasses(firstClassId: number | undefined) {
+  return useQuery({
+    queryKey: [...workOrderKeys.all, "secondClasses", firstClassId] as const,
+    queryFn: () => getWorkOrderSecondClasses(firstClassId!),
+    enabled: (firstClassId ?? 0) > 0,
+    staleTime: Infinity,
   });
 }
 
@@ -255,19 +281,11 @@ export function useDownloadWorkOrderExcel() {
   return useMutation({
     mutationFn: async (params: SearchWorkOrderVO) => {
       const blob = await downloadWorkOrderListExcel(params);
-      const url = window.URL.createObjectURL(blob);
-      let a: HTMLAnchorElement | null = null;
-      try {
-        a = document.createElement("a");
-        a.href = url;
-        a.download = `work-orders-${new Date().toISOString().split("T")[0]}.xlsx`;
-        document.body.appendChild(a);
-        a.click();
-      } finally {
-        // 실패해도 DOM 정리 보장
-        if (a?.parentNode) document.body.removeChild(a);
-        window.URL.revokeObjectURL(url);
-      }
+      // triggerExcelDownload은 window만 사용하므로 클라이언트에서 직접 호출 가능
+      const { triggerExcelDownload, getTodayDateString } = await import(
+        "@/lib/utils/excel-download"
+      );
+      triggerExcelDownload(blob, `work-orders-${getTodayDateString()}.xlsx`);
     },
   });
 }
