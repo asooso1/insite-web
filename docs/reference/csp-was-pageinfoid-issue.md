@@ -1,117 +1,117 @@
 # csp-was pageInfoId 권한 체계 미구현 이슈
 
-> **상태**: 미구현 (필수 구현 필요)
-> **우선순위**: 높음
-> **영향 범위**: 모든 `/api/site/**`, `/api/workorder/**` 등 화이트리스트 외 API 엔드포인트
+| 항목 | 내용 |
+|------|------|
+| 목적 | csp-was JwtFilter의 pageInfoId 헤더 요구로 인한 401 오류 해결 |
+| 상태 | 미구현 (의사결정 대기) |
+| 우선순위 | 높음 |
+| 담당 | 백엔드(csp-was) 또는 프론트엔드(insite-web) 판단 필요 |
+| 최종 업데이트 | 2026-03-24 |
 
-## 문제 개요
+> **AI 에이전트 사용법**: 401 오류가 토큰 만료가 아닌 경우, 이 문서를 참조하세요.
+> `handleAuthExpired`의 `isTokenExpired` 분기 로직과 `retry: false` 설정은
+> 이 이슈의 임시 우회책입니다. 근본 해결 전까지 제거하지 마세요.
 
-csp-was `JwtFilter`는 JWT 인증 외에 **페이지별 기능 URL 권한 체계**를 추가로 사용한다.
-insite-web은 이 체계를 구현하지 않아 일부 API 호출이 **항상 401 반환**된다.
+---
 
-## csp-was 권한 흐름
+## 1. 필요 액션
+
+아래 두 방안 중 하나를 선택해야 한다. **방안 A를 권장**한다.
+
+| 방안 | 작업 내용 | 변경량 | 복잡도 |
+|------|----------|--------|--------|
+| **A (권장)** | csp-was `JwtFilter`에서 `pageFunctionUrlDTOs` 없을 때 통과 허용 | 1줄 | 낮음 |
+| **B** | insite-web에서 매 API 요청에 `pageInfoId` 헤더 추가 | 다수 파일 | 높음 |
+
+**방안 A 권장 근거**: pageInfoId 체계는 Thymeleaf 기반 v1(csp-web)에 특화된 설계이며, insite-web은 Next.js middleware + JWT Role로 권한을 처리한다. Spring Security의 Role 체크는 방안 A에서도 유지된다.
+
+---
+
+## 2. 문제 요약
+
+csp-was `JwtFilter`는 JWT 인증 외에 **pageInfoId 헤더 기반 페이지별 URL 권한 검증**을 수행한다. insite-web은 이 헤더를 전송하지 않아, 화이트리스트에 없는 API가 **항상 401을 반환**한다.
+
+현재 임시 우회:
+- `client.ts`: 401 수신 시 토큰 만료 여부를 확인해 권한 부족 401은 무시
+- `use-buildings.ts`: `retry: false`로 무한 재시도 방지
+
+---
+
+## 3. 기술 상세
+
+### csp-was 권한 흐름
 
 ```
 요청 수신
-  → JWT 유효성 확인 (tokenProvider.getAuthVO)
-  → 화이트리스트 URL 체크 (requestAuthentication)
-      ✅ 화이트리스트에 있으면 → 통과
-      ❌ 없으면 → AccountJwt 테이블에서 pageFunctionUrls 조회
-          → pageInfoId 헤더 값과 매칭되는 URL 목록 조회
-          → 요청 URL이 목록에 있으면 → 통과
-          → 없거나 목록 없으면 → 401 반환
+  -> JWT 유효성 확인 (tokenProvider.getAuthVO)
+  -> 화이트리스트 URL 체크 (requestAuthentication)
+      [O] 화이트리스트 -> 통과
+      [X] 없음 -> AccountJwt.pageFunctionUrls 조회
+          -> pageInfoId 헤더로 허용 URL 목록 매칭
+          -> 요청 URL이 목록에 있으면 -> 통과
+          -> 없으면 -> 401 반환
 ```
 
 **관련 파일**: `csp-was/src/main/java/hdclabs/cspwas/filter/JwtFilter.java`
 
-### 화이트리스트 (pageInfoId 없이 통과되는 URL)
-```java
-/api/account/changePassword
-/api/account/token
+### 화이트리스트 (pageInfoId 없이 통과)
+
+```
+/api/account/changePassword, /api/account/token
 /api/mypage/myInfoView
-/open/**
-/widget/**
+/open/**, /widget/**, /api/poi/**, /api/field/**
+/api/devices/**, /api/chat/**
 /api/guest/workOrder, /api/guest/work-orders
-/api/poi/**
-/api/field/**
-/api/devices/**
 /api/guest/facilityList, /api/guest/buildingInfoList
-/api/chat/**
-/api/services/menus   ← 메뉴 API (화이트리스트)
-/api/admin/caches/**
+/api/services/menus, /api/admin/caches/**
 ```
 
-### 화이트리스트 미포함 (pageInfoId 필요)
-- `/api/site/buildingAccount/buildings` ← 헤더의 빌딩 목록
-- `/api/site/**` (대부분)
-- `/api/workorder/**` (일부)
-- 기타 대부분의 업무 API
+### 화이트리스트 미포함 (pageInfoId 필요 -> 현재 401)
 
-## v1 csp-web 구현 방식
+- `/api/site/buildingAccount/buildings` (헤더 빌딩 목록)
+- `/api/site/**`, `/api/workorder/**` 대부분
+- 기타 업무 API 전반
 
-v1 웹(csp-web)은 모든 API 요청에 `pageInfoId` 헤더를 함께 전송했다.
-`pageInfoId`는 현재 사용자가 보고 있는 페이지의 ID로, DB `AccountJwt` 테이블의
-`pageFunctionUrls` JSON과 매핑되어 해당 페이지에서 허용된 API URL 목록을 검증했다.
-
-## 현재 임시 처리 방식
-
-`src/lib/api/client.ts`의 `handleAuthExpired`:
-- 401 발생 시 JWT `exp` 클레임을 확인
-- **토큰이 유효하면** → 권한 부족 401로 판단 → 로그아웃 안 함 (무시)
-- **토큰이 만료됐으면** → 실제 인증 만료 → 로그아웃 + `/login` 리다이렉트
-
-빌딩 목록 (`/api/site/buildingAccount/buildings`):
-- 항상 401 반환 → 빈 배열 표시
-- `retry: false`로 무한 재시도 방지
-
-## 필수 구현 방안
-
-### 방안 A: csp-was JwtFilter 수정 (권장)
-
-`JwtFilter.requestAuthentication()` 에서 `pageFunctionUrlDTOs`가 없을 때 `false` → `true`로 변경:
+### 방안 A 구현 (csp-was 수정)
 
 ```java
-// JwtFilter.java
+// JwtFilter.java - pageFunctionUrlDTOs 없을 때 통과 허용
 if (pageFunctionUrlDTOs == null || pageFunctionUrlDTOs.isEmpty()) {
-    return true;  // false에서 변경 - JWT 유효하면 허용
+    return true;  // 기존 false -> true 변경
 }
 ```
 
-또는 특정 URL만 화이트리스트 추가:
-```java
-|| requestURI.startsWith("/api/site/buildingAccount/buildings")
-```
+### 방안 B 구현 (insite-web 수정)
 
-**효과**: JWT만 유효하면 모든 API 접근 허용. Spring Security의 Role 체크는 유지됨.
-
-### 방안 B: insite-web에서 pageInfoId 헤더 구현
-
-각 페이지에서 해당 pageInfoId를 헤더로 전송:
 ```typescript
-// API 요청 시 pageInfoId 헤더 추가
+// 매 API 요청에 pageInfoId 헤더 추가
 apiClient.get('/api/site/...', {
   headers: { 'pageInfoId': String(currentPageInfoId) }
 });
 ```
 
-**필요 작업**:
-1. DB에서 페이지별 pageInfoId 값 확인
-2. 각 모듈/페이지에 pageInfoId 매핑 테이블 작성
-3. API 호출 시 자동으로 헤더 추가하는 메커니즘 구현
+방안 B는 DB에서 페이지별 pageInfoId 매핑 확인, 모듈별 매핑 테이블 작성, 자동 헤더 주입 메커니즘 구현이 필요하여 복잡도가 높다.
 
-**단점**: 복잡도 높음, 유지보수 부담
+---
 
-## 결론 및 권장
+## 4. 영향받는 insite-web 코드
 
-**방안 A (csp-was 수정)를 권장**:
-- insite-web은 Next.js Server Component + middleware에서 인증/권한을 처리
-- csp-was의 페이지 기반 권한 체계는 Thymeleaf 기반 v1 아키텍처에 특화된 것
-- JWT Role 기반 권한은 Spring Security에서 여전히 유효하게 동작
+해결 후 아래 파일에서 임시 우회 코드를 제거/단순화할 수 있다.
 
-**구현 시 변경 파일**:
-- `csp-was/src/main/java/hdclabs/cspwas/filter/JwtFilter.java`
-- (방안 A 선택 시 약 1줄 변경)
+| 파일 | 현재 임시 처리 | 해결 후 변경 |
+|------|--------------|-------------|
+| `src/lib/api/client.ts` | `isTokenExpired()` 분기로 권한 부족 401 무시 | 모든 401을 인증 만료로 처리 (단순화) |
+| `src/lib/hooks/use-buildings.ts` | `retry: false` 2곳 설정 | 표준 retry 정책으로 복원 |
+| `src/lib/api/building.ts` | `/api/site/buildingAccount/buildings` 호출 | 정상 동작 (변경 없음) |
+| `src/proxy.ts` | `handleAuthExpired` 관련 로직 | 단순화 가능 |
 
-**구현 후 insite-web에서 제거/복원할 내용**:
-- `src/lib/api/client.ts`: `isTokenExpired()` 함수 단순화 가능 (모든 401을 만료로 처리)
-- `src/lib/hooks/use-buildings.ts`: `retry: false` 제거 가능
+---
+
+## 5. 타임라인
+
+| 시점 | 항목 |
+|------|------|
+| 즉시 | 방안 A/B 의사결정 확정 |
+| 확정 후 1일 | 방안 A: csp-was JwtFilter 1줄 수정 + 배포 |
+| 배포 후 1일 | insite-web 임시 우회 코드 제거 (위 4번 파일들) |
+| 방안 B 선택 시 | 별도 태스크 생성 필요 (예상 3~5일) |
