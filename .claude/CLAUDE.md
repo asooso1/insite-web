@@ -1,159 +1,58 @@
-# insite-web 개발 가이드
+# insite-web
 
-> Spring Boot + Vue.js -> Next.js 15 마이그레이션 | csp-was 변경은 CORS 1줄만 허용
-
-## 현재 상태
-
-Phase 1-9 + A-B 완료 (~75%) | Phase C-D 대기
-- 구현 완료: work-orders, facilities, users, clients, materials, boards, settings, licenses, patrols, reports, fieldwork, analysis, support
-- 진행 현황: `docs/task-progress.md` | 다음 단계: `docs/task-next.md`
-
-## 필수 규칙
-
-**언어:** 문서/주석/커밋/UI텍스트 한국어 | 변수명/함수명 영어 camelCase
-
-**용어 (변경 금지)**
-
-| 영문 | 한글 |
-|------|------|
-| Work Order | 작업 |
-| Facility | 시설 |
-| Building | 빌딩 |
-| Dashboard | 대시보드 |
-| Widget | 위젯 |
-
-**코드 금지:** `any` 타입 / `!important` / 인라인 스타일 / localStorage 토큰 저장 / refresh token 패턴 구현
-
-**URL 상태:** 단순 필터 → `useState`. 다중 필터/탭/공유가 필요한 복잡한 경우 → `nuqs` (`useQueryState` + parsers). 신규 모듈은 `nuqs` 권장.
-
-**커밋:** `<type>: <한글 설명>` (예: `feat: 사용자 목록 페이지 구현`)
-
-## 인증 아키텍처
-
-**csp-was 토큰 방식 (변경 금지 사항)**
-- 단일 JWT (`authToken`), **refresh token 없음**
-- 유효시간: **1시간** (만료 시 재로그인만 가능)
-- 알고리즘: HS256, Secret: Base64 디코딩 후 사용
-- 로그인: `POST /api/account/login` → `authToken` 반환
-- 건물/회사 전환 시 새 토큰 발급: `PUT /api/account/token`
-- 모든 API 요청: `Authorization: Bearer {token}` 헤더 필수
-
-**insite-web 토큰 처리 흐름**
-```
-로그인 성공
-  → /api/auth/login (Next.js Route)
-  → authToken → httpOnly 쿠키 "auth-token" 저장
-  → accessToken + user → 클라이언트 Zustand 저장
-
-페이지 리로드 (Zustand 초기화됨)
-  → AuthInitializer 마운트
-  → /api/auth/me 호출 (쿠키 자동 전송)
-  → JWT 디코딩 → Zustand 복원
-
-로그아웃
-  → /api/auth/logout → 쿠키 삭제 → clearAuth()
-```
-
-**인증 관련 파일**
-| 파일 | 역할 |
-|------|------|
-| `src/lib/auth/cookie.ts` | 쿠키 옵션 및 이름 상수 (`auth-token`) |
-| `src/lib/auth/token-config.ts` | JWT 클레임 타입, TTL 상수 |
-| `src/lib/auth/session.ts` | 서버 사이드 JWT 검증 유틸 |
-| `src/app/api/auth/login/route.ts` | 로그인 프록시, 쿠키 설정 |
-| `src/app/api/auth/logout/route.ts` | 쿠키 삭제 |
-| `src/app/api/auth/me/route.ts` | 쿠키 → user 정보 반환 |
-| `src/components/auth/auth-initializer.tsx` | 리로드 시 auth 복원 |
-| `src/lib/stores/auth-store.ts` | 메모리 auth 상태 (Zustand) |
-
-## 구현 패턴
-
-새 모듈 구현 시 기존 모듈 참조: `src/lib/{types,api,hooks}/facility.ts`, `src/app/(modules)/facilities/`
-
-### 1. 타입 (`lib/types/{module}.ts`)
-```
-Enum: const assertion + Label Record + Style Record 매핑
-DTO: 백엔드 응답 인터페이스 (id, 필드들)
-VO: 생성/수정 요청 (required만 필수)
-SearchVO: 검색 파라미터 (keyword?, page?, size?)
-```
-
-### 2. API (`lib/api/{module}.ts`)
-개별 export 함수 패턴 (`get{Module}List`, `add{Module}` 등)
-- URL 패턴/HTTP method는 모듈마다 상이 → **csp-was 컨트롤러 확인 필수**
-- JSON body: `apiClient.post/put` | 파일 포함: `apiClient.postForm/putForm`
-- 참조: `src/lib/api/facility.ts` (FormData), `src/lib/api/user.ts` (JSON)
-
-### 3. 훅 (`lib/hooks/use-{module}.ts`)
-```
-Keys Factory: all > lists > list(params) > details > detail(id)
-useQuery: queryKey + queryFn 조합
-useMutation: mutationFn + onSuccess invalidateQueries
-```
-
-### 4. 페이지 (`app/(modules)/{module}/`)
-```
-page.tsx              # 목록 (DataTable + 필터 + 페이지네이션)
-[id]/page.tsx         # 상세 (InfoPanel + 탭)
-[id]/edit/page.tsx    # 수정 (폼)
-new/page.tsx          # 등록 (폼)
-_components/          # {module}-form.tsx
-```
-
-## 규칙 파일 참조
-
-| 파일 | 내용 |
-|------|------|
-| `rules/auth.md` | JWT 처리, 토큰 저장, URL redirect 보안 |
-| `rules/error-handling.md` | API 에러 처리, toast, 로그아웃 패턴 |
-| `rules/component-patterns.md` | 목록/상세/폼 페이지 표준, React Query staleTime |
-| `rules/design-system.md` | 상태 표현, 접근성, 반응형, 타이포그래피 규칙 |
-| `rules/security.md` | OWASP 보안 체크리스트 (강화됨) |
-| `rules/performance.md` | React Query 표준, staleTime 기준 |
-| `rules/coding-style.md` | 코드 스타일, TypeScript 규칙 |
-
-## 커스텀 스킬 (커밋 전 검증)
-
-커밋 전 `/pre-commit` 실행 필수. 개별 검증은 아래 스킬 사용:
-
-| 스킬 | 용도 |
-|------|------|
-| `/pre-commit` | 전체 검증 종합 (빌드 + 린트 + 아래 모든 검사) |
-| `/check-api` | API 클라이언트 패턴 (buildingId 주입, fetch 금지, 파라미터 기본값) |
-| `/check-hooks` | React Query 패턴 (staleTime, queryKey factory, enabled 조건) |
-| `/check-components` | 컴포넌트 패턴 (window.alert, console.log, StatusBadge, DataTable) |
-| `/check-security` | 보안 패턴 (localStorage 토큰, 하드코딩 시크릿, open redirect, XSS) |
+> Next.js 15 빌딩 관리 시스템 | csp-was REST API 백엔드 | Phase 9+A-B 완료 (~75%)
 
 ## 명령어
 
-`npm run dev` | `npm run build` (커밋 전 필수) | `npm run lint`
+```
+npm run dev          # 개발 서버 (localhost:3000)
+npm run build        # 프로덕션 빌드 (커밋 전 필수)
+npm run lint         # ESLint
+npm run test         # Vitest 단위/통합 테스트
+npm run test:run     # CI용 1회 실행
+npm run storybook    # Storybook (localhost:6006)
+```
 
-## 참조 경로
+## 절대 금지
 
-**백엔드 (csp-was):**
-- 컨트롤러: `/Volumes/jinseok-SSD-1tb/00_insite/csp-was/src/main/java/hdclabs/cspwas/controller/`
-- 엔티티/VO: `/Volumes/jinseok-SSD-1tb/00_insite/csp-was/src/main/java/hdclabs/cspwas/model/`
+- `any` 타입
+- `!important`
+- 인라인 스타일 (`style={{}}`)
+- localStorage 토큰 저장
+- refresh token 구현
+- 직접 `fetch()` (apiClient 사용)
+- `window.alert/confirm` (toast/AlertDialog 사용)
 
-**기존 프론트엔드 (csp-web):**
-- 템플릿: `/Volumes/jinseok-SSD-1tb/00_insite/csp-web/src/main/resources/templates/`
+## 언어 규칙
 
+문서/주석/커밋/UI → **한국어** | 변수/함수명 → **영어 camelCase**
+커밋: `<type>: <한국어 설명>` (feat/fix/refactor/docs/test/chore/perf/ci)
 
-<claude-mem-context>
-# Recent Activity
+## 인증 (변경 금지)
 
-<!-- This section is auto-generated by claude-mem. Edit content outside the tags. -->
+단일 JWT (`authToken`), refresh token 없음, 1시간 만료
+- 클라이언트: `apiClient` → Authorization 자동 주입
+- API Route: `request.cookies.get("auth-token")?.value`로 직접 추출
+- buildingId: `apiClient`가 자동 주입 (수동 추가 금지)
 
-### Feb 23, 2026
+## 새 모듈 구현 시
 
-| ID | Time | T | Title | Read |
-|----|------|---|-------|------|
-| #1113 | 9:19 AM | 🔄 | Optimized insite-web CLAUDE.md documentation with 66% size reduction | ~704 |
-| #1106 | 9:14 AM | 🔵 | Architect review identified API pattern documentation inaccuracies | ~639 |
-| #1105 | 9:10 AM | ⚖️ | Documentation optimization plan for CLAUDE.md files | ~457 |
+기존 모듈 참조: `src/lib/{types,api,hooks}/facility.ts` + `src/app/(modules)/facilities/`
 
-### Mar 11, 2026
+1. **타입**: `lib/types/{module}.ts` — Enum + DTO + VO + SearchVO
+2. **API**: `lib/api/{module}.ts` — apiClient.get/post/put/delete (URL은 csp-was 컨트롤러 확인)
+3. **훅**: `lib/hooks/use-{module}.ts` — Keys factory + useQuery(staleTime 필수) + useMutation
+4. **페이지**: `app/(modules)/{module}/` — page.tsx + [id]/page.tsx + new/page.tsx + [id]/edit/page.tsx
+5. **Stories**: 새 컴포넌트는 `.stories.tsx` 필수 생성. **기존 컴포넌트 사용 전 Stories 파일 먼저 읽기.**
 
-| ID | Time | T | Title | Read |
-|----|------|---|-------|------|
-| #1640 | 11:31 AM | ✅ | Design System Rules Added to Claude Documentation Index | ~511 |
-</claude-mem-context>
+## 커밋 전 검증
+
+`/pre-commit` 실행 필수. 개별: `/check-api` `/check-hooks` `/check-components` `/check-security`
+
+## 참조
+
+- 진행 현황: @docs/task-progress.md
+- 다음 단계: @docs/task-next.md
+- API 스펙: @docs/reference/api-backend-spec.md
+- v1 마이그레이션: @docs/reference/v1-migration-reference.md
+- 차단 이슈: @docs/reference/csp-was-pageinfoid-issue.md

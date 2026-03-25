@@ -1,8 +1,8 @@
 # insite-web 다음 단계 구현 태스크리스트
 
-> 기준: docs/ux-analysis/00-gap-analysis-report.md GAP 분석 결과
-> 작성일: 2026-03-23
-> 현재 상태: Phase 1-9 완료 (~72% 구현)
+> 기준: docs/deprecated/ux-analysis/00-gap-analysis-report.md GAP 분석 결과
+> 작성일: 2026-03-23 | 최종 수정: 2026-03-25
+> 현재 상태: Phase 1-9 + A-B 완료 (~75% 구현)
 > 목표: Phase 10-11 포함 전체 기능 완성
 
 ---

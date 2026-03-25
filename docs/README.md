@@ -11,11 +11,9 @@ docs/
 ├── task-next.md               ← 다음 단계 로드맵 (Phase A~D)
 │
 ├── reference/                 ← 개발 시 참조하는 살아있는 문서
-│   ├── csp-was-api-spec.md    # csp-was 컨트롤러별 API 전체 스펙
-│   ├── v1-api-reference.md    # v1(csp-web) HTML에서 추출한 API 호출 패턴
-│   ├── v1-module-map.md       # v1 모듈 33개 상세 (HTML 파일 매핑)
-│   ├── v1-modules-summary.md  # v1 vs v2 모듈 체크리스트 요약
-│   ├── v1-gap-analysis.md     # v1 vs v2 기능 GAP 분석 (22개 미구현)
+│   ├── api-backend-spec.md    # csp-was 도메인별 API 전체 스펙 (62 컨트롤러, 681+ 엔드포인트)
+│   ├── api-frontend-patterns.md # v1 프론트엔드 API 호출 패턴 (파라미터, 요청 방식)
+│   ├── v1-migration-reference.md # v1→v2 마이그레이션 통합 참조 (모듈 현황, GAP, BEMS/BECM)
 │   ├── csp-was-pageinfoid-issue.md  # [차단] pageInfoId 권한 이슈
 │   └── upgrade-notes.md       # 패키지 메이저 업그레이드 이력
 │
@@ -38,17 +36,15 @@ docs/
 | `task-progress.md` | Phase 1~9 완료 현황, 종합검토 이슈 이력 | 매 Phase 완료 시 |
 | `task-next.md` | Phase A~D 로드맵 (25개 태스크, ~38주) | 태스크 시작/완료 시 |
 
-## 참조 문서 (7개)
+## 참조 문서 (5개)
 
 | 문서 | 용도 | 사용 시점 |
 |------|------|----------|
-| `reference/csp-was-api-spec.md` | 백엔드 API 전체 목록 | 새 모듈 구현 시 |
-| `reference/v1-api-reference.md` | v1 API 호출 패턴 | v1 동작 재현 시 |
-| `reference/v1-module-map.md` | v1 모듈 상세 (585 HTML) | BEMS/BECM 구현 시 |
-| `reference/v1-modules-summary.md` | v1 vs v2 모듈 체크리스트 | 진행률 확인 시 |
-| `reference/v1-gap-analysis.md` | 미구현 22개 모듈 GAP | Phase D 계획 시 |
-| `reference/csp-was-pageinfoid-issue.md` | pageInfoId 차단 이슈 | csp-was 수정 협의 시 |
-| `reference/upgrade-notes.md` | 패키지 업그레이드 이력 | 의존성 문제 발생 시 |
+| `reference/api-backend-spec.md` | csp-was 62개 컨트롤러 681+ 엔드포인트 (도메인별) | 새 모듈 구현 시 API 확인 |
+| `reference/api-frontend-patterns.md` | v1이 API를 어떻게 호출했는지 (파라미터, 패턴) | v1 동작 재현 시 |
+| `reference/v1-migration-reference.md` | v1→v2 통합 참조 (13 구현/20 미구현, BEMS/BECM 상세) | 마이그레이션 계획 시 |
+| `reference/csp-was-pageinfoid-issue.md` | pageInfoId 차단 이슈 (방안 A 권장) | csp-was 수정 협의 시 |
+| `reference/upgrade-notes.md` | 패키지 메이저 업그레이드 이력 | 의존성 문제 발생 시 |
 
 ## 개발 규칙 (.claude/rules/)
 
@@ -56,8 +52,7 @@ docs/
 
 | 규칙 파일 | 내용 |
 |----------|------|
-| `api-auth.md` | API 인증 패턴 (Bearer 토큰, 쿠키) |
-| `auth.md` | JWT 처리, 토큰 저장, 인증 상태 |
+| `auth.md` | JWT 처리, 토큰 저장, API 인증 패턴, 인증 상태 |
 | `building-context.md` | buildingId 자동 주입 |
 | `coding-style.md` | TypeScript/React 코딩 규칙 |
 | `component-patterns.md` | 목록/상세/폼 페이지 표준 |

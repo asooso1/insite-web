@@ -22,12 +22,12 @@ if [ -n "$ALERT" ]; then
   ISSUES="$ISSUES\n[window.alert/confirm 발견]\n$ALERT"
 fi
 
-# 2. console.log/error 프로덕션 코드 체크 (API 라우트, error.tsx 제외)
-CONSOLE=$(grep -rn "console\.log\|console\.error\|console\.warn" src/app/ src/components/ 2>/dev/null \
+# 2. console.log/error 프로덕션 코드 체크 (warn은 의도적 경고로 허용, API 라우트/error.tsx 제외)
+CONSOLE=$(grep -rn "console\.log\|console\.error" src/app/ src/components/ 2>/dev/null \
   | grep -v "NODE_ENV\|development\|\.stories\.\|src/app/api/\|src/app/error\." \
   | grep -v ":[[:space:]]*\*\|:[[:space:]]*//" | head -3)
 if [ -n "$CONSOLE" ]; then
-  ISSUES="$ISSUES\n[console.log 프로덕션 코드 발견]\n$CONSOLE"
+  ISSUES="$ISSUES\n[console.log/error 프로덕션 코드 발견]\n$CONSOLE"
 fi
 
 # 3. any 타입 체크

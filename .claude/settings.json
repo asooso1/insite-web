@@ -6,7 +6,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash /Volumes/jinseok-SSD-1tb/00_insite/insite-web/.claude/hooks/pre-commit-check.sh",
+            "command": "bash /Users/mac_mini/00_insite/insite-web/.claude/hooks/pre-commit-check.sh",
             "timeout": 30
           }
         ]
@@ -18,7 +18,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash /Volumes/jinseok-SSD-1tb/00_insite/insite-web/.claude/hooks/post-edit-check.sh",
+            "command": "bash /Users/mac_mini/00_insite/insite-web/.claude/hooks/post-edit-check.sh",
             "timeout": 15
           }
         ]
@@ -29,7 +29,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash /Volumes/jinseok-SSD-1tb/00_insite/insite-web/.claude/hooks/stop-check.sh",
+            "command": "bash /Users/mac_mini/00_insite/insite-web/.claude/hooks/stop-check.sh",
             "timeout": 10
           }
         ]

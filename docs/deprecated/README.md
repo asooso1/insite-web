@@ -15,7 +15,7 @@
 
 | 문서 | 사유 |
 |------|------|
-| `api-audit.md` | OpenAPI 스펙 추출 미완성, csp-was-api-spec.md로 대체 |
+| `api-audit.md` | OpenAPI 스펙 추출 미완성, api-backend-spec.md로 대체 |
 | `infrastructure-decisions.md` | 인프라 결정 완료, 실제 배포 환경으로 진행 |
 | `performance-baseline.md` | 성능 측정 미실행, Phase 7에서 별도 최적화 |
 | `prisma-schema-design.md` | Prisma 대신 menu_insite_mapping 직접 쿼리로 결정 |

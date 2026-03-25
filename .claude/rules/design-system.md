@@ -43,195 +43,23 @@ Stories 파일을 읽지 않고 컴포넌트를 사용하는 것은 **금지**. 
 
 ## 컴포넌트 카탈로그
 
-### UI 기본 (`src/components/ui/`)
+전체 목록은 `/component-catalog` 스킬 참조. 자주 쓰는 컴포넌트:
 
-| 컴포넌트 | Story 경로 | 주요 용도 |
-|---------|------------|---------|
-| `Button` | UI/Button | 액션 버튼 (variant: default/destructive/outline/secondary/ghost/link) |
-| `Input` | UI/Input | 텍스트 입력 |
-| `Textarea` | UI/Textarea | 멀티라인 입력 |
-| `Select` | UI/Select | 드롭다운 선택 |
-| `Checkbox` | UI/Checkbox | 체크박스 |
-| `Switch` | UI/Switch | 토글 스위치 |
-| `Tabs` | UI/Tabs | 탭 네비게이션 |
-| `Dialog` | UI/Dialog | 모달 다이얼로그 |
-| `AlertDialog` | UI/AlertDialog | 확인 다이얼로그 (삭제 등 위험 액션) |
-| `Badge` | UI/Badge | 인라인 배지 (variant: default/secondary/destructive/outline) |
-| `Card` | UI/Card | 카드 컨테이너 |
-| `Skeleton` | UI/Skeleton | 로딩 스켈레톤 |
-| `Pagination` | UI/Pagination | 페이지네이션 |
-| `Label` | UI/Label | 폼 필드 레이블 |
-| `DropdownMenu` | UI/DropdownMenu | 드롭다운 메뉴 (컨텍스트 메뉴, 액션 메뉴) |
-| `Tooltip` | UI/Tooltip | 툴팁 |
-| `Separator` | UI/Separator | 구분선 (가로/세로) |
-| `Accordion` | UI/Accordion | 아코디언 |
-| `Breadcrumb` | UI/Breadcrumb | 경로 탐색 (3단계 이상) |
-| `Table` | UI/Table | 기본 HTML 테이블 래퍼 (단순 표 용도만) |
-| `Popover` | UI/Popover | 팝오버 (필터, 미니폼 등) |
-| `ScrollArea` | UI/ScrollArea | 커스텀 스크롤 영역 |
-| `Command` | UI/Command | 검색/명령 팔레트 |
-| `Toggle` | UI/Toggle | 토글 버튼 |
-| `ToggleGroup` | UI/ToggleGroup | 토글 그룹 (뷰 전환, 다중 선택) |
-| `Avatar` | UI/Avatar | 사용자 아바타 (이미지 + 이니셜 폴백) |
-| `Progress` | UI/Progress | 진행 상태 바 (variant: default/success/warning/error) |
-| `Alert` | UI/Alert | 인라인 알림 (variant: default/destructive/warning/success/info) |
-| `Sheet` | UI/Sheet | 슬라이드 패널 (side: right/left/bottom/top) |
-| `Slider` | UI/Slider | 범위 슬라이더 (단일값/범위) |
-| `NumberInput` | UI/NumberInput | 숫자 증감 입력 (-/+ 버튼) |
-| `RadioGroup` | UI/RadioGroup | 라디오 그룹 |
-| `AspectRatio` | UI/AspectRatio | 비율 고정 컨테이너 |
-| `Sonner` | UI/Sonner | 토스트 알림 (sonner 라이브러리) |
-
-### 데이터 표시 (`src/components/data-display/`)
-
-| 컴포넌트 | Story 경로 | 주요 용도 |
-|---------|------------|---------|
-| `DataTable` | DataDisplay/DataTable | 목록 테이블 (TanStack Table 기반, 페이지네이션/정렬/선택 내장) |
-| `DataTableToolbar` | DataDisplay/DataTableToolbar | DataTable 상단 툴바 |
-| `StatusBadge` | DataDisplay/StatusBadge | 상태 배지 (도메인 상태 매핑) |
-| `EmptyState` | DataDisplay/EmptyState | 빈/에러/검색없음 상태 |
-| `KpiCard` | DataDisplay/KpiCard | KPI 수치 카드 |
-| `InfoPanel` | DataDisplay/InfoPanel | 레이블-값 목록 패널 |
-| `Chip` | DataDisplay/Chip | 태그/칩 |
-| `StatWidget` | DataDisplay/StatWidget | 통계 위젯 |
-| `Loader` | DataDisplay/Loader | 로딩 스피너 |
-
-### 공통 (`src/components/common/`)
-
-| 컴포넌트 | Story 경로 | 주요 용도 |
-|---------|------------|---------|
-| `PageHeader` | Common/PageHeader | 페이지 헤더 (제목+설명+아이콘+통계+액션) |
-| `FilterBar` | Common/FilterBar | 목록 페이지 필터 (tabs/date-range/select/search) |
-
-### 폼 (`src/components/forms/`)
-
-| 컴포넌트 | Story 경로 | 주요 용도 |
-|---------|------------|---------|
-| `FormField` | Forms/FormField | 레이블+입력+에러 래퍼 (폼의 기본 단위) |
-| `DatePicker` | Forms/DatePicker | 날짜 선택 |
-| `FileUpload` | Forms/FileUpload | 파일 업로드 |
-| `CascadingSelect` | Forms/CascadingSelect | 계층형 선택 (빌딩→층→구역 등) |
-| `MultiSelect` | Forms/MultiSelect | 다중 선택 (검색 가능, 칩 표시) |
-| `Combobox` | Forms/Combobox | 검색 가능한 단일 선택 드롭다운 |
-
-### 차트 (`src/components/charts/`)
-
-| 컴포넌트 | Story 경로 | 주요 용도 |
-|---------|------------|---------|
-| `AreaChart` | Charts/AreaChart | 영역 차트 (에너지 추이 등) |
-| `BarChart` | Charts/BarChart | 막대 차트 |
-| `LineChart` | Charts/LineChart | 선 차트 |
-| `PieChart` | Charts/PieChart | 파이/도넛 차트 |
-
-### 서드파티 (`src/components/third-party/`)
-
-| 컴포넌트 | Story 경로 | 주요 용도 |
-|---------|------------|---------|
-| `RichTextEditor` | ThirdParty/RichTextEditor | 리치 텍스트 편집기 |
-| `Calendar` | ThirdParty/Calendar | 달력/일정 |
-| `PrintButton` | ThirdParty/PrintButton | 인쇄 버튼 |
-
----
-
-## FilterBar 표준 패턴
-
-목록 페이지의 필터는 반드시 `FilterBar` 컴포넌트를 사용한다.
-
-```typescript
-import { FilterBar, type FilterDef } from "@/components/common/filter-bar";
-
-// 1. 필터 정의 (파일 상단 상수로 선언)
-const FILTER_DEFS: FilterDef[] = [
-  { type: "tabs", key: "state", options: STATE_OPTIONS },
-  { type: "date-range", fromKey: "dateFrom", toKey: "dateTo" },
-  { type: "select", key: "searchCode", options: SEARCH_CODE_OPTIONS },
-  { type: "search", key: "keyword", placeholder: "검색어를 입력하세요" },
-];
-
-// 2. 초기값 (tabs의 첫 option.value, 나머지 빈 문자열)
-const INITIAL_FILTERS = { state: "", dateFrom: "", dateTo: "", searchCode: "title", keyword: "" };
-
-// 3. 페이지 컴포넌트
-function Page() {
-  const [filters, setFilters] = useState(INITIAL_FILTERS);
-
-  const handleFilterChange = (key: string, value: string) => {
-    setFilters(prev => ({ ...prev, [key]: value }));
-  };
-
-  const handleFilterReset = () => setFilters(INITIAL_FILTERS);
-
-  return (
-    <FilterBar
-      filters={FILTER_DEFS}
-      values={filters}
-      onChange={handleFilterChange}
-      onReset={handleFilterReset}
-      rightSlot={<Button variant="outline" size="sm">엑셀 다운로드</Button>}
-    />
-  );
-}
-```
-
-**FilterDef 타입 정리:**
-
-| type | 필수 props | 선택 props |
-|------|-----------|-----------|
-| `tabs` | `key`, `options` | - |
-| `select` | `key`, `options` | `placeholder`, `allLabel` |
-| `search` | `key` | `placeholder` |
-| `date-range` | `fromKey`, `toKey` | `fromPlaceholder`, `toPlaceholder` |
-
----
-
-## PageHeader 표준 패턴
-
-```typescript
-import { PageHeader } from "@/components/common/page-header";
-import { Wrench } from "lucide-react";
-
-// 목록 페이지
-<PageHeader
-  title="수시업무 목록"
-  description="빌딩 시설물 유지보수 작업을 관리합니다"
-  icon={Wrench}
-  stats={[
-    { label: "전체", value: 128 },
-    { label: "진행중", value: 12, variant: "muted" },
-  ]}
-  actions={
-    <Button asChild>
-      <Link href="/work-orders/new">새 작업지시</Link>
-    </Button>
-  }
-/>
-
-// 상세 페이지 (뒤로가기 버튼은 클라이언트 컴포넌트로 분리)
-<PageHeader title="수시업무 상세" />
-```
+| 상황 | 컴포넌트 | 경로 |
+|------|---------|------|
+| 목록 테이블 | `DataTable` | `data-display/data-table` |
+| 상태 배지 | `StatusBadge` | `data-display/status-badge` |
+| 빈/에러 상태 | `EmptyState` | `data-display/empty-state` |
+| 페이지 헤더 | `PageHeader` | `common/page-header` |
+| 필터 | `FilterBar` | `common/filter-bar` |
+| 폼 필드 | `FormField` | `forms/form-field` |
+| 삭제 확인 | `AlertDialog` | `ui/alert-dialog` |
 
 ---
 
 ## StatusBadge 사용 패턴
 
 직접 색상 클래스 사용 **금지**. `StatusBadge` 컴포넌트만 사용.
-
-```typescript
-import { StatusBadge } from "@/components/data-display/status-badge";
-
-// ❌ 금지
-<span className="text-green-600 bg-green-100">운영중</span>
-
-// ✅ 도메인 상태 직접 사용 (WorkOrderState, FacilityState enum 값)
-<StatusBadge status="COMPLETE" />
-<StatusBadge status="ONGOING_OPERATING" />
-
-// ✅ 제네릭 상태 (도메인 enum이 없는 경우)
-<StatusBadge status="pending" />    // 대기
-<StatusBadge status="inProgress" /> // 진행중
-<StatusBadge status="completed" />  // 완료
-<StatusBadge status="cancelled" />  // 취소
-```
 
 **지원 status 값:**
 - 수시업무: `WRITE` / `ISSUE` / `PROCESSING` / `REQ_COMPLETE` / `COMPLETE` / `CANCEL`
@@ -406,57 +234,11 @@ export function BackButton() {
 
 ---
 
-## Storybook 활용 가이드
+## Storybook 활용
 
-### 컴포넌트 사용 전 (필수)
-
-```
-# AI 에이전트 / 개발자 모두 동일하게 적용
-1. 위 카탈로그에서 컴포넌트 확인
-2. src/components/{category}/{name}.stories.tsx 파일 Read
-3. Stories에서 props API, variant, 올바른 사용 패턴 확인
-4. 확인된 패턴 그대로 구현
-```
-
-### 컴포넌트 생성 후 (필수)
-
-Stories 파일 구조:
-```typescript
-// src/components/{category}/{name}.stories.tsx
-import type { Meta, StoryObj } from "@storybook/react";
-import { ComponentName } from "./component-name";
-
-const meta = {
-  title: "Category/ComponentName",  // 카탈로그 경로와 일치
-  component: ComponentName,
-  parameters: { layout: "padded" },
-  tags: ["autodocs"],
-} satisfies Meta<typeof ComponentName>;
-
-export default meta;
-type Story = StoryObj<typeof meta>;
-
-export const Default: Story = { args: { /* 기본값 */ } };
-export const WithVariant: Story = { /* 주요 variant */ };
-export const EdgeCase: Story = { /* 비활성/에러/빈 상태 */ };
-export const InContext: Story = { render: () => (/* 실제 사용 맥락 */) };
-```
-
-**Stories 파일 위치 규칙:**
-| 컴포넌트 위치 | Stories 위치 |
-|-------------|------------|
-| `src/components/ui/foo.tsx` | `src/components/ui/foo.stories.tsx` |
-| `src/components/common/bar.tsx` | `src/components/common/bar.stories.tsx` |
-| `src/components/data-display/baz.tsx` | `src/components/data-display/baz.stories.tsx` |
-| `src/components/forms/qux.tsx` | `src/components/forms/qux.stories.tsx` |
-| `src/components/charts/chart.tsx` | `src/components/charts/chart.stories.tsx` |
-| `src/components/third-party/lib.tsx` | `src/components/third-party/lib.stories.tsx` |
-
-### Storybook 실행
-
-```bash
-npm run storybook   # http://localhost:6006
-```
+컴포넌트 사용 전: `src/components/{category}/{name}.stories.tsx` 파일을 먼저 읽어 올바른 props 확인.
+새 컴포넌트 생성 후: 동일 경로에 `.stories.tsx` 파일 생성 필수 (Default + 주요 variant + InContext).
+Stories 상세 구조: `/component-catalog` 스킬 참조.
 
 ---
 
