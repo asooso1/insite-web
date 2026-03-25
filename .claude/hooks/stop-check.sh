@@ -1,10 +1,17 @@
 #!/bin/bash
-# 세션 종료 시 미커밋 소스 변경사항 안내
-# Stop 훅에서 실행
+# Stop 훅: 세션 종료 시 미커밋 변경사항 안내 + cmux 상태 초기화
 
-# 프로젝트 루트 기준으로 실행 (hooks/ 디렉토리 기준 상위 3단계)
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-PROJECT_ROOT="$(cd "$SCRIPT_DIR/../../.." && pwd)"
+PROJECT_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
+
+# cmux 정리
+if cmux ping &>/dev/null; then
+  cmux claude-hook stop 2>/dev/null || true
+  cmux clear-progress 2>/dev/null || true
+  cmux set-status "agent" "종료됨" --icon "circle" --color "#94a3b8" 2>/dev/null || true
+  cmux notify --title "Claude Code" --subtitle "$(basename "$PROJECT_ROOT")" --body "세션이 종료되었습니다." 2>/dev/null || true
+  cmux log "세션 종료" --level "info" --source "claude" 2>/dev/null || true
+fi
 
 # .omc/, CLAUDE.md 등 비소스 파일 제외하고 실제 소스 변경사항 확인
 CHANGES=$(git -C "$PROJECT_ROOT" status --short 2>/dev/null \
@@ -13,7 +20,6 @@ CHANGES=$(git -C "$PROJECT_ROOT" status --short 2>/dev/null \
 
 if [ -n "$CHANGES" ]; then
   COUNT=$(echo "$CHANGES" | wc -l | tr -d ' ')
-  # Stop 훅: additionalContext 형식으로 Claude에게 전달
   jq -n --arg msg "미커밋 소스 변경사항 ${COUNT}개 있음. 커밋 전 /pre-commit 검증 권장." \
     '{"hookSpecificOutput": {"hookEventName": "Stop", "additionalContext": $msg}}'
 fi

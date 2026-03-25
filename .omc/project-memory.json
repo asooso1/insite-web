@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "lastScanned": 1774312583666,
+  "lastScanned": 1774401784941,
   "projectRoot": "/Volumes/jinseok-SSD-1tb/00_insite/insite-web",
   "techStack": {
     "languages": [
@@ -103,21 +103,20 @@
     "docs": {
       "path": "docs",
       "purpose": "Documentation",
-      "fileCount": 9,
-      "lastAccessed": 1774312583620,
+      "fileCount": 4,
+      "lastAccessed": 1774401784860,
       "keyFiles": [
         "CLAUDE.md",
-        "backend-changes.md",
-        "browser-testing-tasklist.md",
-        "comprehensive-review-plan.md",
-        "csp-was-api-spec.md"
+        "README.md",
+        "task-next.md",
+        "task-progress.md"
       ]
     },
     "e2e": {
       "path": "e2e",
       "purpose": null,
       "fileCount": 18,
-      "lastAccessed": 1774312583622,
+      "lastAccessed": 1774401784860,
       "keyFiles": [
         "CLAUDE.md",
         "README.md",
@@ -130,7 +129,7 @@
       "path": "playwright-report",
       "purpose": null,
       "fileCount": 1,
-      "lastAccessed": 1774312583637,
+      "lastAccessed": 1774401784860,
       "keyFiles": [
         "index.html"
       ]
@@ -139,7 +138,7 @@
       "path": "public",
       "purpose": "Public files",
       "fileCount": 8,
-      "lastAccessed": 1774312583638,
+      "lastAccessed": 1774401784860,
       "keyFiles": [
         "CLAUDE.md",
         "file.svg",
@@ -152,7 +151,7 @@
       "path": "src",
       "purpose": "Source code",
       "fileCount": 2,
-      "lastAccessed": 1774312583639,
+      "lastAccessed": 1774401784861,
       "keyFiles": [
         "CLAUDE.md",
         "proxy.ts"
@@ -162,7 +161,7 @@
       "path": "storybook-static",
       "purpose": null,
       "fileCount": 17,
-      "lastAccessed": 1774312583639,
+      "lastAccessed": 1774401784864,
       "keyFiles": [
         "CLAUDE.md",
         "favicon.svg",
@@ -175,14 +174,14 @@
       "path": "test-results",
       "purpose": null,
       "fileCount": 0,
-      "lastAccessed": 1774312583641,
+      "lastAccessed": 1774401784865,
       "keyFiles": []
     },
     "tests": {
       "path": "tests",
       "purpose": "Test files",
       "fileCount": 2,
-      "lastAccessed": 1774312583643,
+      "lastAccessed": 1774401784879,
       "keyFiles": [
         "setup.ts",
         "utils.tsx"
@@ -191,26 +190,26 @@
     "src/app": {
       "path": "src/app",
       "purpose": "Application code",
-      "fileCount": 6,
-      "lastAccessed": 1774312583646,
+      "fileCount": 7,
+      "lastAccessed": 1774401784883,
       "keyFiles": [
+        "CLAUDE.md",
         "error.tsx",
-        "favicon.ico",
-        "globals.css"
+        "favicon.ico"
       ]
     },
     "src/components": {
       "path": "src/components",
       "purpose": "UI components",
       "fileCount": 0,
-      "lastAccessed": 1774312583647,
+      "lastAccessed": 1774401784884,
       "keyFiles": []
     },
     "src/lib": {
       "path": "src/lib",
       "purpose": "Library code",
       "fileCount": 2,
-      "lastAccessed": 1774312583648,
+      "lastAccessed": 1774401784884,
       "keyFiles": [
         "animations.ts",
         "utils.ts"
@@ -220,7 +219,7 @@
       "path": "src/mocks",
       "purpose": "Mock data",
       "fileCount": 4,
-      "lastAccessed": 1774312583648,
+      "lastAccessed": 1774401784884,
       "keyFiles": [
         "browser.ts",
         "handlers.ts",
@@ -231,7 +230,7 @@
       "path": "src/types",
       "purpose": "Type definitions",
       "fileCount": 1,
-      "lastAccessed": 1774312583649,
+      "lastAccessed": 1774401784885,
       "keyFiles": [
         "kakao.d.ts"
       ]
@@ -240,7 +239,7 @@
       "path": "storybook-static/assets",
       "purpose": "Static assets",
       "fileCount": 188,
-      "lastAccessed": 1774312583652,
+      "lastAccessed": 1774401784889,
       "keyFiles": [
         "AreaChart-CZ1p62BF.js",
         "CartesianGrid-nBDQLgpk.js",
@@ -250,304 +249,76 @@
   },
   "hotPaths": [
     {
-      "path": "src/app/(modules)/work-orders/page.tsx",
-      "accessCount": 20,
-      "lastAccessed": 1774316824134,
-      "type": "file"
-    },
-    {
-      "path": "",
+      "path": ".claude/hooks/session-start.sh",
       "accessCount": 18,
-      "lastAccessed": 1774316568368,
-      "type": "directory"
+      "lastAccessed": 1774427077369,
+      "type": "file"
     },
     {
-      "path": "src/components/common/filter-bar.tsx",
+      "path": ".claude/cmux/workspace-layout.sh",
       "accessCount": 15,
-      "lastAccessed": 1774314239824,
+      "lastAccessed": 1774426246929,
       "type": "file"
     },
     {
-      "path": "src/components/data-display/data-table.tsx",
-      "accessCount": 15,
-      "lastAccessed": 1774316119216,
+      "path": ".claude/rules/cmux-workflow.md",
+      "accessCount": 7,
+      "lastAccessed": 1774427651475,
       "type": "file"
     },
     {
-      "path": "src/lib/hooks/use-dashboard.ts",
-      "accessCount": 14,
-      "lastAccessed": 1774314238757,
-      "type": "file"
-    },
-    {
-      "path": "src/lib/utils/excel-download.ts",
-      "accessCount": 10,
-      "lastAccessed": 1774316826423,
-      "type": "file"
-    },
-    {
-      "path": "src/lib/api/dashboard.ts",
-      "accessCount": 9,
-      "lastAccessed": 1774314357063,
-      "type": "file"
-    },
-    {
-      "path": "docs/task-next.md",
-      "accessCount": 8,
-      "lastAccessed": 1774315866430,
-      "type": "file"
-    },
-    {
-      "path": "src/components/layout/header.tsx",
-      "accessCount": 6,
-      "lastAccessed": 1774316127086,
-      "type": "file"
-    },
-    {
-      "path": "src/app/dashboard/_components/dashboard-widgets.tsx",
+      "path": ".claude/hooks/stop-check.sh",
       "accessCount": 5,
-      "lastAccessed": 1774313714633,
+      "lastAccessed": 1774426218081,
       "type": "file"
     },
     {
-      "path": "src/app/(modules)/facilities/page.tsx",
+      "path": ".claude/settings.json",
       "accessCount": 5,
-      "lastAccessed": 1774316660376,
+      "lastAccessed": 1774427087952,
       "type": "file"
     },
     {
-      "path": "src/components/data-display/bulk-action-bar.tsx",
-      "accessCount": 5,
-      "lastAccessed": 1774316824655,
-      "type": "file"
-    },
-    {
-      "path": "src/lib/hooks/use-complains.ts",
+      "path": ".claude/hooks/notification.sh",
       "accessCount": 4,
-      "lastAccessed": 1774313682631,
+      "lastAccessed": 1774426217706,
       "type": "file"
     },
     {
-      "path": "src/lib/validations/common.ts",
+      "path": ".claude/cmux/agent-status.sh",
       "accessCount": 4,
-      "lastAccessed": 1774314235800,
+      "lastAccessed": 1774426260359,
       "type": "file"
     },
     {
-      "path": "src/lib/types/dashboard.ts",
+      "path": ".claude/cmux/multi-agent-launch.sh",
       "accessCount": 4,
-      "lastAccessed": 1774314275225,
+      "lastAccessed": 1774426291815,
       "type": "file"
     },
     {
-      "path": "src",
+      "path": "scripts/setup-cmux.sh",
       "accessCount": 3,
-      "lastAccessed": 1774313386351,
-      "type": "directory"
-    },
-    {
-      "path": "src/lib/hooks/use-work-orders.ts",
-      "accessCount": 3,
-      "lastAccessed": 1774313541875,
+      "lastAccessed": 1774425390290,
       "type": "file"
     },
     {
-      "path": "src/app/(modules)/work-orders/_components/work-order-form.tsx",
-      "accessCount": 3,
-      "lastAccessed": 1774313868143,
-      "type": "file"
-    },
-    {
-      "path": "src/app/(modules)/facilities/_components/facility-form.tsx",
-      "accessCount": 3,
-      "lastAccessed": 1774313876123,
-      "type": "file"
-    },
-    {
-      "path": "src/app/(modules)/nfc-rounds/page.tsx",
-      "accessCount": 3,
-      "lastAccessed": 1774313876341,
-      "type": "file"
-    },
-    {
-      "path": "src/app/(modules)/users/_components/user-form.tsx",
-      "accessCount": 3,
-      "lastAccessed": 1774313882388,
-      "type": "file"
-    },
-    {
-      "path": "src/components/widgets/dashboard/facility-status-widget.tsx",
-      "accessCount": 3,
-      "lastAccessed": 1774314236143,
-      "type": "file"
-    },
-    {
-      "path": "src/lib/validations/auth.ts",
-      "accessCount": 3,
-      "lastAccessed": 1774314291306,
-      "type": "file"
-    },
-    {
-      "path": "src/app/(modules)/clients/page.tsx",
-      "accessCount": 2,
-      "lastAccessed": 1774313498238,
-      "type": "file"
-    },
-    {
-      "path": "src/components/widgets/dashboard/work-order-status-widget.tsx",
-      "accessCount": 2,
-      "lastAccessed": 1774313507860,
-      "type": "file"
-    },
-    {
-      "path": "src/lib/hooks/use-facilities.ts",
-      "accessCount": 2,
-      "lastAccessed": 1774313517976,
-      "type": "file"
-    },
-    {
-      "path": "src/lib/hooks/use-clients.ts",
-      "accessCount": 2,
-      "lastAccessed": 1774313521409,
-      "type": "file"
-    },
-    {
-      "path": "src/lib/hooks/use-users.ts",
-      "accessCount": 2,
-      "lastAccessed": 1774313525324,
-      "type": "file"
-    },
-    {
-      "path": "src/app/(modules)/clients/_components/client-form.tsx",
-      "accessCount": 2,
-      "lastAccessed": 1774313887852,
-      "type": "file"
-    },
-    {
-      "path": "src/app/(modules)/materials/_components/material-form.tsx",
-      "accessCount": 2,
-      "lastAccessed": 1774313893554,
-      "type": "file"
-    },
-    {
-      "path": "src/app/(modules)/boards/_components/notice-form.tsx",
-      "accessCount": 2,
-      "lastAccessed": 1774313905568,
-      "type": "file"
-    },
-    {
-      "path": "src/app/(modules)/boards/_components/data-form.tsx",
-      "accessCount": 2,
-      "lastAccessed": 1774313912718,
-      "type": "file"
-    },
-    {
-      "path": "src/lib/types/facility.ts",
-      "accessCount": 2,
-      "lastAccessed": 1774314339632,
-      "type": "file"
-    },
-    {
-      "path": "src/components/data-display/index.ts",
-      "accessCount": 2,
-      "lastAccessed": 1774316053854,
-      "type": "file"
-    },
-    {
-      "path": "src/app/(modules)/users/page.tsx",
-      "accessCount": 2,
-      "lastAccessed": 1774316284965,
-      "type": "file"
-    },
-    {
-      "path": "src/app",
+      "path": ".claude/hooks/pre-commit-check.sh",
       "accessCount": 1,
-      "lastAccessed": 1774313373819,
-      "type": "directory"
-    },
-    {
-      "path": "src/app/dashboard/page.tsx",
-      "accessCount": 1,
-      "lastAccessed": 1774313385455,
+      "lastAccessed": 1774424998069,
       "type": "file"
     },
     {
-      "path": "src/lib/hooks",
+      "path": ".claude/hooks/post-edit-check.sh",
       "accessCount": 1,
-      "lastAccessed": 1774313395775,
-      "type": "directory"
-    },
-    {
-      "path": "src/components",
-      "accessCount": 1,
-      "lastAccessed": 1774313396138,
-      "type": "directory"
-    },
-    {
-      "path": "src/lib/validations/index.ts",
-      "accessCount": 1,
-      "lastAccessed": 1774313495906,
+      "lastAccessed": 1774424998496,
       "type": "file"
     },
     {
-      "path": "src/lib/api/work-order.ts",
+      "path": "cmux.json",
       "accessCount": 1,
-      "lastAccessed": 1774313502485,
+      "lastAccessed": 1774425239782,
       "type": "file"
-    },
-    {
-      "path": "src/lib/api/facility.ts",
-      "accessCount": 1,
-      "lastAccessed": 1774313515199,
-      "type": "file"
-    },
-    {
-      "path": "src/components/widgets/widget-container.tsx",
-      "accessCount": 1,
-      "lastAccessed": 1774313515587,
-      "type": "file"
-    },
-    {
-      "path": "src/app/(modules)",
-      "accessCount": 1,
-      "lastAccessed": 1774313843552,
-      "type": "directory"
-    },
-    {
-      "path": "src/app/(modules)/patrols/_components/patrol-plan-form.tsx",
-      "accessCount": 1,
-      "lastAccessed": 1774313859531,
-      "type": "file"
-    },
-    {
-      "path": "src/app/(modules)/licenses/_components/license-form.tsx",
-      "accessCount": 1,
-      "lastAccessed": 1774313908061,
-      "type": "file"
-    },
-    {
-      "path": "src/app/(modules)/reports/_components/report-form.tsx",
-      "accessCount": 1,
-      "lastAccessed": 1774313908287,
-      "type": "file"
-    },
-    {
-      "path": "src/lib",
-      "accessCount": 1,
-      "lastAccessed": 1774314244323,
-      "type": "directory"
-    },
-    {
-      "path": "src/components/forms/login-form.tsx",
-      "accessCount": 1,
-      "lastAccessed": 1774314288991,
-      "type": "file"
-    },
-    {
-      "path": "src/lib/types",
-      "accessCount": 1,
-      "lastAccessed": 1774314336354,
-      "type": "directory"
     }
   ],
   "userDirectives": []

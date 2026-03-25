@@ -1,0 +1,76 @@
+{
+  "commands": [
+    {
+      "name": "Dev Environment",
+      "description": "Claude Code + Dev Server + Browser 개발 환경",
+      "layout": {
+        "type": "split",
+        "direction": "right",
+        "ratio": 0.5,
+        "children": [
+          {
+            "type": "pane",
+            "surfaces": [
+              {
+                "name": "Claude Code",
+                "command": "claude"
+              }
+            ]
+          },
+          {
+            "type": "split",
+            "direction": "down",
+            "ratio": 0.5,
+            "children": [
+              {
+                "type": "pane",
+                "surfaces": [
+                  {
+                    "name": "Dev Server",
+                    "command": "npm run dev"
+                  }
+                ]
+              },
+              {
+                "type": "pane",
+                "surfaces": [
+                  {
+                    "name": "Browser",
+                    "type": "browser",
+                    "url": "http://localhost:3000"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "Review",
+      "description": "코드 리뷰 환경",
+      "layout": {
+        "type": "pane",
+        "surfaces": [
+          {
+            "name": "Code Review",
+            "command": "claude -p '/oh-my-claudecode:code-review'"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Build Fix",
+      "description": "빌드 오류 수정",
+      "layout": {
+        "type": "pane",
+        "surfaces": [
+          {
+            "name": "Build Fixer",
+            "command": "claude -p '/oh-my-claudecode:build-fix'"
+          }
+        ]
+      }
+    }
+  ]
+}
